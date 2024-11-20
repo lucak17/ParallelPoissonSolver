@@ -1,0 +1,8 @@
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/solverPoisson.dir
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/edit_cache.dir
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/rebuild_cache.dir
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/alpakaIde.dir
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/edit_cache.dir
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/rebuild_cache.dir
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/thirdParty/alpaka/thirdParty/CMakeFiles/edit_cache.dir
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/thirdParty/alpaka/thirdParty/CMakeFiles/rebuild_cache.dir

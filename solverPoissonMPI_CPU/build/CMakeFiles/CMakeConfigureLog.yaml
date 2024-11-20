@@ -4,17 +4,17 @@ events:
   -
     kind: "message-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineSystem.cmake:211 (message)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineSystem.cmake:211 (message)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       The system is: Linux - 5.14.21-150500.55.31_13.0.53-cray_shasta_c - x86_64
   -
     kind: "message-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
       Compiler: /opt/cray/pe/craype/2.7.30/bin/cc 
@@ -27,16 +27,16 @@ events:
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
       
-      The C compiler identification is GNU, found in:
+      The C compiler identification is Clang, found in:
         /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/3.27.7/CompilerIdC/a.out
       
   -
     kind: "message-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
       Compiler: /opt/cray/pe/craype/2.7.30/bin/CC 
@@ -49,20 +49,20 @@ events:
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
       
-      The CXX compiler identification is GNU, found in:
+      The CXX compiler identification is Clang, found in:
         /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/3.27.7/CompilerIdCXX/a.out
       
   -
     kind: "try_compile-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:12 (project)"
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-7HtSLP"
-      binary: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-7HtSLP"
+      source: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP"
+      binary: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP"
     cmakeVariables:
       CMAKE_C_FLAGS: ""
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -71,360 +71,300 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-7HtSLP'
+        Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP'
         
-        Run Build Command(s): /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_3bea7/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_3bea7.dir/build.make CMakeFiles/cmTC_3bea7.dir/build
-        gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-7HtSLP'
-        Building C object CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o
-        /opt/cray/pe/craype/2.7.30/bin/cc   -v -o CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o -c /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeCCompilerABI.c
-        Using built-in specs.
-        COLLECT_GCC=gcc-12
-        OFFLOAD_TARGET_NAMES=nvptx-none
-        OFFLOAD_TARGET_DEFAULT=1
-        Target: x86_64-suse-linux
-        Configured with: ../configure --prefix=/usr --infodir=/usr/share/info --mandir=/usr/share/man --libdir=/usr/lib64 --libexecdir=/usr/lib64 --enable-languages=c,c++,objc,fortran,obj-c++,ada,go,d --enable-offload-targets=nvptx-none, --enable-offload-defaulted --without-cuda-driver --enable-checking=release --disable-werror --with-gxx-include-dir=/usr/include/c++/12 --enable-ssp --disable-libssp --disable-libvtv --enable-cet=auto --disable-libcc1 --disable-plugin --with-bugurl=https://bugs.opensuse.org/ --with-pkgversion='SUSE Linux' --with-slibdir=/lib64 --with-system-zlib --enable-libstdcxx-allocator=new --disable-libstdcxx-pch --enable-libphobos --enable-version-specific-runtime-libs --with-gcc-major-version-only --enable-linker-build-id --enable-linux-futex --enable-gnu-indirect-function --program-suffix=-12 --without-system-libunwind --enable-multilib --with-arch-32=x86-64 --with-tune=generic --enable-link-serialization --build=x86_64-suse-linux --host=x86_64-suse-linux
+        Run Build Command(s): /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_13cc9/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_13cc9.dir/build.make CMakeFiles/cmTC_13cc9.dir/build
+        gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP'
+        Building C object CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o
+        /opt/cray/pe/craype/2.7.30/bin/cc   -v -MD -MT CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -c /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeCCompilerABI.c
+        Cray clang version 17.0.0  (b59b7a8e9169719529cf5ab440f3c301e515d047)
+        Target: x86_64-unknown-linux-gnu
         Thread model: posix
-        Supported LTO compression algorithms: zlib
-        gcc version 12.3.0 (SUSE Linux) 
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-dumpdir' 'CMakeFiles/cmTC_3bea7.dir/'
-         /usr/lib64/gcc/x86_64-suse-linux/12/cc1 -quiet -v -I /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include -I /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/papi/7.0.1.2/include -I /opt/cray/pe/fftw/3.3.10.6/x86_rome/include -I /opt/cray/pe/pmi/6.1.13/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include -D __CRAY_X86_ROME -D __CRAY_HOST -D __CRAYXT_COMPUTE_LINUX_TARGET -D __TARGET_LINUX__ /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_3bea7.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -march=znver2 -version -o /tmp/ccKECGnP.s
-        GNU C17 (SUSE Linux) version 12.3.0 (x86_64-suse-linux)
-        	compiled by GNU C version 12.3.0, GMP version 6.1.2, MPFR version 4.0.2-p6, MPC version 1.1.0, isl version isl-0.18-GMP
-        
-        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        InstalledDir: /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin
+        Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12
+        Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/7
+        Selected GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12
+        Candidate multilib: .;@m64
+        Selected multilib: .;@m64
+        Found HIP installation: /opt/rocm-5.7.0, version 5.7.31921
+         (in-process)
+         "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/bin/clang-17" -cc1 -triple x86_64-unknown-linux-gnu -mllvm -cray-omp-opt-fork-call -mllvm -cray-omp-parallel-opt-call -mllvm -cray-openmp-rename-outlined -fcray-gpu -flocal-restrict -mllvm -cray-enhanced-asm=1 -fenhanced-asm=1 -mllvm -cray-enhanced-ir=1 -fenhanced-ir=1 -fomp-local-offload-table -ffortran -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -main-file-name CMakeCCompilerABI.c -mrelocation-model static -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu znver2 -debugger-tuning=gdb -v -fcoverage-compilation-dir=/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP -resource-dir /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17 -dependency-file CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -sys-header-deps -canonical-system-headers -isystem /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include -isystem /opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs -D __CRAY_X86_ROME -D __CRAYXT_COMPUTE_LINUX_TARGET -D _HIP_PLATFORM_HCC_ -I /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include -I /opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include -I /opt/rocm-5.7.0/include -I /opt/rocm-5.7.0/rocprofiler/include -I /opt/rocm-5.7.0/roctracer/include -I /opt/rocm-5.7.0/hip/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include -internal-isystem /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include -internal-isystem /usr/local/include -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdebug-compilation-dir=/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP -ferror-limit 19 -fgnuc-version=4.2.1 -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -x c /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeCCompilerABI.c
+        clang -cc1 version 17.0.3 based upon LLVM 17.0.3rc default target x86_64-unknown-linux-gnu
+        ignoring nonexistent directory "/include"
+        ignoring duplicate directory "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include"
         #include "..." search starts here:
         #include <...> search starts here:
-         /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include
-         /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include
+         /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include
+         /opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include
+         /opt/rocm-5.7.0/include
+         /opt/rocm-5.7.0/rocprofiler/include
+         /opt/rocm-5.7.0/roctracer/include
+         /opt/rocm-5.7.0/hip/include
          /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include
-         /opt/cray/pe/papi/7.0.1.2/include
-         /opt/cray/pe/fftw/3.3.10.6/x86_rome/include
-         /opt/cray/pe/pmi/6.1.13/include
          /opt/cray/pe/dsmml/0.2.2/dsmml//include
-         /pdc/software/23.12/other/score-p/8.4-cpeGNU/include
-         /pdc/software/eb/software/opari2/2.0.6/include
-         /pdc/software/eb/software/libunwind/1.4.0-alps/include
-         /pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include
-         /pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include
-         /usr/lib64/gcc/x86_64-suse-linux/12/include
+         /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include
+         /opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs
          /usr/local/include
-         /usr/lib64/gcc/x86_64-suse-linux/12/include-fixed
          /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include
          /usr/include
         End of search list.
-        GNU C17 (SUSE Linux) version 12.3.0 (x86_64-suse-linux)
-        	compiled by GNU C version 12.3.0, GMP version 6.1.2, MPFR version 4.0.2-p6, MPC version 1.1.0, isl version isl-0.18-GMP
-        
-        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-        Compiler executable checksum: 00000000000000000000000000000000
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-dumpdir' 'CMakeFiles/cmTC_3bea7.dir/'
-         /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/as -v -I /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include -I /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/papi/7.0.1.2/include -I /opt/cray/pe/fftw/3.3.10.6/x86_rome/include -I /opt/cray/pe/pmi/6.1.13/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include --64 -o CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o /tmp/ccKECGnP.s
-        GNU assembler version 2.41.0 (x86_64-suse-linux) using BFD version (GNU Binutils; SUSE Linux Enterprise 15) 2.41.0.20230908-150100.7.46
-        COMPILER_PATH=/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/
-        LIBRARY_PATH=/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/pdc/software/eb/software/libunwind/1.4.0-alps/lib/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../:/lib/:/usr/lib/
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-dumpdir' 'CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.'
-        Linking C executable cmTC_3bea7
-        /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3bea7.dir/link.txt --verbose=1
-        /opt/cray/pe/craype/2.7.30/bin/cc  -v CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o -o cmTC_3bea7 
-        Using built-in specs.
-        COLLECT_GCC=gcc-12
-        COLLECT_LTO_WRAPPER=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper
-        OFFLOAD_TARGET_NAMES=nvptx-none
-        OFFLOAD_TARGET_DEFAULT=1
-        Target: x86_64-suse-linux
-        Configured with: ../configure --prefix=/usr --infodir=/usr/share/info --mandir=/usr/share/man --libdir=/usr/lib64 --libexecdir=/usr/lib64 --enable-languages=c,c++,objc,fortran,obj-c++,ada,go,d --enable-offload-targets=nvptx-none, --enable-offload-defaulted --without-cuda-driver --enable-checking=release --disable-werror --with-gxx-include-dir=/usr/include/c++/12 --enable-ssp --disable-libssp --disable-libvtv --enable-cet=auto --disable-libcc1 --disable-plugin --with-bugurl=https://bugs.opensuse.org/ --with-pkgversion='SUSE Linux' --with-slibdir=/lib64 --with-system-zlib --enable-libstdcxx-allocator=new --disable-libstdcxx-pch --enable-libphobos --enable-version-specific-runtime-libs --with-gcc-major-version-only --enable-linker-build-id --enable-linux-futex --enable-gnu-indirect-function --program-suffix=-12 --without-system-libunwind --enable-multilib --with-arch-32=x86-64 --with-tune=generic --enable-link-serialization --build=x86_64-suse-linux --host=x86_64-suse-linux
+        Linking C executable cmTC_13cc9
+        /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E cmake_link_script CMakeFiles/cmTC_13cc9.dir/link.txt --verbose=1
+        /opt/cray/pe/craype/2.7.30/bin/cc  -v CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -o cmTC_13cc9 
+        Cray clang version 17.0.0  (b59b7a8e9169719529cf5ab440f3c301e515d047)
+        Target: x86_64-unknown-linux-gnu
         Thread model: posix
-        Supported LTO compression algorithms: zlib
-        gcc version 12.3.0 (SUSE Linux) 
-        COMPILER_PATH=/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/
-        LIBRARY_PATH=/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/pdc/software/eb/software/libunwind/1.4.0-alps/lib/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../:/lib/:/usr/lib/
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'cmTC_3bea7' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib' '-L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib' '-L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64' '-L/opt/cray/pe/papi/7.0.1.2/lib' '-L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib' '-L/opt/cray/pe/pmi/6.1.13/lib' '-L/opt/cray/pe/dsmml/0.2.2/dsmml//lib' '-dumpdir' 'cmTC_3bea7.'
-         /usr/lib64/gcc/x86_64-suse-linux/12/collect2 -plugin /usr/lib64/gcc/x86_64-suse-linux/12/liblto_plugin.so -plugin-opt=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper -plugin-opt=-fresolution=/tmp/cc7AD5dv.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_3bea7 /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o /usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o -L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib -L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib -L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64 -L/opt/cray/pe/papi/7.0.1.2/lib -L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib -L/opt/cray/pe/pmi/6.1.13/lib -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib -L/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64 -L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64 -L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64 -L/usr/lib64/gcc/x86_64-suse-linux/12 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/pdc/software/eb/software/libunwind/1.4.0-alps/lib -L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib -L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib -L/usr/lib64/gcc/x86_64-suse-linux/12/../../.. CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o -Bdynamic --as-needed -lpapi --no-as-needed --as-needed -lpfm --no-as-needed --as-needed -lfftw3f_mpi --no-as-needed --as-needed -lfftw3f_threads --no-as-needed --as-needed -lfftw3f --no-as-needed --as-needed -lfftw3_mpi --no-as-needed --as-needed -lfftw3_threads --no-as-needed --as-needed -lfftw3 --no-as-needed --as-needed -lpmi --no-as-needed --as-needed -lpmi2 --no-as-needed --as-needed -lsci_gnu_123_mpi --no-as-needed --as-needed -lmpi_gnu_123 --no-as-needed --as-needed -lsci_gnu_123 --no-as-needed -ldl --as-needed -ldsmml --no-as-needed -lxpmem --as-needed -lgfortran -lquadmath --no-as-needed --as-needed -lmvec --no-as-needed --as-needed -lm --no-as-needed --as-needed -lpthread --no-as-needed --disable-new-dtags -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib64/gcc/x86_64-suse-linux/12/crtend.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'cmTC_3bea7' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib' '-L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib' '-L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64' '-L/opt/cray/pe/papi/7.0.1.2/lib' '-L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib' '-L/opt/cray/pe/pmi/6.1.13/lib' '-L/opt/cray/pe/dsmml/0.2.2/dsmml//lib' '-dumpdir' 'cmTC_3bea7.'
-        gmake[1]: Leaving directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-7HtSLP'
+        InstalledDir: /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin
+        Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12
+        Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/7
+        Selected GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12
+        Candidate multilib: .;@m64
+        Selected multilib: .;@m64
+        Found HIP installation: /opt/rocm-5.7.0, version 5.7.31921
+         "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin/ld.lld" --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_13cc9 /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o -L/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib -L/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib -L/opt/rocm-5.7.0/lib64 -L/opt/rocm-5.7.0/lib -L/opt/rocm-5.7.0/rocprofiler/lib -L/opt/rocm-5.7.0/rocprofiler/tool -L/opt/rocm-5.7.0/roctracer/lib -L/opt/rocm-5.7.0/roctracer/tool -L/opt/rocm-5.7.0/hip/lib -L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64 -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib -L/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../ -L/usr/lib64/gcc/x86_64-suse-linux/12 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib -L/lib -L/usr/lib -plugin-opt=mcpu=znver2 -plugin-opt=lto=0 -plugin-opt=defaults=cray -plugin-opt=mllvm=-cray-math-precision=none -rpath=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -lamdhip64 --as-needed -lsci_cray_mpi --no-as-needed --as-needed -lsci_cray --no-as-needed -ldl --as-needed -lmpi_cray --no-as-needed --as-needed -ldsmml --no-as-needed -lxpmem --as-needed -lstdc++ --no-as-needed --as-needed -lpgas-shmem --no-as-needed -lquadmath -lmodules -lfi -lcraymath -lf -lu -lcsup --as-needed -lpthread -latomic --no-as-needed --as-needed -lm --no-as-needed --disable-new-dtags /opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a --as-needed -L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib -rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so -lunwind --no-as-needed -lc /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a --as-needed -L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib -rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so -lunwind --no-as-needed /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o
+        gmake[1]: Leaving directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP'
         
       exitCode: 0
   -
     kind: "message-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Parsed C implicit include dir info: rv=done
         found start of include info
         found start of implicit include info
-          add: [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include]
-          add: [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include]
+          add: [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include]
+          add: [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include]
+          add: [/opt/rocm-5.7.0/include]
+          add: [/opt/rocm-5.7.0/rocprofiler/include]
+          add: [/opt/rocm-5.7.0/roctracer/include]
+          add: [/opt/rocm-5.7.0/hip/include]
           add: [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include]
-          add: [/opt/cray/pe/papi/7.0.1.2/include]
-          add: [/opt/cray/pe/fftw/3.3.10.6/x86_rome/include]
-          add: [/opt/cray/pe/pmi/6.1.13/include]
           add: [/opt/cray/pe/dsmml/0.2.2/dsmml//include]
-          add: [/pdc/software/23.12/other/score-p/8.4-cpeGNU/include]
-          add: [/pdc/software/eb/software/opari2/2.0.6/include]
-          add: [/pdc/software/eb/software/libunwind/1.4.0-alps/include]
-          add: [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include]
-          add: [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include]
-          add: [/usr/lib64/gcc/x86_64-suse-linux/12/include]
+          add: [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include]
+          add: [/opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs]
           add: [/usr/local/include]
-          add: [/usr/lib64/gcc/x86_64-suse-linux/12/include-fixed]
           add: [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include]
           add: [/usr/include]
         end of search list found
-        collapse include dir [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include] ==> [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include]
-        collapse include dir [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include] ==> [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include]
+        collapse include dir [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include] ==> [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include]
+        collapse include dir [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include] ==> [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include]
+        collapse include dir [/opt/rocm-5.7.0/include] ==> [/opt/rocm-5.7.0/include]
+        collapse include dir [/opt/rocm-5.7.0/rocprofiler/include] ==> [/opt/rocm-5.7.0/rocprofiler/include]
+        collapse include dir [/opt/rocm-5.7.0/roctracer/include] ==> [/opt/rocm-5.7.0/roctracer/include]
+        collapse include dir [/opt/rocm-5.7.0/hip/include] ==> [/opt/rocm-5.7.0/hip/include]
         collapse include dir [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include] ==> [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include]
-        collapse include dir [/opt/cray/pe/papi/7.0.1.2/include] ==> [/opt/cray/pe/papi/7.0.1.2/include]
-        collapse include dir [/opt/cray/pe/fftw/3.3.10.6/x86_rome/include] ==> [/opt/cray/pe/fftw/3.3.10.6/x86_rome/include]
-        collapse include dir [/opt/cray/pe/pmi/6.1.13/include] ==> [/opt/cray/pe/pmi/6.1.13/include]
         collapse include dir [/opt/cray/pe/dsmml/0.2.2/dsmml//include] ==> [/opt/cray/pe/dsmml/0.2.2/dsmml/include]
-        collapse include dir [/pdc/software/23.12/other/score-p/8.4-cpeGNU/include] ==> [/pdc/software/23.12/other/score-p/8.4-cpeGNU/include]
-        collapse include dir [/pdc/software/eb/software/opari2/2.0.6/include] ==> [/pdc/software/eb/software/opari2/2.0.6/include]
-        collapse include dir [/pdc/software/eb/software/libunwind/1.4.0-alps/include] ==> [/pdc/software/eb/software/libunwind/1.4.0-alps/include]
-        collapse include dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include] ==> [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include]
-        collapse include dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include] ==> [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include]
-        collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/include] ==> [/usr/lib64/gcc/x86_64-suse-linux/12/include]
+        collapse include dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include] ==> [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include]
+        collapse include dir [/opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs] ==> [/opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs]
         collapse include dir [/usr/local/include] ==> [/usr/local/include]
-        collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/include-fixed] ==> [/usr/lib64/gcc/x86_64-suse-linux/12/include-fixed]
         collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include] ==> [/usr/x86_64-suse-linux/include]
         collapse include dir [/usr/include] ==> [/usr/include]
-        implicit include dirs: [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include;/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include;/opt/cray/pe/papi/7.0.1.2/include;/opt/cray/pe/fftw/3.3.10.6/x86_rome/include;/opt/cray/pe/pmi/6.1.13/include;/opt/cray/pe/dsmml/0.2.2/dsmml/include;/pdc/software/23.12/other/score-p/8.4-cpeGNU/include;/pdc/software/eb/software/opari2/2.0.6/include;/pdc/software/eb/software/libunwind/1.4.0-alps/include;/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include;/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include;/usr/lib64/gcc/x86_64-suse-linux/12/include;/usr/local/include;/usr/lib64/gcc/x86_64-suse-linux/12/include-fixed;/usr/x86_64-suse-linux/include;/usr/include]
+        implicit include dirs: [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include;/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include;/opt/rocm-5.7.0/include;/opt/rocm-5.7.0/rocprofiler/include;/opt/rocm-5.7.0/roctracer/include;/opt/rocm-5.7.0/hip/include;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include;/opt/cray/pe/dsmml/0.2.2/dsmml/include;/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include;/opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs;/usr/local/include;/usr/x86_64-suse-linux/include;/usr/include]
       
       
   -
     kind: "message-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Parsed C implicit link information:
         link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
-        ignore line: [Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-7HtSLP']
+        ignore line: [Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP']
         ignore line: []
-        ignore line: [Run Build Command(s): /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_3bea7/fast]
-        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_3bea7.dir/build.make CMakeFiles/cmTC_3bea7.dir/build]
-        ignore line: [gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-7HtSLP']
-        ignore line: [Building C object CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o]
-        ignore line: [/opt/cray/pe/craype/2.7.30/bin/cc   -v -o CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o -c /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeCCompilerABI.c]
-        ignore line: [Using built-in specs.]
-        ignore line: [COLLECT_GCC=gcc-12]
-        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
-        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
-        ignore line: [Target: x86_64-suse-linux]
-        ignore line: [Configured with: ../configure --prefix=/usr --infodir=/usr/share/info --mandir=/usr/share/man --libdir=/usr/lib64 --libexecdir=/usr/lib64 --enable-languages=c c++ objc fortran obj-c++ ada go d --enable-offload-targets=nvptx-none  --enable-offload-defaulted --without-cuda-driver --enable-checking=release --disable-werror --with-gxx-include-dir=/usr/include/c++/12 --enable-ssp --disable-libssp --disable-libvtv --enable-cet=auto --disable-libcc1 --disable-plugin --with-bugurl=https://bugs.opensuse.org/ --with-pkgversion='SUSE Linux' --with-slibdir=/lib64 --with-system-zlib --enable-libstdcxx-allocator=new --disable-libstdcxx-pch --enable-libphobos --enable-version-specific-runtime-libs --with-gcc-major-version-only --enable-linker-build-id --enable-linux-futex --enable-gnu-indirect-function --program-suffix=-12 --without-system-libunwind --enable-multilib --with-arch-32=x86-64 --with-tune=generic --enable-link-serialization --build=x86_64-suse-linux --host=x86_64-suse-linux]
+        ignore line: [Run Build Command(s): /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_13cc9/fast]
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_13cc9.dir/build.make CMakeFiles/cmTC_13cc9.dir/build]
+        ignore line: [gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP']
+        ignore line: [Building C object CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/opt/cray/pe/craype/2.7.30/bin/cc   -v -MD -MT CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -c /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeCCompilerABI.c]
+        ignore line: [Cray clang version 17.0.0  (b59b7a8e9169719529cf5ab440f3c301e515d047)]
+        ignore line: [Target: x86_64-unknown-linux-gnu]
         ignore line: [Thread model: posix]
-        ignore line: [Supported LTO compression algorithms: zlib]
-        ignore line: [gcc version 12.3.0 (SUSE Linux) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-dumpdir' 'CMakeFiles/cmTC_3bea7.dir/']
-        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/cc1 -quiet -v -I /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include -I /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/papi/7.0.1.2/include -I /opt/cray/pe/fftw/3.3.10.6/x86_rome/include -I /opt/cray/pe/pmi/6.1.13/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include -D __CRAY_X86_ROME -D __CRAY_HOST -D __CRAYXT_COMPUTE_LINUX_TARGET -D __TARGET_LINUX__ /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_3bea7.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -march=znver2 -version -o /tmp/ccKECGnP.s]
-        ignore line: [GNU C17 (SUSE Linux) version 12.3.0 (x86_64-suse-linux)]
-        ignore line: [	compiled by GNU C version 12.3.0  GMP version 6.1.2  MPFR version 4.0.2-p6  MPC version 1.1.0  isl version isl-0.18-GMP]
-        ignore line: []
-        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [InstalledDir: /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin]
+        ignore line: [Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12]
+        ignore line: [Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/7]
+        ignore line: [Selected GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12]
+        ignore line: [Candidate multilib: .]
+        ignore line: [@m64]
+        ignore line: [Selected multilib: .]
+        ignore line: [@m64]
+        ignore line: [Found HIP installation: /opt/rocm-5.7.0  version 5.7.31921]
+        ignore line: [ (in-process)]
+        ignore line: [ "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/bin/clang-17" -cc1 -triple x86_64-unknown-linux-gnu -mllvm -cray-omp-opt-fork-call -mllvm -cray-omp-parallel-opt-call -mllvm -cray-openmp-rename-outlined -fcray-gpu -flocal-restrict -mllvm -cray-enhanced-asm=1 -fenhanced-asm=1 -mllvm -cray-enhanced-ir=1 -fenhanced-ir=1 -fomp-local-offload-table -ffortran -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -main-file-name CMakeCCompilerABI.c -mrelocation-model static -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu znver2 -debugger-tuning=gdb -v -fcoverage-compilation-dir=/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP -resource-dir /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17 -dependency-file CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -sys-header-deps -canonical-system-headers -isystem /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include -isystem /opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs -D __CRAY_X86_ROME -D __CRAYXT_COMPUTE_LINUX_TARGET -D _HIP_PLATFORM_HCC_ -I /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include -I /opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include -I /opt/rocm-5.7.0/include -I /opt/rocm-5.7.0/rocprofiler/include -I /opt/rocm-5.7.0/roctracer/include -I /opt/rocm-5.7.0/hip/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include -internal-isystem /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include -internal-isystem /usr/local/include -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdebug-compilation-dir=/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-BshiwP -ferror-limit 19 -fgnuc-version=4.2.1 -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -x c /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang -cc1 version 17.0.3 based upon LLVM 17.0.3rc default target x86_64-unknown-linux-gnu]
+        ignore line: [ignoring nonexistent directory "/include"]
+        ignore line: [ignoring duplicate directory "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include"]
         ignore line: [#include "..." search starts here:]
         ignore line: [#include <...> search starts here:]
-        ignore line: [ /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include]
-        ignore line: [ /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include]
+        ignore line: [ /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include]
+        ignore line: [ /opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include]
+        ignore line: [ /opt/rocm-5.7.0/include]
+        ignore line: [ /opt/rocm-5.7.0/rocprofiler/include]
+        ignore line: [ /opt/rocm-5.7.0/roctracer/include]
+        ignore line: [ /opt/rocm-5.7.0/hip/include]
         ignore line: [ /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include]
-        ignore line: [ /opt/cray/pe/papi/7.0.1.2/include]
-        ignore line: [ /opt/cray/pe/fftw/3.3.10.6/x86_rome/include]
-        ignore line: [ /opt/cray/pe/pmi/6.1.13/include]
         ignore line: [ /opt/cray/pe/dsmml/0.2.2/dsmml//include]
-        ignore line: [ /pdc/software/23.12/other/score-p/8.4-cpeGNU/include]
-        ignore line: [ /pdc/software/eb/software/opari2/2.0.6/include]
-        ignore line: [ /pdc/software/eb/software/libunwind/1.4.0-alps/include]
-        ignore line: [ /pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include]
-        ignore line: [ /pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include]
-        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/include]
+        ignore line: [ /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include]
+        ignore line: [ /opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs]
         ignore line: [ /usr/local/include]
-        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/include-fixed]
         ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include]
         ignore line: [ /usr/include]
         ignore line: [End of search list.]
-        ignore line: [GNU C17 (SUSE Linux) version 12.3.0 (x86_64-suse-linux)]
-        ignore line: [	compiled by GNU C version 12.3.0  GMP version 6.1.2  MPFR version 4.0.2-p6  MPC version 1.1.0  isl version isl-0.18-GMP]
-        ignore line: []
-        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-        ignore line: [Compiler executable checksum: 00000000000000000000000000000000]
-        ignore line: [COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-dumpdir' 'CMakeFiles/cmTC_3bea7.dir/']
-        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/as -v -I /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include -I /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/papi/7.0.1.2/include -I /opt/cray/pe/fftw/3.3.10.6/x86_rome/include -I /opt/cray/pe/pmi/6.1.13/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include --64 -o CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o /tmp/ccKECGnP.s]
-        ignore line: [GNU assembler version 2.41.0 (x86_64-suse-linux) using BFD version (GNU Binutils]
-        ignore line: [ SUSE Linux Enterprise 15) 2.41.0.20230908-150100.7.46]
-        ignore line: [COMPILER_PATH=/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/]
-        ignore line: [LIBRARY_PATH=/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/pdc/software/eb/software/libunwind/1.4.0-alps/lib/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../:/lib/:/usr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-dumpdir' 'CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.']
-        ignore line: [Linking C executable cmTC_3bea7]
-        ignore line: [/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3bea7.dir/link.txt --verbose=1]
-        ignore line: [/opt/cray/pe/craype/2.7.30/bin/cc  -v CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o -o cmTC_3bea7 ]
-        ignore line: [Using built-in specs.]
-        ignore line: [COLLECT_GCC=gcc-12]
-        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper]
-        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
-        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
-        ignore line: [Target: x86_64-suse-linux]
-        ignore line: [Configured with: ../configure --prefix=/usr --infodir=/usr/share/info --mandir=/usr/share/man --libdir=/usr/lib64 --libexecdir=/usr/lib64 --enable-languages=c c++ objc fortran obj-c++ ada go d --enable-offload-targets=nvptx-none  --enable-offload-defaulted --without-cuda-driver --enable-checking=release --disable-werror --with-gxx-include-dir=/usr/include/c++/12 --enable-ssp --disable-libssp --disable-libvtv --enable-cet=auto --disable-libcc1 --disable-plugin --with-bugurl=https://bugs.opensuse.org/ --with-pkgversion='SUSE Linux' --with-slibdir=/lib64 --with-system-zlib --enable-libstdcxx-allocator=new --disable-libstdcxx-pch --enable-libphobos --enable-version-specific-runtime-libs --with-gcc-major-version-only --enable-linker-build-id --enable-linux-futex --enable-gnu-indirect-function --program-suffix=-12 --without-system-libunwind --enable-multilib --with-arch-32=x86-64 --with-tune=generic --enable-link-serialization --build=x86_64-suse-linux --host=x86_64-suse-linux]
+        ignore line: [Linking C executable cmTC_13cc9]
+        ignore line: [/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E cmake_link_script CMakeFiles/cmTC_13cc9.dir/link.txt --verbose=1]
+        ignore line: [/opt/cray/pe/craype/2.7.30/bin/cc  -v CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -o cmTC_13cc9 ]
+        ignore line: [Cray clang version 17.0.0  (b59b7a8e9169719529cf5ab440f3c301e515d047)]
+        ignore line: [Target: x86_64-unknown-linux-gnu]
         ignore line: [Thread model: posix]
-        ignore line: [Supported LTO compression algorithms: zlib]
-        ignore line: [gcc version 12.3.0 (SUSE Linux) ]
-        ignore line: [COMPILER_PATH=/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/]
-        ignore line: [LIBRARY_PATH=/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/pdc/software/eb/software/libunwind/1.4.0-alps/lib/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../:/lib/:/usr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'cmTC_3bea7' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib' '-L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib' '-L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64' '-L/opt/cray/pe/papi/7.0.1.2/lib' '-L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib' '-L/opt/cray/pe/pmi/6.1.13/lib' '-L/opt/cray/pe/dsmml/0.2.2/dsmml//lib' '-dumpdir' 'cmTC_3bea7.']
-        link line: [ /usr/lib64/gcc/x86_64-suse-linux/12/collect2 -plugin /usr/lib64/gcc/x86_64-suse-linux/12/liblto_plugin.so -plugin-opt=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper -plugin-opt=-fresolution=/tmp/cc7AD5dv.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_3bea7 /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o /usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o -L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib -L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib -L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64 -L/opt/cray/pe/papi/7.0.1.2/lib -L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib -L/opt/cray/pe/pmi/6.1.13/lib -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib -L/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64 -L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64 -L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64 -L/usr/lib64/gcc/x86_64-suse-linux/12 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/pdc/software/eb/software/libunwind/1.4.0-alps/lib -L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib -L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib -L/usr/lib64/gcc/x86_64-suse-linux/12/../../.. CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o -Bdynamic --as-needed -lpapi --no-as-needed --as-needed -lpfm --no-as-needed --as-needed -lfftw3f_mpi --no-as-needed --as-needed -lfftw3f_threads --no-as-needed --as-needed -lfftw3f --no-as-needed --as-needed -lfftw3_mpi --no-as-needed --as-needed -lfftw3_threads --no-as-needed --as-needed -lfftw3 --no-as-needed --as-needed -lpmi --no-as-needed --as-needed -lpmi2 --no-as-needed --as-needed -lsci_gnu_123_mpi --no-as-needed --as-needed -lmpi_gnu_123 --no-as-needed --as-needed -lsci_gnu_123 --no-as-needed -ldl --as-needed -ldsmml --no-as-needed -lxpmem --as-needed -lgfortran -lquadmath --no-as-needed --as-needed -lmvec --no-as-needed --as-needed -lm --no-as-needed --as-needed -lpthread --no-as-needed --disable-new-dtags -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib64/gcc/x86_64-suse-linux/12/crtend.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o]
-          arg [/usr/lib64/gcc/x86_64-suse-linux/12/collect2] ==> ignore
-          arg [-plugin] ==> ignore
-          arg [/usr/lib64/gcc/x86_64-suse-linux/12/liblto_plugin.so] ==> ignore
-          arg [-plugin-opt=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper] ==> ignore
-          arg [-plugin-opt=-fresolution=/tmp/cc7AD5dv.res] ==> ignore
-          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-          arg [-plugin-opt=-pass-through=-lc] ==> ignore
-          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-          arg [--build-id] ==> ignore
+        ignore line: [InstalledDir: /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin]
+        ignore line: [Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12]
+        ignore line: [Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/7]
+        ignore line: [Selected GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12]
+        ignore line: [Candidate multilib: .]
+        ignore line: [@m64]
+        ignore line: [Selected multilib: .]
+        ignore line: [@m64]
+        ignore line: [Found HIP installation: /opt/rocm-5.7.0  version 5.7.31921]
+        link line: [ "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin/ld.lld" --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_13cc9 /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o -L/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib -L/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib -L/opt/rocm-5.7.0/lib64 -L/opt/rocm-5.7.0/lib -L/opt/rocm-5.7.0/rocprofiler/lib -L/opt/rocm-5.7.0/rocprofiler/tool -L/opt/rocm-5.7.0/roctracer/lib -L/opt/rocm-5.7.0/roctracer/tool -L/opt/rocm-5.7.0/hip/lib -L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64 -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib -L/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../ -L/usr/lib64/gcc/x86_64-suse-linux/12 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib -L/lib -L/usr/lib -plugin-opt=mcpu=znver2 -plugin-opt=lto=0 -plugin-opt=defaults=cray -plugin-opt=mllvm=-cray-math-precision=none -rpath=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o -lamdhip64 --as-needed -lsci_cray_mpi --no-as-needed --as-needed -lsci_cray --no-as-needed -ldl --as-needed -lmpi_cray --no-as-needed --as-needed -ldsmml --no-as-needed -lxpmem --as-needed -lstdc++ --no-as-needed --as-needed -lpgas-shmem --no-as-needed -lquadmath -lmodules -lfi -lcraymath -lf -lu -lcsup --as-needed -lpthread -latomic --no-as-needed --as-needed -lm --no-as-needed --disable-new-dtags /opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a --as-needed -L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib -rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so -lunwind --no-as-needed -lc /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a --as-needed -L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib -rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so -lunwind --no-as-needed /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o]
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin/ld.lld] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
           arg [--eh-frame-hdr] ==> ignore
           arg [-m] ==> ignore
           arg [elf_x86_64] ==> ignore
           arg [-dynamic-linker] ==> ignore
           arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
           arg [-o] ==> ignore
-          arg [cmTC_3bea7] ==> ignore
+          arg [cmTC_13cc9] ==> ignore
           arg [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o]
           arg [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o]
-          arg [/usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o]
-          arg [-L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib] ==> dir [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib]
-          arg [-L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib] ==> dir [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib]
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o] ==> obj [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o]
+          arg [-L/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib] ==> dir [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib]
+          arg [-L/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib] ==> dir [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib]
+          arg [-L/opt/rocm-5.7.0/lib64] ==> dir [/opt/rocm-5.7.0/lib64]
+          arg [-L/opt/rocm-5.7.0/lib] ==> dir [/opt/rocm-5.7.0/lib]
+          arg [-L/opt/rocm-5.7.0/rocprofiler/lib] ==> dir [/opt/rocm-5.7.0/rocprofiler/lib]
+          arg [-L/opt/rocm-5.7.0/rocprofiler/tool] ==> dir [/opt/rocm-5.7.0/rocprofiler/tool]
+          arg [-L/opt/rocm-5.7.0/roctracer/lib] ==> dir [/opt/rocm-5.7.0/roctracer/lib]
+          arg [-L/opt/rocm-5.7.0/roctracer/tool] ==> dir [/opt/rocm-5.7.0/roctracer/tool]
+          arg [-L/opt/rocm-5.7.0/hip/lib] ==> dir [/opt/rocm-5.7.0/hip/lib]
           arg [-L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64] ==> dir [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64]
-          arg [-L/opt/cray/pe/papi/7.0.1.2/lib] ==> dir [/opt/cray/pe/papi/7.0.1.2/lib]
-          arg [-L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib] ==> dir [/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib]
-          arg [-L/opt/cray/pe/pmi/6.1.13/lib] ==> dir [/opt/cray/pe/pmi/6.1.13/lib]
           arg [-L/opt/cray/pe/dsmml/0.2.2/dsmml//lib] ==> dir [/opt/cray/pe/dsmml/0.2.2/dsmml//lib]
-          arg [-L/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64] ==> dir [/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64]
-          arg [-L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64] ==> dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64]
-          arg [-L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64] ==> dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64]
+          arg [-L/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../] ==> dir [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../]
           arg [-L/usr/lib64/gcc/x86_64-suse-linux/12] ==> dir [/usr/lib64/gcc/x86_64-suse-linux/12]
           arg [-L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64] ==> dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64]
           arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
           arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
-          arg [-L/pdc/software/eb/software/libunwind/1.4.0-alps/lib] ==> dir [/pdc/software/eb/software/libunwind/1.4.0-alps/lib]
-          arg [-L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib] ==> dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib]
-          arg [-L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib] ==> dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib]
           arg [-L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib] ==> dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib]
-          arg [-L/usr/lib64/gcc/x86_64-suse-linux/12/../../..] ==> dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../..]
-          arg [CMakeFiles/cmTC_3bea7.dir/CMakeCCompilerABI.c.o] ==> ignore
-          arg [-Bdynamic] ==> search dynamic
+          arg [-L/lib] ==> dir [/lib]
+          arg [-L/usr/lib] ==> dir [/usr/lib]
+          arg [-plugin-opt=mcpu=znver2] ==> ignore
+          arg [-plugin-opt=lto=0] ==> ignore
+          arg [-plugin-opt=defaults=cray] ==> ignore
+          arg [-plugin-opt=mllvm=-cray-math-precision=none] ==> ignore
+          arg [-rpath=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib] ==> ignore
+          arg [CMakeFiles/cmTC_13cc9.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lamdhip64] ==> lib [amdhip64]
           arg [--as-needed] ==> ignore
-          arg [-lpapi] ==> lib [papi]
+          arg [-lsci_cray_mpi] ==> lib [sci_cray_mpi]
           arg [--no-as-needed] ==> ignore
           arg [--as-needed] ==> ignore
-          arg [-lpfm] ==> lib [pfm]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3f_mpi] ==> lib [fftw3f_mpi]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3f_threads] ==> lib [fftw3f_threads]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3f] ==> lib [fftw3f]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3_mpi] ==> lib [fftw3_mpi]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3_threads] ==> lib [fftw3_threads]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3] ==> lib [fftw3]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lpmi] ==> lib [pmi]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lpmi2] ==> lib [pmi2]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lsci_gnu_123_mpi] ==> lib [sci_gnu_123_mpi]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lmpi_gnu_123] ==> lib [mpi_gnu_123]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lsci_gnu_123] ==> lib [sci_gnu_123]
+          arg [-lsci_cray] ==> lib [sci_cray]
           arg [--no-as-needed] ==> ignore
           arg [-ldl] ==> lib [dl]
+          arg [--as-needed] ==> ignore
+          arg [-lmpi_cray] ==> lib [mpi_cray]
+          arg [--no-as-needed] ==> ignore
           arg [--as-needed] ==> ignore
           arg [-ldsmml] ==> lib [dsmml]
           arg [--no-as-needed] ==> ignore
           arg [-lxpmem] ==> lib [xpmem]
           arg [--as-needed] ==> ignore
-          arg [-lgfortran] ==> lib [gfortran]
-          arg [-lquadmath] ==> lib [quadmath]
+          arg [-lstdc++] ==> lib [stdc++]
           arg [--no-as-needed] ==> ignore
           arg [--as-needed] ==> ignore
-          arg [-lmvec] ==> lib [mvec]
+          arg [-lpgas-shmem] ==> lib [pgas-shmem]
+          arg [--no-as-needed] ==> ignore
+          arg [-lquadmath] ==> lib [quadmath]
+          arg [-lmodules] ==> lib [modules]
+          arg [-lfi] ==> lib [fi]
+          arg [-lcraymath] ==> lib [craymath]
+          arg [-lf] ==> lib [f]
+          arg [-lu] ==> lib [u]
+          arg [-lcsup] ==> lib [csup]
+          arg [--as-needed] ==> ignore
+          arg [-lpthread] ==> lib [pthread]
+          arg [-latomic] ==> lib [atomic]
           arg [--no-as-needed] ==> ignore
           arg [--as-needed] ==> ignore
           arg [-lm] ==> lib [m]
           arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lpthread] ==> lib [pthread]
-          arg [--no-as-needed] ==> ignore
           arg [--disable-new-dtags] ==> ignore
-          arg [-lgcc] ==> lib [gcc]
-          arg [--push-state] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o] ==> obj [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o]
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a] ==> lib [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a]
           arg [--as-needed] ==> ignore
-          arg [-lgcc_s] ==> lib [gcc_s]
-          arg [--pop-state] ==> ignore
+          arg [-L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
+          arg [-rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so] ==> ignore
+          arg [-lunwind] ==> lib [unwind]
+          arg [--no-as-needed] ==> ignore
           arg [-lc] ==> lib [c]
-          arg [-lgcc] ==> lib [gcc]
-          arg [--push-state] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a] ==> lib [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a]
           arg [--as-needed] ==> ignore
-          arg [-lgcc_s] ==> lib [gcc_s]
-          arg [--pop-state] ==> ignore
-          arg [/usr/lib64/gcc/x86_64-suse-linux/12/crtend.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/crtend.o]
+          arg [-L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
+          arg [-rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so] ==> ignore
+          arg [-lunwind] ==> lib [unwind]
+          arg [--no-as-needed] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o] ==> obj [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o]
           arg [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o]
+        remove lib [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a]
+        remove lib [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a]
         collapse obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o] ==> [/usr/lib64/crt1.o]
         collapse obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o] ==> [/usr/lib64/crti.o]
         collapse obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o] ==> [/usr/lib64/crtn.o]
-        collapse library dir [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib] ==> [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib]
-        collapse library dir [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib] ==> [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib]
+        collapse library dir [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib] ==> [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib]
+        collapse library dir [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib] ==> [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib]
+        collapse library dir [/opt/rocm-5.7.0/lib64] ==> [/opt/rocm-5.7.0/lib64]
+        collapse library dir [/opt/rocm-5.7.0/lib] ==> [/opt/rocm-5.7.0/lib]
+        collapse library dir [/opt/rocm-5.7.0/rocprofiler/lib] ==> [/opt/rocm-5.7.0/rocprofiler/lib]
+        collapse library dir [/opt/rocm-5.7.0/rocprofiler/tool] ==> [/opt/rocm-5.7.0/rocprofiler/tool]
+        collapse library dir [/opt/rocm-5.7.0/roctracer/lib] ==> [/opt/rocm-5.7.0/roctracer/lib]
+        collapse library dir [/opt/rocm-5.7.0/roctracer/tool] ==> [/opt/rocm-5.7.0/roctracer/tool]
+        collapse library dir [/opt/rocm-5.7.0/hip/lib] ==> [/opt/rocm-5.7.0/hip/lib]
         collapse library dir [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64] ==> [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64]
-        collapse library dir [/opt/cray/pe/papi/7.0.1.2/lib] ==> [/opt/cray/pe/papi/7.0.1.2/lib]
-        collapse library dir [/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib] ==> [/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib]
-        collapse library dir [/opt/cray/pe/pmi/6.1.13/lib] ==> [/opt/cray/pe/pmi/6.1.13/lib]
         collapse library dir [/opt/cray/pe/dsmml/0.2.2/dsmml//lib] ==> [/opt/cray/pe/dsmml/0.2.2/dsmml/lib]
-        collapse library dir [/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64] ==> [/pdc/software/eb/software/libunwind/1.4.0-alps/lib64]
-        collapse library dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64] ==> [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib64]
-        collapse library dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64] ==> [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib64]
+        collapse library dir [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../] ==> [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib]
         collapse library dir [/usr/lib64/gcc/x86_64-suse-linux/12] ==> [/usr/lib64/gcc/x86_64-suse-linux/12]
         collapse library dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64] ==> [/usr/lib64]
         collapse library dir [/lib/../lib64] ==> [/lib64]
         collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
-        collapse library dir [/pdc/software/eb/software/libunwind/1.4.0-alps/lib] ==> [/pdc/software/eb/software/libunwind/1.4.0-alps/lib]
-        collapse library dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib] ==> [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib]
-        collapse library dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib] ==> [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib]
         collapse library dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib] ==> [/usr/x86_64-suse-linux/lib]
-        collapse library dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../..] ==> [/usr/lib64]
-        implicit libs: [papi;pfm;fftw3f_mpi;fftw3f_threads;fftw3f;fftw3_mpi;fftw3_threads;fftw3;pmi;pmi2;sci_gnu_123_mpi;mpi_gnu_123;sci_gnu_123;dl;dsmml;xpmem;gfortran;quadmath;mvec;m;pthread;gcc;gcc_s;c;gcc;gcc_s]
-        implicit objs: [/usr/lib64/crt1.o;/usr/lib64/crti.o;/usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o;/usr/lib64/gcc/x86_64-suse-linux/12/crtend.o;/usr/lib64/crtn.o]
-        implicit dirs: [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib;/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64;/opt/cray/pe/papi/7.0.1.2/lib;/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib;/opt/cray/pe/pmi/6.1.13/lib;/opt/cray/pe/dsmml/0.2.2/dsmml/lib;/pdc/software/eb/software/libunwind/1.4.0-alps/lib64;/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib64;/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib64;/usr/lib64/gcc/x86_64-suse-linux/12;/usr/lib64;/lib64;/pdc/software/eb/software/libunwind/1.4.0-alps/lib;/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib;/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib;/usr/x86_64-suse-linux/lib]
+        collapse library dir [/lib] ==> [/lib]
+        collapse library dir [/usr/lib] ==> [/usr/lib]
+        collapse library dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
+        collapse library dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
+        implicit libs: [amdhip64;sci_cray_mpi;sci_cray;dl;mpi_cray;dsmml;xpmem;stdc++;pgas-shmem;quadmath;modules;fi;craymath;f;u;csup;pthread;atomic;m;unwind;c;unwind]
+        implicit objs: [/usr/lib64/crt1.o;/usr/lib64/crti.o;/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o;/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o;/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o;/usr/lib64/crtn.o]
+        implicit dirs: [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib;/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib;/opt/rocm-5.7.0/lib64;/opt/rocm-5.7.0/lib;/opt/rocm-5.7.0/rocprofiler/lib;/opt/rocm-5.7.0/rocprofiler/tool;/opt/rocm-5.7.0/roctracer/lib;/opt/rocm-5.7.0/roctracer/tool;/opt/rocm-5.7.0/hip/lib;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64;/opt/cray/pe/dsmml/0.2.2/dsmml/lib;/opt/cray/pe/cce/17.0.0/cce/x86_64/lib;/usr/lib64/gcc/x86_64-suse-linux/12;/usr/lib64;/lib64;/usr/x86_64-suse-linux/lib;/lib;/usr/lib;/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
         implicit fwks: []
       
       
   -
     kind: "try_compile-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:12 (project)"
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-oey6yP"
-      binary: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-oey6yP"
+      source: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO"
+      binary: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -433,367 +373,313 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-oey6yP'
+        Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO'
         
-        Run Build Command(s): /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_8c279/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_8c279.dir/build.make CMakeFiles/cmTC_8c279.dir/build
-        gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-oey6yP'
-        Building CXX object CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o
-        /opt/cray/pe/craype/2.7.30/bin/CC   -v -o CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o -c /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp
-        Using built-in specs.
-        COLLECT_GCC=g++-12
-        OFFLOAD_TARGET_NAMES=nvptx-none
-        OFFLOAD_TARGET_DEFAULT=1
-        Target: x86_64-suse-linux
-        Configured with: ../configure --prefix=/usr --infodir=/usr/share/info --mandir=/usr/share/man --libdir=/usr/lib64 --libexecdir=/usr/lib64 --enable-languages=c,c++,objc,fortran,obj-c++,ada,go,d --enable-offload-targets=nvptx-none, --enable-offload-defaulted --without-cuda-driver --enable-checking=release --disable-werror --with-gxx-include-dir=/usr/include/c++/12 --enable-ssp --disable-libssp --disable-libvtv --enable-cet=auto --disable-libcc1 --disable-plugin --with-bugurl=https://bugs.opensuse.org/ --with-pkgversion='SUSE Linux' --with-slibdir=/lib64 --with-system-zlib --enable-libstdcxx-allocator=new --disable-libstdcxx-pch --enable-libphobos --enable-version-specific-runtime-libs --with-gcc-major-version-only --enable-linker-build-id --enable-linux-futex --enable-gnu-indirect-function --program-suffix=-12 --without-system-libunwind --enable-multilib --with-arch-32=x86-64 --with-tune=generic --enable-link-serialization --build=x86_64-suse-linux --host=x86_64-suse-linux
+        Run Build Command(s): /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_481a4/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_481a4.dir/build.make CMakeFiles/cmTC_481a4.dir/build
+        gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO'
+        Building CXX object CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o
+        /opt/cray/pe/craype/2.7.30/bin/CC   -v -MD -MT CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -c /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp
+        Cray clang version 17.0.0  (b59b7a8e9169719529cf5ab440f3c301e515d047)
+        Target: x86_64-unknown-linux-gnu
         Thread model: posix
-        Supported LTO compression algorithms: zlib
-        gcc version 12.3.0 (SUSE Linux) 
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_8c279.dir/'
-         /usr/lib64/gcc/x86_64-suse-linux/12/cc1plus -quiet -v -I /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include -I /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/papi/7.0.1.2/include -I /opt/cray/pe/fftw/3.3.10.6/x86_rome/include -I /opt/cray/pe/pmi/6.1.13/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include -D_GNU_SOURCE -D __CRAY_X86_ROME -D __CRAY_HOST -D __CRAYXT_COMPUTE_LINUX_TARGET -D __TARGET_LINUX__ /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_8c279.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -march=znver2 -version -o /tmp/ccgKgjEg.s
-        GNU C++17 (SUSE Linux) version 12.3.0 (x86_64-suse-linux)
-        	compiled by GNU C version 12.3.0, GMP version 6.1.2, MPFR version 4.0.2-p6, MPC version 1.1.0, isl version isl-0.18-GMP
-        
-        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        InstalledDir: /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin
+        Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12
+        Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/7
+        Selected GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12
+        Candidate multilib: .;@m64
+        Selected multilib: .;@m64
+        Found HIP installation: /opt/rocm-5.7.0, version 5.7.31921
+         (in-process)
+         "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/bin/clang-17" -cc1 -triple x86_64-unknown-linux-gnu -mllvm -cray-omp-opt-fork-call -mllvm -cray-omp-parallel-opt-call -mllvm -cray-openmp-rename-outlined -fcray-gpu -flocal-restrict -mllvm -cray-enhanced-asm=1 -fenhanced-asm=1 -mllvm -cray-enhanced-ir=1 -fenhanced-ir=1 -fomp-local-offload-table -ffortran -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model static -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu znver2 -debugger-tuning=gdb -v -fcoverage-compilation-dir=/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO -resource-dir /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17 -dependency-file CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -canonical-system-headers -isystem /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include -isystem /opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs -D __CRAY_X86_ROME -D __CRAYXT_COMPUTE_LINUX_TARGET -D _HIP_PLATFORM_HCC_ -I /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include -I /opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include -I /opt/rocm-5.7.0/include -I /opt/rocm-5.7.0/rocprofiler/include -I /opt/rocm-5.7.0/roctracer/include -I /opt/rocm-5.7.0/hip/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12 -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/x86_64-suse-linux -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/backward -internal-isystem /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include -internal-isystem /usr/local/include -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdeprecated-macro -fdebug-compilation-dir=/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO -ferror-limit 19 -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -x c++ /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp
+        clang -cc1 version 17.0.3 based upon LLVM 17.0.3rc default target x86_64-unknown-linux-gnu
+        ignoring nonexistent directory "/include"
+        ignoring duplicate directory "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include"
         #include "..." search starts here:
         #include <...> search starts here:
-         /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include
-         /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include
+         /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include
+         /opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include
+         /opt/rocm-5.7.0/include
+         /opt/rocm-5.7.0/rocprofiler/include
+         /opt/rocm-5.7.0/roctracer/include
+         /opt/rocm-5.7.0/hip/include
          /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include
-         /opt/cray/pe/papi/7.0.1.2/include
-         /opt/cray/pe/fftw/3.3.10.6/x86_rome/include
-         /opt/cray/pe/pmi/6.1.13/include
          /opt/cray/pe/dsmml/0.2.2/dsmml//include
-         /pdc/software/23.12/other/score-p/8.4-cpeGNU/include
-         /pdc/software/eb/software/opari2/2.0.6/include
-         /pdc/software/eb/software/libunwind/1.4.0-alps/include
-         /pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include
-         /pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include
-         /usr/include/c++/12
-         /usr/include/c++/12/x86_64-suse-linux
-         /usr/include/c++/12/backward
-         /usr/lib64/gcc/x86_64-suse-linux/12/include
+         /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include
+         /opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs
+         /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12
+         /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/x86_64-suse-linux
+         /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/backward
          /usr/local/include
-         /usr/lib64/gcc/x86_64-suse-linux/12/include-fixed
          /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include
          /usr/include
         End of search list.
-        GNU C++17 (SUSE Linux) version 12.3.0 (x86_64-suse-linux)
-        	compiled by GNU C version 12.3.0, GMP version 6.1.2, MPFR version 4.0.2-p6, MPC version 1.1.0, isl version isl-0.18-GMP
-        
-        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-        Compiler executable checksum: 00000000000000000000000000000000
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_8c279.dir/'
-         /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/as -v -I /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include -I /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/papi/7.0.1.2/include -I /opt/cray/pe/fftw/3.3.10.6/x86_rome/include -I /opt/cray/pe/pmi/6.1.13/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include --64 -o CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccgKgjEg.s
-        GNU assembler version 2.41.0 (x86_64-suse-linux) using BFD version (GNU Binutils; SUSE Linux Enterprise 15) 2.41.0.20230908-150100.7.46
-        COMPILER_PATH=/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/
-        LIBRARY_PATH=/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/pdc/software/eb/software/libunwind/1.4.0-alps/lib/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../:/lib/:/usr/lib/
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.'
-        Linking CXX executable cmTC_8c279
-        /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c279.dir/link.txt --verbose=1
-        /opt/cray/pe/craype/2.7.30/bin/CC  -v CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_8c279 
-        Using built-in specs.
-        COLLECT_GCC=g++-12
-        COLLECT_LTO_WRAPPER=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper
-        OFFLOAD_TARGET_NAMES=nvptx-none
-        OFFLOAD_TARGET_DEFAULT=1
-        Target: x86_64-suse-linux
-        Configured with: ../configure --prefix=/usr --infodir=/usr/share/info --mandir=/usr/share/man --libdir=/usr/lib64 --libexecdir=/usr/lib64 --enable-languages=c,c++,objc,fortran,obj-c++,ada,go,d --enable-offload-targets=nvptx-none, --enable-offload-defaulted --without-cuda-driver --enable-checking=release --disable-werror --with-gxx-include-dir=/usr/include/c++/12 --enable-ssp --disable-libssp --disable-libvtv --enable-cet=auto --disable-libcc1 --disable-plugin --with-bugurl=https://bugs.opensuse.org/ --with-pkgversion='SUSE Linux' --with-slibdir=/lib64 --with-system-zlib --enable-libstdcxx-allocator=new --disable-libstdcxx-pch --enable-libphobos --enable-version-specific-runtime-libs --with-gcc-major-version-only --enable-linker-build-id --enable-linux-futex --enable-gnu-indirect-function --program-suffix=-12 --without-system-libunwind --enable-multilib --with-arch-32=x86-64 --with-tune=generic --enable-link-serialization --build=x86_64-suse-linux --host=x86_64-suse-linux
+        Linking CXX executable cmTC_481a4
+        /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E cmake_link_script CMakeFiles/cmTC_481a4.dir/link.txt --verbose=1
+        /opt/cray/pe/craype/2.7.30/bin/CC  -v CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_481a4 
+        Cray clang version 17.0.0  (b59b7a8e9169719529cf5ab440f3c301e515d047)
+        Target: x86_64-unknown-linux-gnu
         Thread model: posix
-        Supported LTO compression algorithms: zlib
-        gcc version 12.3.0 (SUSE Linux) 
-        COMPILER_PATH=/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/
-        LIBRARY_PATH=/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/pdc/software/eb/software/libunwind/1.4.0-alps/lib/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../:/lib/:/usr/lib/
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'cmTC_8c279' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib' '-L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib' '-L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64' '-L/opt/cray/pe/papi/7.0.1.2/lib' '-L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib' '-L/opt/cray/pe/pmi/6.1.13/lib' '-L/opt/cray/pe/dsmml/0.2.2/dsmml//lib' '-shared-libgcc' '-dumpdir' 'cmTC_8c279.'
-         /usr/lib64/gcc/x86_64-suse-linux/12/collect2 -plugin /usr/lib64/gcc/x86_64-suse-linux/12/liblto_plugin.so -plugin-opt=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper -plugin-opt=-fresolution=/tmp/ccQCdgf7.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_8c279 /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o /usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o -L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib -L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib -L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64 -L/opt/cray/pe/papi/7.0.1.2/lib -L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib -L/opt/cray/pe/pmi/6.1.13/lib -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib -L/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64 -L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64 -L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64 -L/usr/lib64/gcc/x86_64-suse-linux/12 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/pdc/software/eb/software/libunwind/1.4.0-alps/lib -L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib -L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib -L/usr/lib64/gcc/x86_64-suse-linux/12/../../.. CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o -Bdynamic --as-needed -lpapi --no-as-needed --as-needed -lpfm --no-as-needed --as-needed -lfftw3f_mpi --no-as-needed --as-needed -lfftw3f_threads --no-as-needed --as-needed -lfftw3f --no-as-needed --as-needed -lfftw3_mpi --no-as-needed --as-needed -lfftw3_threads --no-as-needed --as-needed -lfftw3 --no-as-needed --as-needed -lpmi --no-as-needed --as-needed -lpmi2 --no-as-needed --as-needed -lsci_gnu_123_mpi --no-as-needed --as-needed -lmpi_gnu_123 --no-as-needed --as-needed -lsci_gnu_123 --no-as-needed -ldl --as-needed -ldsmml --no-as-needed -lxpmem --as-needed -lgfortran -lquadmath --no-as-needed --as-needed -lmvec --no-as-needed --as-needed -lm --no-as-needed --as-needed -lpthread --no-as-needed --disable-new-dtags -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib64/gcc/x86_64-suse-linux/12/crtend.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o
-        COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'cmTC_8c279' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib' '-L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib' '-L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64' '-L/opt/cray/pe/papi/7.0.1.2/lib' '-L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib' '-L/opt/cray/pe/pmi/6.1.13/lib' '-L/opt/cray/pe/dsmml/0.2.2/dsmml//lib' '-shared-libgcc' '-dumpdir' 'cmTC_8c279.'
-        gmake[1]: Leaving directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-oey6yP'
+        InstalledDir: /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin
+        Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12
+        Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/7
+        Selected GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12
+        Candidate multilib: .;@m64
+        Selected multilib: .;@m64
+        Found HIP installation: /opt/rocm-5.7.0, version 5.7.31921
+         "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin/ld.lld" --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_481a4 /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o -L/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib -L/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib -L/opt/rocm-5.7.0/lib64 -L/opt/rocm-5.7.0/lib -L/opt/rocm-5.7.0/rocprofiler/lib -L/opt/rocm-5.7.0/rocprofiler/tool -L/opt/rocm-5.7.0/roctracer/lib -L/opt/rocm-5.7.0/roctracer/tool -L/opt/rocm-5.7.0/hip/lib -L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64 -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib -L/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../ -L/usr/lib64/gcc/x86_64-suse-linux/12 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib -L/lib -L/usr/lib -plugin-opt=mcpu=znver2 -plugin-opt=lto=0 -plugin-opt=defaults=cray -plugin-opt=mllvm=-cray-math-precision=none -rpath=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -lamdhip64 --as-needed -lsci_cray_mpi --no-as-needed --as-needed -lsci_cray --no-as-needed -ldl --as-needed -lmpi_cray --no-as-needed --as-needed -ldsmml --no-as-needed -lxpmem --as-needed -lstdc++ --no-as-needed --as-needed -lpgas-shmem --no-as-needed -lquadmath -lmodules -lfi -lcraymath -lf -lu -lcsup --as-needed -lpthread -latomic --no-as-needed --as-needed -lm --no-as-needed --disable-new-dtags /opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o -lstdc++ -lm /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a --as-needed -L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib -rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so -lunwind --no-as-needed -lc /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a --as-needed -L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib -rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so -lunwind --no-as-needed /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o
+        gmake[1]: Leaving directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO'
         
       exitCode: 0
   -
     kind: "message-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Parsed CXX implicit include dir info: rv=done
         found start of include info
         found start of implicit include info
-          add: [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include]
-          add: [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include]
+          add: [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include]
+          add: [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include]
+          add: [/opt/rocm-5.7.0/include]
+          add: [/opt/rocm-5.7.0/rocprofiler/include]
+          add: [/opt/rocm-5.7.0/roctracer/include]
+          add: [/opt/rocm-5.7.0/hip/include]
           add: [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include]
-          add: [/opt/cray/pe/papi/7.0.1.2/include]
-          add: [/opt/cray/pe/fftw/3.3.10.6/x86_rome/include]
-          add: [/opt/cray/pe/pmi/6.1.13/include]
           add: [/opt/cray/pe/dsmml/0.2.2/dsmml//include]
-          add: [/pdc/software/23.12/other/score-p/8.4-cpeGNU/include]
-          add: [/pdc/software/eb/software/opari2/2.0.6/include]
-          add: [/pdc/software/eb/software/libunwind/1.4.0-alps/include]
-          add: [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include]
-          add: [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include]
-          add: [/usr/include/c++/12]
-          add: [/usr/include/c++/12/x86_64-suse-linux]
-          add: [/usr/include/c++/12/backward]
-          add: [/usr/lib64/gcc/x86_64-suse-linux/12/include]
+          add: [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include]
+          add: [/opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs]
+          add: [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12]
+          add: [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/x86_64-suse-linux]
+          add: [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/backward]
           add: [/usr/local/include]
-          add: [/usr/lib64/gcc/x86_64-suse-linux/12/include-fixed]
           add: [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include]
           add: [/usr/include]
         end of search list found
-        collapse include dir [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include] ==> [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include]
-        collapse include dir [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include] ==> [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include]
+        collapse include dir [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include] ==> [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include]
+        collapse include dir [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include] ==> [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include]
+        collapse include dir [/opt/rocm-5.7.0/include] ==> [/opt/rocm-5.7.0/include]
+        collapse include dir [/opt/rocm-5.7.0/rocprofiler/include] ==> [/opt/rocm-5.7.0/rocprofiler/include]
+        collapse include dir [/opt/rocm-5.7.0/roctracer/include] ==> [/opt/rocm-5.7.0/roctracer/include]
+        collapse include dir [/opt/rocm-5.7.0/hip/include] ==> [/opt/rocm-5.7.0/hip/include]
         collapse include dir [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include] ==> [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include]
-        collapse include dir [/opt/cray/pe/papi/7.0.1.2/include] ==> [/opt/cray/pe/papi/7.0.1.2/include]
-        collapse include dir [/opt/cray/pe/fftw/3.3.10.6/x86_rome/include] ==> [/opt/cray/pe/fftw/3.3.10.6/x86_rome/include]
-        collapse include dir [/opt/cray/pe/pmi/6.1.13/include] ==> [/opt/cray/pe/pmi/6.1.13/include]
         collapse include dir [/opt/cray/pe/dsmml/0.2.2/dsmml//include] ==> [/opt/cray/pe/dsmml/0.2.2/dsmml/include]
-        collapse include dir [/pdc/software/23.12/other/score-p/8.4-cpeGNU/include] ==> [/pdc/software/23.12/other/score-p/8.4-cpeGNU/include]
-        collapse include dir [/pdc/software/eb/software/opari2/2.0.6/include] ==> [/pdc/software/eb/software/opari2/2.0.6/include]
-        collapse include dir [/pdc/software/eb/software/libunwind/1.4.0-alps/include] ==> [/pdc/software/eb/software/libunwind/1.4.0-alps/include]
-        collapse include dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include] ==> [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include]
-        collapse include dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include] ==> [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include]
-        collapse include dir [/usr/include/c++/12] ==> [/usr/include/c++/12]
-        collapse include dir [/usr/include/c++/12/x86_64-suse-linux] ==> [/usr/include/c++/12/x86_64-suse-linux]
-        collapse include dir [/usr/include/c++/12/backward] ==> [/usr/include/c++/12/backward]
-        collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/include] ==> [/usr/lib64/gcc/x86_64-suse-linux/12/include]
+        collapse include dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include] ==> [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include]
+        collapse include dir [/opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs] ==> [/opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs]
+        collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12] ==> [/usr/include/c++/12]
+        collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/x86_64-suse-linux] ==> [/usr/include/c++/12/x86_64-suse-linux]
+        collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/backward] ==> [/usr/include/c++/12/backward]
         collapse include dir [/usr/local/include] ==> [/usr/local/include]
-        collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/include-fixed] ==> [/usr/lib64/gcc/x86_64-suse-linux/12/include-fixed]
         collapse include dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include] ==> [/usr/x86_64-suse-linux/include]
         collapse include dir [/usr/include] ==> [/usr/include]
-        implicit include dirs: [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include;/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include;/opt/cray/pe/papi/7.0.1.2/include;/opt/cray/pe/fftw/3.3.10.6/x86_rome/include;/opt/cray/pe/pmi/6.1.13/include;/opt/cray/pe/dsmml/0.2.2/dsmml/include;/pdc/software/23.12/other/score-p/8.4-cpeGNU/include;/pdc/software/eb/software/opari2/2.0.6/include;/pdc/software/eb/software/libunwind/1.4.0-alps/include;/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include;/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include;/usr/include/c++/12;/usr/include/c++/12/x86_64-suse-linux;/usr/include/c++/12/backward;/usr/lib64/gcc/x86_64-suse-linux/12/include;/usr/local/include;/usr/lib64/gcc/x86_64-suse-linux/12/include-fixed;/usr/x86_64-suse-linux/include;/usr/include]
+        implicit include dirs: [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include;/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include;/opt/rocm-5.7.0/include;/opt/rocm-5.7.0/rocprofiler/include;/opt/rocm-5.7.0/roctracer/include;/opt/rocm-5.7.0/hip/include;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include;/opt/cray/pe/dsmml/0.2.2/dsmml/include;/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include;/opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs;/usr/include/c++/12;/usr/include/c++/12/x86_64-suse-linux;/usr/include/c++/12/backward;/usr/local/include;/usr/x86_64-suse-linux/include;/usr/include]
       
       
   -
     kind: "message-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:2 (project)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
-        ignore line: [Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-oey6yP']
+        ignore line: [Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO']
         ignore line: []
-        ignore line: [Run Build Command(s): /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_8c279/fast]
-        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_8c279.dir/build.make CMakeFiles/cmTC_8c279.dir/build]
-        ignore line: [gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-oey6yP']
-        ignore line: [Building CXX object CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o]
-        ignore line: [/opt/cray/pe/craype/2.7.30/bin/CC   -v -o CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o -c /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp]
-        ignore line: [Using built-in specs.]
-        ignore line: [COLLECT_GCC=g++-12]
-        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
-        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
-        ignore line: [Target: x86_64-suse-linux]
-        ignore line: [Configured with: ../configure --prefix=/usr --infodir=/usr/share/info --mandir=/usr/share/man --libdir=/usr/lib64 --libexecdir=/usr/lib64 --enable-languages=c c++ objc fortran obj-c++ ada go d --enable-offload-targets=nvptx-none  --enable-offload-defaulted --without-cuda-driver --enable-checking=release --disable-werror --with-gxx-include-dir=/usr/include/c++/12 --enable-ssp --disable-libssp --disable-libvtv --enable-cet=auto --disable-libcc1 --disable-plugin --with-bugurl=https://bugs.opensuse.org/ --with-pkgversion='SUSE Linux' --with-slibdir=/lib64 --with-system-zlib --enable-libstdcxx-allocator=new --disable-libstdcxx-pch --enable-libphobos --enable-version-specific-runtime-libs --with-gcc-major-version-only --enable-linker-build-id --enable-linux-futex --enable-gnu-indirect-function --program-suffix=-12 --without-system-libunwind --enable-multilib --with-arch-32=x86-64 --with-tune=generic --enable-link-serialization --build=x86_64-suse-linux --host=x86_64-suse-linux]
+        ignore line: [Run Build Command(s): /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_481a4/fast]
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_481a4.dir/build.make CMakeFiles/cmTC_481a4.dir/build]
+        ignore line: [gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO']
+        ignore line: [Building CXX object CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/opt/cray/pe/craype/2.7.30/bin/CC   -v -MD -MT CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -c /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Cray clang version 17.0.0  (b59b7a8e9169719529cf5ab440f3c301e515d047)]
+        ignore line: [Target: x86_64-unknown-linux-gnu]
         ignore line: [Thread model: posix]
-        ignore line: [Supported LTO compression algorithms: zlib]
-        ignore line: [gcc version 12.3.0 (SUSE Linux) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_8c279.dir/']
-        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/cc1plus -quiet -v -I /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include -I /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/papi/7.0.1.2/include -I /opt/cray/pe/fftw/3.3.10.6/x86_rome/include -I /opt/cray/pe/pmi/6.1.13/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include -D_GNU_SOURCE -D __CRAY_X86_ROME -D __CRAY_HOST -D __CRAYXT_COMPUTE_LINUX_TARGET -D __TARGET_LINUX__ /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_8c279.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -march=znver2 -version -o /tmp/ccgKgjEg.s]
-        ignore line: [GNU C++17 (SUSE Linux) version 12.3.0 (x86_64-suse-linux)]
-        ignore line: [	compiled by GNU C version 12.3.0  GMP version 6.1.2  MPFR version 4.0.2-p6  MPC version 1.1.0  isl version isl-0.18-GMP]
-        ignore line: []
-        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [InstalledDir: /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin]
+        ignore line: [Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12]
+        ignore line: [Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/7]
+        ignore line: [Selected GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12]
+        ignore line: [Candidate multilib: .]
+        ignore line: [@m64]
+        ignore line: [Selected multilib: .]
+        ignore line: [@m64]
+        ignore line: [Found HIP installation: /opt/rocm-5.7.0  version 5.7.31921]
+        ignore line: [ (in-process)]
+        ignore line: [ "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/bin/clang-17" -cc1 -triple x86_64-unknown-linux-gnu -mllvm -cray-omp-opt-fork-call -mllvm -cray-omp-parallel-opt-call -mllvm -cray-openmp-rename-outlined -fcray-gpu -flocal-restrict -mllvm -cray-enhanced-asm=1 -fenhanced-asm=1 -mllvm -cray-enhanced-ir=1 -fenhanced-ir=1 -fomp-local-offload-table -ffortran -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model static -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu znver2 -debugger-tuning=gdb -v -fcoverage-compilation-dir=/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO -resource-dir /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17 -dependency-file CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -canonical-system-headers -isystem /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include -isystem /opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs -D __CRAY_X86_ROME -D __CRAYXT_COMPUTE_LINUX_TARGET -D _HIP_PLATFORM_HCC_ -I /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include -I /opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include -I /opt/rocm-5.7.0/include -I /opt/rocm-5.7.0/rocprofiler/include -I /opt/rocm-5.7.0/roctracer/include -I /opt/rocm-5.7.0/hip/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12 -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/x86_64-suse-linux -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/backward -internal-isystem /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include -internal-isystem /usr/local/include -internal-isystem /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdeprecated-macro -fdebug-compilation-dir=/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-WMNOuO -ferror-limit 19 -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -x c++ /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [clang -cc1 version 17.0.3 based upon LLVM 17.0.3rc default target x86_64-unknown-linux-gnu]
+        ignore line: [ignoring nonexistent directory "/include"]
+        ignore line: [ignoring duplicate directory "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include"]
         ignore line: [#include "..." search starts here:]
         ignore line: [#include <...> search starts here:]
-        ignore line: [ /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include]
-        ignore line: [ /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include]
+        ignore line: [ /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include]
+        ignore line: [ /opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include]
+        ignore line: [ /opt/rocm-5.7.0/include]
+        ignore line: [ /opt/rocm-5.7.0/rocprofiler/include]
+        ignore line: [ /opt/rocm-5.7.0/roctracer/include]
+        ignore line: [ /opt/rocm-5.7.0/hip/include]
         ignore line: [ /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include]
-        ignore line: [ /opt/cray/pe/papi/7.0.1.2/include]
-        ignore line: [ /opt/cray/pe/fftw/3.3.10.6/x86_rome/include]
-        ignore line: [ /opt/cray/pe/pmi/6.1.13/include]
         ignore line: [ /opt/cray/pe/dsmml/0.2.2/dsmml//include]
-        ignore line: [ /pdc/software/23.12/other/score-p/8.4-cpeGNU/include]
-        ignore line: [ /pdc/software/eb/software/opari2/2.0.6/include]
-        ignore line: [ /pdc/software/eb/software/libunwind/1.4.0-alps/include]
-        ignore line: [ /pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/include]
-        ignore line: [ /pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/include]
-        ignore line: [ /usr/include/c++/12]
-        ignore line: [ /usr/include/c++/12/x86_64-suse-linux]
-        ignore line: [ /usr/include/c++/12/backward]
-        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/include]
+        ignore line: [ /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/include]
+        ignore line: [ /opt/cray/pe/cce/17.0.0/cce/x86_64/include/craylibs]
+        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12]
+        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/x86_64-suse-linux]
+        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/../../../../include/c++/12/backward]
         ignore line: [ /usr/local/include]
-        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/include-fixed]
         ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/include]
         ignore line: [ /usr/include]
         ignore line: [End of search list.]
-        ignore line: [GNU C++17 (SUSE Linux) version 12.3.0 (x86_64-suse-linux)]
-        ignore line: [	compiled by GNU C version 12.3.0  GMP version 6.1.2  MPFR version 4.0.2-p6  MPC version 1.1.0  isl version isl-0.18-GMP]
-        ignore line: []
-        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-        ignore line: [Compiler executable checksum: 00000000000000000000000000000000]
-        ignore line: [COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_8c279.dir/']
-        ignore line: [ /usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/as -v -I /opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include -I /opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include -I /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include -I /opt/cray/pe/papi/7.0.1.2/include -I /opt/cray/pe/fftw/3.3.10.6/x86_rome/include -I /opt/cray/pe/pmi/6.1.13/include -I /opt/cray/pe/dsmml/0.2.2/dsmml//include --64 -o CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccgKgjEg.s]
-        ignore line: [GNU assembler version 2.41.0 (x86_64-suse-linux) using BFD version (GNU Binutils]
-        ignore line: [ SUSE Linux Enterprise 15) 2.41.0.20230908-150100.7.46]
-        ignore line: [COMPILER_PATH=/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/]
-        ignore line: [LIBRARY_PATH=/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/pdc/software/eb/software/libunwind/1.4.0-alps/lib/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../:/lib/:/usr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-shared-libgcc' '-dumpdir' 'CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.']
-        ignore line: [Linking CXX executable cmTC_8c279]
-        ignore line: [/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c279.dir/link.txt --verbose=1]
-        ignore line: [/opt/cray/pe/craype/2.7.30/bin/CC  -v CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_8c279 ]
-        ignore line: [Using built-in specs.]
-        ignore line: [COLLECT_GCC=g++-12]
-        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper]
-        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
-        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
-        ignore line: [Target: x86_64-suse-linux]
-        ignore line: [Configured with: ../configure --prefix=/usr --infodir=/usr/share/info --mandir=/usr/share/man --libdir=/usr/lib64 --libexecdir=/usr/lib64 --enable-languages=c c++ objc fortran obj-c++ ada go d --enable-offload-targets=nvptx-none  --enable-offload-defaulted --without-cuda-driver --enable-checking=release --disable-werror --with-gxx-include-dir=/usr/include/c++/12 --enable-ssp --disable-libssp --disable-libvtv --enable-cet=auto --disable-libcc1 --disable-plugin --with-bugurl=https://bugs.opensuse.org/ --with-pkgversion='SUSE Linux' --with-slibdir=/lib64 --with-system-zlib --enable-libstdcxx-allocator=new --disable-libstdcxx-pch --enable-libphobos --enable-version-specific-runtime-libs --with-gcc-major-version-only --enable-linker-build-id --enable-linux-futex --enable-gnu-indirect-function --program-suffix=-12 --without-system-libunwind --enable-multilib --with-arch-32=x86-64 --with-tune=generic --enable-link-serialization --build=x86_64-suse-linux --host=x86_64-suse-linux]
+        ignore line: [Linking CXX executable cmTC_481a4]
+        ignore line: [/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E cmake_link_script CMakeFiles/cmTC_481a4.dir/link.txt --verbose=1]
+        ignore line: [/opt/cray/pe/craype/2.7.30/bin/CC  -v CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_481a4 ]
+        ignore line: [Cray clang version 17.0.0  (b59b7a8e9169719529cf5ab440f3c301e515d047)]
+        ignore line: [Target: x86_64-unknown-linux-gnu]
         ignore line: [Thread model: posix]
-        ignore line: [Supported LTO compression algorithms: zlib]
-        ignore line: [gcc version 12.3.0 (SUSE Linux) ]
-        ignore line: [COMPILER_PATH=/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/]
-        ignore line: [LIBRARY_PATH=/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64/:/usr/lib64/gcc/x86_64-suse-linux/12/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/pdc/software/eb/software/libunwind/1.4.0-alps/lib/:/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/:/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib/:/usr/lib64/gcc/x86_64-suse-linux/12/../../../:/lib/:/usr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-march=znver2' '-D' '__CRAY_X86_ROME' '-D' '__CRAY_HOST' '-D' '__CRAYXT_COMPUTE_LINUX_TARGET' '-D' '__TARGET_LINUX__' '-v' '-o' 'cmTC_8c279' '-I' '/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/include' '-I' '/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/include' '-I' '/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include' '-I' '/opt/cray/pe/papi/7.0.1.2/include' '-I' '/opt/cray/pe/fftw/3.3.10.6/x86_rome/include' '-I' '/opt/cray/pe/pmi/6.1.13/include' '-I' '/opt/cray/pe/dsmml/0.2.2/dsmml//include' '-L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib' '-L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib' '-L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64' '-L/opt/cray/pe/papi/7.0.1.2/lib' '-L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib' '-L/opt/cray/pe/pmi/6.1.13/lib' '-L/opt/cray/pe/dsmml/0.2.2/dsmml//lib' '-shared-libgcc' '-dumpdir' 'cmTC_8c279.']
-        link line: [ /usr/lib64/gcc/x86_64-suse-linux/12/collect2 -plugin /usr/lib64/gcc/x86_64-suse-linux/12/liblto_plugin.so -plugin-opt=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper -plugin-opt=-fresolution=/tmp/ccQCdgf7.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_8c279 /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o /usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o -L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib -L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib -L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64 -L/opt/cray/pe/papi/7.0.1.2/lib -L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib -L/opt/cray/pe/pmi/6.1.13/lib -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib -L/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64 -L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64 -L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64 -L/usr/lib64/gcc/x86_64-suse-linux/12 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/pdc/software/eb/software/libunwind/1.4.0-alps/lib -L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib -L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib -L/usr/lib64/gcc/x86_64-suse-linux/12/../../.. CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o -Bdynamic --as-needed -lpapi --no-as-needed --as-needed -lpfm --no-as-needed --as-needed -lfftw3f_mpi --no-as-needed --as-needed -lfftw3f_threads --no-as-needed --as-needed -lfftw3f --no-as-needed --as-needed -lfftw3_mpi --no-as-needed --as-needed -lfftw3_threads --no-as-needed --as-needed -lfftw3 --no-as-needed --as-needed -lpmi --no-as-needed --as-needed -lpmi2 --no-as-needed --as-needed -lsci_gnu_123_mpi --no-as-needed --as-needed -lmpi_gnu_123 --no-as-needed --as-needed -lsci_gnu_123 --no-as-needed -ldl --as-needed -ldsmml --no-as-needed -lxpmem --as-needed -lgfortran -lquadmath --no-as-needed --as-needed -lmvec --no-as-needed --as-needed -lm --no-as-needed --as-needed -lpthread --no-as-needed --disable-new-dtags -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib64/gcc/x86_64-suse-linux/12/crtend.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o]
-          arg [/usr/lib64/gcc/x86_64-suse-linux/12/collect2] ==> ignore
-          arg [-plugin] ==> ignore
-          arg [/usr/lib64/gcc/x86_64-suse-linux/12/liblto_plugin.so] ==> ignore
-          arg [-plugin-opt=/usr/lib64/gcc/x86_64-suse-linux/12/lto-wrapper] ==> ignore
-          arg [-plugin-opt=-fresolution=/tmp/ccQCdgf7.res] ==> ignore
-          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-          arg [-plugin-opt=-pass-through=-lc] ==> ignore
-          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-          arg [--build-id] ==> ignore
+        ignore line: [InstalledDir: /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin]
+        ignore line: [Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12]
+        ignore line: [Found candidate GCC installation: /usr/lib64/gcc/x86_64-suse-linux/7]
+        ignore line: [Selected GCC installation: /usr/lib64/gcc/x86_64-suse-linux/12]
+        ignore line: [Candidate multilib: .]
+        ignore line: [@m64]
+        ignore line: [Selected multilib: .]
+        ignore line: [@m64]
+        ignore line: [Found HIP installation: /opt/rocm-5.7.0  version 5.7.31921]
+        link line: [ "/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin/ld.lld" --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_481a4 /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o -L/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib -L/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib -L/opt/rocm-5.7.0/lib64 -L/opt/rocm-5.7.0/lib -L/opt/rocm-5.7.0/rocprofiler/lib -L/opt/rocm-5.7.0/rocprofiler/tool -L/opt/rocm-5.7.0/roctracer/lib -L/opt/rocm-5.7.0/roctracer/tool -L/opt/rocm-5.7.0/hip/lib -L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64 -L/opt/cray/pe/dsmml/0.2.2/dsmml//lib -L/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../ -L/usr/lib64/gcc/x86_64-suse-linux/12 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib -L/lib -L/usr/lib -plugin-opt=mcpu=znver2 -plugin-opt=lto=0 -plugin-opt=defaults=cray -plugin-opt=mllvm=-cray-math-precision=none -rpath=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o -lamdhip64 --as-needed -lsci_cray_mpi --no-as-needed --as-needed -lsci_cray --no-as-needed -ldl --as-needed -lmpi_cray --no-as-needed --as-needed -ldsmml --no-as-needed -lxpmem --as-needed -lstdc++ --no-as-needed --as-needed -lpgas-shmem --no-as-needed -lquadmath -lmodules -lfi -lcraymath -lf -lu -lcsup --as-needed -lpthread -latomic --no-as-needed --as-needed -lm --no-as-needed --disable-new-dtags /opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o -lstdc++ -lm /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a --as-needed -L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib -rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so -lunwind --no-as-needed -lc /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a --as-needed -L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib -rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so -lunwind --no-as-needed /opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o /usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o]
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/share/../bin/ld.lld] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
           arg [--eh-frame-hdr] ==> ignore
           arg [-m] ==> ignore
           arg [elf_x86_64] ==> ignore
           arg [-dynamic-linker] ==> ignore
           arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
           arg [-o] ==> ignore
-          arg [cmTC_8c279] ==> ignore
+          arg [cmTC_481a4] ==> ignore
           arg [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o]
           arg [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o]
-          arg [/usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o]
-          arg [-L/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib] ==> dir [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib]
-          arg [-L/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib] ==> dir [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib]
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o] ==> obj [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o]
+          arg [-L/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib] ==> dir [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib]
+          arg [-L/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib] ==> dir [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib]
+          arg [-L/opt/rocm-5.7.0/lib64] ==> dir [/opt/rocm-5.7.0/lib64]
+          arg [-L/opt/rocm-5.7.0/lib] ==> dir [/opt/rocm-5.7.0/lib]
+          arg [-L/opt/rocm-5.7.0/rocprofiler/lib] ==> dir [/opt/rocm-5.7.0/rocprofiler/lib]
+          arg [-L/opt/rocm-5.7.0/rocprofiler/tool] ==> dir [/opt/rocm-5.7.0/rocprofiler/tool]
+          arg [-L/opt/rocm-5.7.0/roctracer/lib] ==> dir [/opt/rocm-5.7.0/roctracer/lib]
+          arg [-L/opt/rocm-5.7.0/roctracer/tool] ==> dir [/opt/rocm-5.7.0/roctracer/tool]
+          arg [-L/opt/rocm-5.7.0/hip/lib] ==> dir [/opt/rocm-5.7.0/hip/lib]
           arg [-L/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64] ==> dir [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64]
-          arg [-L/opt/cray/pe/papi/7.0.1.2/lib] ==> dir [/opt/cray/pe/papi/7.0.1.2/lib]
-          arg [-L/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib] ==> dir [/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib]
-          arg [-L/opt/cray/pe/pmi/6.1.13/lib] ==> dir [/opt/cray/pe/pmi/6.1.13/lib]
           arg [-L/opt/cray/pe/dsmml/0.2.2/dsmml//lib] ==> dir [/opt/cray/pe/dsmml/0.2.2/dsmml//lib]
-          arg [-L/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64] ==> dir [/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64]
-          arg [-L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64] ==> dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64]
-          arg [-L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64] ==> dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64]
+          arg [-L/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../] ==> dir [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../]
           arg [-L/usr/lib64/gcc/x86_64-suse-linux/12] ==> dir [/usr/lib64/gcc/x86_64-suse-linux/12]
           arg [-L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64] ==> dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64]
           arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
           arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
-          arg [-L/pdc/software/eb/software/libunwind/1.4.0-alps/lib] ==> dir [/pdc/software/eb/software/libunwind/1.4.0-alps/lib]
-          arg [-L/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib] ==> dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib]
-          arg [-L/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib] ==> dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib]
           arg [-L/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib] ==> dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib]
-          arg [-L/usr/lib64/gcc/x86_64-suse-linux/12/../../..] ==> dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../..]
-          arg [CMakeFiles/cmTC_8c279.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
-          arg [-Bdynamic] ==> search dynamic
+          arg [-L/lib] ==> dir [/lib]
+          arg [-L/usr/lib] ==> dir [/usr/lib]
+          arg [-plugin-opt=mcpu=znver2] ==> ignore
+          arg [-plugin-opt=lto=0] ==> ignore
+          arg [-plugin-opt=defaults=cray] ==> ignore
+          arg [-plugin-opt=mllvm=-cray-math-precision=none] ==> ignore
+          arg [-rpath=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib] ==> ignore
+          arg [CMakeFiles/cmTC_481a4.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lamdhip64] ==> lib [amdhip64]
           arg [--as-needed] ==> ignore
-          arg [-lpapi] ==> lib [papi]
+          arg [-lsci_cray_mpi] ==> lib [sci_cray_mpi]
           arg [--no-as-needed] ==> ignore
           arg [--as-needed] ==> ignore
-          arg [-lpfm] ==> lib [pfm]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3f_mpi] ==> lib [fftw3f_mpi]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3f_threads] ==> lib [fftw3f_threads]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3f] ==> lib [fftw3f]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3_mpi] ==> lib [fftw3_mpi]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3_threads] ==> lib [fftw3_threads]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lfftw3] ==> lib [fftw3]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lpmi] ==> lib [pmi]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lpmi2] ==> lib [pmi2]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lsci_gnu_123_mpi] ==> lib [sci_gnu_123_mpi]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lmpi_gnu_123] ==> lib [mpi_gnu_123]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lsci_gnu_123] ==> lib [sci_gnu_123]
+          arg [-lsci_cray] ==> lib [sci_cray]
           arg [--no-as-needed] ==> ignore
           arg [-ldl] ==> lib [dl]
+          arg [--as-needed] ==> ignore
+          arg [-lmpi_cray] ==> lib [mpi_cray]
+          arg [--no-as-needed] ==> ignore
           arg [--as-needed] ==> ignore
           arg [-ldsmml] ==> lib [dsmml]
           arg [--no-as-needed] ==> ignore
           arg [-lxpmem] ==> lib [xpmem]
           arg [--as-needed] ==> ignore
-          arg [-lgfortran] ==> lib [gfortran]
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [--no-as-needed] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lpgas-shmem] ==> lib [pgas-shmem]
+          arg [--no-as-needed] ==> ignore
           arg [-lquadmath] ==> lib [quadmath]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lmvec] ==> lib [mvec]
-          arg [--no-as-needed] ==> ignore
-          arg [--as-needed] ==> ignore
-          arg [-lm] ==> lib [m]
-          arg [--no-as-needed] ==> ignore
+          arg [-lmodules] ==> lib [modules]
+          arg [-lfi] ==> lib [fi]
+          arg [-lcraymath] ==> lib [craymath]
+          arg [-lf] ==> lib [f]
+          arg [-lu] ==> lib [u]
+          arg [-lcsup] ==> lib [csup]
           arg [--as-needed] ==> ignore
           arg [-lpthread] ==> lib [pthread]
+          arg [-latomic] ==> lib [atomic]
+          arg [--no-as-needed] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lm] ==> lib [m]
           arg [--no-as-needed] ==> ignore
           arg [--disable-new-dtags] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o] ==> obj [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o]
           arg [-lstdc++] ==> lib [stdc++]
           arg [-lm] ==> lib [m]
-          arg [-lgcc_s] ==> lib [gcc_s]
-          arg [-lgcc] ==> lib [gcc]
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a] ==> lib [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a]
+          arg [--as-needed] ==> ignore
+          arg [-L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
+          arg [-rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so] ==> ignore
+          arg [-lunwind] ==> lib [unwind]
+          arg [--no-as-needed] ==> ignore
           arg [-lc] ==> lib [c]
-          arg [-lgcc_s] ==> lib [gcc_s]
-          arg [-lgcc] ==> lib [gcc]
-          arg [/usr/lib64/gcc/x86_64-suse-linux/12/crtend.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/crtend.o]
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a] ==> lib [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a]
+          arg [--as-needed] ==> ignore
+          arg [-L/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
+          arg [-rpath=/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/libunwind.so] ==> ignore
+          arg [-lunwind] ==> lib [unwind]
+          arg [--no-as-needed] ==> ignore
+          arg [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o] ==> obj [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o]
           arg [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o] ==> obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o]
+        remove lib [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a]
+        remove lib [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/libclang_rt.builtins-x86_64.a]
         collapse obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crt1.o] ==> [/usr/lib64/crt1.o]
         collapse obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crti.o] ==> [/usr/lib64/crti.o]
         collapse obj [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64/crtn.o] ==> [/usr/lib64/crtn.o]
-        collapse library dir [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib] ==> [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib]
-        collapse library dir [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib] ==> [/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib]
+        collapse library dir [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib] ==> [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib]
+        collapse library dir [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib] ==> [/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib]
+        collapse library dir [/opt/rocm-5.7.0/lib64] ==> [/opt/rocm-5.7.0/lib64]
+        collapse library dir [/opt/rocm-5.7.0/lib] ==> [/opt/rocm-5.7.0/lib]
+        collapse library dir [/opt/rocm-5.7.0/rocprofiler/lib] ==> [/opt/rocm-5.7.0/rocprofiler/lib]
+        collapse library dir [/opt/rocm-5.7.0/rocprofiler/tool] ==> [/opt/rocm-5.7.0/rocprofiler/tool]
+        collapse library dir [/opt/rocm-5.7.0/roctracer/lib] ==> [/opt/rocm-5.7.0/roctracer/lib]
+        collapse library dir [/opt/rocm-5.7.0/roctracer/tool] ==> [/opt/rocm-5.7.0/roctracer/tool]
+        collapse library dir [/opt/rocm-5.7.0/hip/lib] ==> [/opt/rocm-5.7.0/hip/lib]
         collapse library dir [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64] ==> [/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64]
-        collapse library dir [/opt/cray/pe/papi/7.0.1.2/lib] ==> [/opt/cray/pe/papi/7.0.1.2/lib]
-        collapse library dir [/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib] ==> [/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib]
-        collapse library dir [/opt/cray/pe/pmi/6.1.13/lib] ==> [/opt/cray/pe/pmi/6.1.13/lib]
         collapse library dir [/opt/cray/pe/dsmml/0.2.2/dsmml//lib] ==> [/opt/cray/pe/dsmml/0.2.2/dsmml/lib]
-        collapse library dir [/pdc/software/eb/software/libunwind/1.4.0-alps/lib/../lib64] ==> [/pdc/software/eb/software/libunwind/1.4.0-alps/lib64]
-        collapse library dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib/../lib64] ==> [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib64]
-        collapse library dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib/../lib64] ==> [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib64]
+        collapse library dir [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/pkgconfig/../] ==> [/opt/cray/pe/cce/17.0.0/cce/x86_64/lib]
         collapse library dir [/usr/lib64/gcc/x86_64-suse-linux/12] ==> [/usr/lib64/gcc/x86_64-suse-linux/12]
         collapse library dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../lib64] ==> [/usr/lib64]
         collapse library dir [/lib/../lib64] ==> [/lib64]
         collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
-        collapse library dir [/pdc/software/eb/software/libunwind/1.4.0-alps/lib] ==> [/pdc/software/eb/software/libunwind/1.4.0-alps/lib]
-        collapse library dir [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib] ==> [/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib]
-        collapse library dir [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib] ==> [/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib]
         collapse library dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/lib] ==> [/usr/x86_64-suse-linux/lib]
-        collapse library dir [/usr/lib64/gcc/x86_64-suse-linux/12/../../..] ==> [/usr/lib64]
-        implicit libs: [papi;pfm;fftw3f_mpi;fftw3f_threads;fftw3f;fftw3_mpi;fftw3_threads;fftw3;pmi;pmi2;sci_gnu_123_mpi;mpi_gnu_123;sci_gnu_123;dl;dsmml;xpmem;gfortran;quadmath;mvec;m;pthread;stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
-        implicit objs: [/usr/lib64/crt1.o;/usr/lib64/crti.o;/usr/lib64/gcc/x86_64-suse-linux/12/crtbegin.o;/usr/lib64/gcc/x86_64-suse-linux/12/crtend.o;/usr/lib64/crtn.o]
-        implicit dirs: [/opt/cray/pe/mpich/8.1.28/ofi/gnu/12.3/lib;/opt/cray/pe/libsci/23.12.5/GNU/12.3/x86_64/lib;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64;/opt/cray/pe/papi/7.0.1.2/lib;/opt/cray/pe/fftw/3.3.10.6/x86_rome/lib;/opt/cray/pe/pmi/6.1.13/lib;/opt/cray/pe/dsmml/0.2.2/dsmml/lib;/pdc/software/eb/software/libunwind/1.4.0-alps/lib64;/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib64;/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib64;/usr/lib64/gcc/x86_64-suse-linux/12;/usr/lib64;/lib64;/pdc/software/eb/software/libunwind/1.4.0-alps/lib;/pdc/software/23.12/eb/software/cubew/4.8.2-cpeGNU-23.12/lib;/pdc/software/23.12/eb/software/cubelib/4.8.2-cpeGNU-23.12/lib;/usr/x86_64-suse-linux/lib]
+        collapse library dir [/lib] ==> [/lib]
+        collapse library dir [/usr/lib] ==> [/usr/lib]
+        collapse library dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
+        collapse library dir [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib] ==> [/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
+        implicit libs: [amdhip64;sci_cray_mpi;sci_cray;dl;mpi_cray;dsmml;xpmem;stdc++;pgas-shmem;quadmath;modules;fi;craymath;f;u;csup;pthread;atomic;m;stdc++;m;unwind;c;unwind]
+        implicit objs: [/usr/lib64/crt1.o;/usr/lib64/crti.o;/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtbegin-x86_64.o;/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/no_mmap.o;/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib/clang/17/lib/linux/clang_rt.crtend-x86_64.o;/usr/lib64/crtn.o]
+        implicit dirs: [/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib;/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib;/opt/rocm-5.7.0/lib64;/opt/rocm-5.7.0/lib;/opt/rocm-5.7.0/rocprofiler/lib;/opt/rocm-5.7.0/rocprofiler/tool;/opt/rocm-5.7.0/roctracer/lib;/opt/rocm-5.7.0/roctracer/tool;/opt/rocm-5.7.0/hip/lib;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64;/opt/cray/pe/dsmml/0.2.2/dsmml/lib;/opt/cray/pe/cce/17.0.0/cce/x86_64/lib;/usr/lib64/gcc/x86_64-suse-linux/12;/usr/lib64;/lib64;/usr/x86_64-suse-linux/lib;/lib;/usr/lib;/opt/cray/pe/cce/17.0.0/cce-clang/x86_64/lib]
         implicit fwks: []
       
       
   -
     kind: "try_compile-v1"
     backtrace:
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/FindMPI.cmake:1278 (try_compile)"
-      - "/cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/share/cmake-3.27/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
-      - "CMakeLists.txt:9 (find_package)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:19 (find_package)"
     description: "The MPI test test_mpi for CXX in mode MPICXX"
     directories:
-      source: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-6JQFFQ"
-      binary: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-6JQFFQ"
+      source: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-9BmaCN"
+      binary: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-9BmaCN"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -802,17 +688,17 @@ events:
       variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
       cached: true
       stdout: |
-        Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-6JQFFQ'
+        Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-9BmaCN'
         
-        Run Build Command(s): /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_81e1f/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_81e1f.dir/build.make CMakeFiles/cmTC_81e1f.dir/build
-        gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-6JQFFQ'
-        Building CXX object CMakeFiles/cmTC_81e1f.dir/test_mpi.cpp.o
-        /opt/cray/pe/craype/2.7.30/bin/CC   -std=gnu++17 -o CMakeFiles/cmTC_81e1f.dir/test_mpi.cpp.o -c /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-6JQFFQ/test_mpi.cpp
-        Linking CXX executable cmTC_81e1f
-        /cfs/klemming/pdc/software/dardel/23.12/spack/cmake-3.27.7-znuwndq/bin/cmake -E cmake_link_script CMakeFiles/cmTC_81e1f.dir/link.txt --verbose=1
-        /opt/cray/pe/craype/2.7.30/bin/CC CMakeFiles/cmTC_81e1f.dir/test_mpi.cpp.o -o cmTC_81e1f 
-        gmake[1]: Leaving directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-6JQFFQ'
+        Run Build Command(s): /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_56a61/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_56a61.dir/build.make CMakeFiles/cmTC_56a61.dir/build
+        gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-9BmaCN'
+        Building CXX object CMakeFiles/cmTC_56a61.dir/test_mpi.cpp.o
+        /opt/cray/pe/craype/2.7.30/bin/CC   -std=gnu++17 -MD -MT CMakeFiles/cmTC_56a61.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_56a61.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_56a61.dir/test_mpi.cpp.o -c /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-9BmaCN/test_mpi.cpp
+        Linking CXX executable cmTC_56a61
+        /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E cmake_link_script CMakeFiles/cmTC_56a61.dir/link.txt --verbose=1
+        /opt/cray/pe/craype/2.7.30/bin/CC CMakeFiles/cmTC_56a61.dir/test_mpi.cpp.o -o cmTC_56a61 
+        gmake[1]: Leaving directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/CMakeScratch/TryCompile-9BmaCN'
         
       exitCode: 0
 ...

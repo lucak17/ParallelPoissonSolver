@@ -1,0 +1,31 @@
+Current local time and date: 2024-11-19 01:38:39
+Domain DIM = 3 - Number of MPI tasks 4 4 4 - Tot MPI ranks 64 - Max threads per MPI rank 1 - Tot threads 64
+Global grid size from block 128 128 256 - Global number of points 4194304
+Domain local Np xyz no guards 32 32 64 - Domain local Np xyz guards = 34 34 66 - Guards size 1 1 1
+Total local number of points noguards 65536 - total local number of points guards 76296
+Total local number of points noguards per thread 65536 - total local number of points guards per thread 76296
+Domain global origin xyz 0 0 0 - domain global extension xyz 12.7 12.7 25.5 - Ds xyz  = 0.1 0.1 0.1
+Boundary condition type 0 1 0 1 0 1
+Debug in BiCGSTAB START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 33 1 33 1 65 indexLimitsSolver 2 33 2 33 2 65 norm fieldB 1.10747e+07
+ Debug in BiCGSTAB iter 10 alpha 2.15438 omega 1.27489 rho0 1.00433e-05 error 0.1177
+ Debug in BiCGSTAB iter 20 alpha 2.36951 omega 1.56154 rho0 2.98229e-09 error 0.0594782
+ Debug in BiCGSTAB iter 30 alpha 2.12289 omega 7.61746 rho0 1.1794e-09 error 0.0384286
+ Debug in BiCGSTAB iter 40 alpha -0.0214219 omega 111.746 rho0 3.53609e-09 error 0.0146431
+ Debug in BiCGSTAB iter 50 alpha 0.0876172 omega 3.15441 rho0 3.24587e-08 error 0.00290871
+ Debug in BiCGSTAB iter 60 alpha 1.91426 omega 0.549451 rho0 6.38106e-10 error 0.00187811
+ Debug in BiCGSTAB iter 70 alpha -0.964405 omega 0.550619 rho0 1.78402e-09 error 0.00126771
+ Debug in BiCGSTAB iter 80 alpha 3.92302 omega 4.58093 rho0 6.19037e-10 error 0.000687628
+ Debug in BiCGSTAB iter 90 alpha 2.05997 omega 7.34951 rho0 6.17801e-12 error 0.00026333
+ Debug in BiCGSTAB iter 100 alpha 2.14337 omega 1.06189 rho0 1.15513e-13 error 6.71747e-05
+ Debug in BiCGSTAB iter 110 alpha 3.70273 omega 0.561469 rho0 -6.70399e-17 error 3.05042e-05
+ Debug in BiCGSTAB iter 120 alpha 3.61559 omega 0.539142 rho0 4.10017e-15 error 2.41177e-06
+ Debug in BiCGSTAB iter 130 alpha 3.65679 omega 0.550509 rho0 4.17519e-15 error 8.43245e-07
+ Debug in BiCGSTAB iter 140 alpha -76.7688 omega 0.540118 rho0 9.90797e-17 error 9.64247e-07
+ Debug in BiCGSTAB iter 150 alpha 2.10966 omega 0.814588 rho0 2.41261e-17 error 1.65804e-08
+Iterative solver finished with iter: 155 error from algo 7.55263e-09 error r=b-Ax 7.55263e-09 errorAvgtot 1.80069e-15
+Max error local block avg 0.0155235 in rank 63
+Max error local point 0.0254452 in rank 63
+Solver time: 614.681 seconds
+SolverInFunction time: 614.06 seconds
+Elapsed time: 615.756 seconds
+End program. 

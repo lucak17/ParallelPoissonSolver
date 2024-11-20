@@ -1,4 +1,14 @@
 cmake_minimum_required(VERSION 3.22)  # Minimum CMake version
+
+# Check if compilers are not already set and provide defaults
+if(NOT DEFINED CMAKE_C_COMPILER)
+    set(CMAKE_C_COMPILER cc)
+endif()
+
+if(NOT DEFINED CMAKE_CXX_COMPILER)
+    set(CMAKE_CXX_COMPILER CC)
+endif()
+
 project(solverPoisson)                   # Project name
 
 # Set the C++ standard
@@ -25,4 +35,6 @@ target_include_directories(solverPoisson PUBLIC include)
 
 # Correct library paths
 #target_link_libraries(solverPoisson PRIVATE cubew cubelib)
+
+
 
