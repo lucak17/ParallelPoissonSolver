@@ -13,6 +13,7 @@ CMakeFiles/solverPoisson.dir/src/main.cpp.o
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/noneSolver.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solverSetup.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solvers.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/testAcc.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/main.cpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/include/alpaka/acc/AccCpuOmp2Blocks.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/include/alpaka/acc/AccCpuOmp2Threads.hpp

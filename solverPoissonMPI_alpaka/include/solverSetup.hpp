@@ -2,8 +2,17 @@
 #define SOLVERSETUP_HPP
 
 #pragma once
+#include <alpaka/alpaka.hpp>
+
+constexpr int DIM=3;
 
 using T_data=double;
+
+using Dim = alpaka::DimInt<DIM>;
+using Idx = std::size_t;
+using Acc = alpaka::AccGpuHipRt<Dim,Idx>;
+
+
 
 template <typename T_data>
 inline MPI_Datatype getMPIType();

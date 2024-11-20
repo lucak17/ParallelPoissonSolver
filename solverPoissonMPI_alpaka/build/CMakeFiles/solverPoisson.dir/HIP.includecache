@@ -151,6 +151,8 @@ communicationMPI.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/communicationMPI.hpp
 
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solverSetup.hpp
+alpaka/alpaka.hpp
+-
 
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solvers.hpp
 noneSolver.hpp
@@ -161,6 +163,26 @@ BiCGSTAB.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/BiCGSTAB.hpp
 chebyshevIteration.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/chebyshevIteration.hpp
+
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/testAcc.hpp
+array
+-
+iostream
+-
+cstring
+-
+cmath
+-
+alpaka/alpaka.hpp
+-
+iterativeSolverBase.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/iterativeSolverBase.hpp
+blockGrid.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/blockGrid.hpp
+solverSetup.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solverSetup.hpp
+communicationMPI.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/communicationMPI.hpp
 
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/main.cpp
 mpi.h
@@ -191,6 +213,8 @@ blockGrid.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/blockGrid.hpp
 matrixFreeOperatorA.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/matrixFreeOperatorA.hpp
+testAcc.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/testAcc.hpp
 
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/include/alpaka/acc/AccCpuOmp2Blocks.hpp
 alpaka/atomic/AtomicCpu.hpp

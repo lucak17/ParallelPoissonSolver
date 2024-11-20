@@ -14,6 +14,8 @@
 #include "solvers.hpp"
 #include "blockGrid.hpp"
 #include "matrixFreeOperatorA.hpp"
+#include "testAcc.hpp"
+//#include "solverSetup.hpp"
 
 
 // Nranks, ds, guards always size 3, then exceeding dimensions are not used 
@@ -21,15 +23,8 @@
 int main(int argc, char** argv) {
     // Initialize MPI
     MPI_Init(&argc, &argv);
-
-    using Dim = alpaka::DimInt<3>;
-    using Idx = std::size_t;
-
-    // Get the total number of processes
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-
-    // Get the rank of the current process
     int my_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 
@@ -42,14 +37,19 @@ int main(int argc, char** argv) {
 
     // read number MPI processes in x y z
     std::array<int,3> nranks_tmp;
-    if(DIM==3){
+    if constexpr (DIM==3){
         nranks_tmp = {std::atoi(argv[1]),std::atoi(argv[2]),std::atoi(argv[3])};
     }
-    else if(DIM==2){
+    else if constexpr (DIM==2){
         nranks_tmp = {std::atoi(argv[1]),std::atoi(argv[2]),1};
     }
-    else if(DIM==1){
+    else if constexpr (DIM==1){
         nranks_tmp = {std::atoi(argv[1]),1,1};
+    }
+    else
+    {
+        std::cerr << "Error: DIM is not valid, DIM = "<< DIM << std::endl;
+        exit(-1); // Exit with failure status
     }
     // number MPI processes in each direction x y z 
     const std::array<int, 3> nranks = nranks_tmp;
@@ -59,6 +59,7 @@ int main(int argc, char** argv) {
         exit(-1); // Exit with failure status
     }
 
+    
     // create object that holds grid info
     BlockGrid<DIM,T_data> blockGrid(nranks,my_rank,npglobal,ds,origin,guards,bcsType,bcsValue);
     auto nlocal_noguards = blockGrid.getNlocalNoGuards();
@@ -76,6 +77,7 @@ int main(int argc, char** argv) {
         std::cout<< "Total local number of points noguards per thread "<<blockGrid.getNtotLocalNoGuards()<< " - total local number of points guards per thread "<< blockGrid.getNtotLocalGuards() <<std::endl;
         std::cout<< "Domain global origin xyz "<<  origin[0]<< " " << origin[1]<< " " << origin[2]<< " - domain global extension xyz "<<  origin[0] + (npglobal[0]-1)*ds[0]<< " " << origin[1] + (npglobal[1]-1)*ds[1]<< " " << origin[2]+ (npglobal[2]-1)*ds[2]<< " - Ds xyz  = "<<ds[0] << " "<< ds[1] << " "<< ds[2] <<std::endl;
         std::cout<< "Boundary condition type " << blockGrid.getBcsType()[0] << " " << blockGrid.getBcsType()[1] << " " << blockGrid.getBcsType()[2] << " " << blockGrid.getBcsType()[3] << " " << blockGrid.getBcsType()[4] << " " << blockGrid.getBcsType()[5]  <<std::endl;
+        std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
     }
 
 
@@ -83,6 +85,8 @@ int main(int argc, char** argv) {
     CommunicatorMPI<DIM,T_data>  communicator(blockGrid);
     ExactSolutionAndBCs<DIM,T_data> exactSolutionAndBCs;
     MatrixFreeOperatorA<DIM,T_data> operatorA(blockGrid);
+    
+    TestAcc<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator);
     
     // iterative solver object
     T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);

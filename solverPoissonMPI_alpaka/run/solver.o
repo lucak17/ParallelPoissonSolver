@@ -1,30 +1,24 @@
-Current local time and date: 2024-11-20 01:12:56
+Current local time and date: 2024-11-20 11:01:40
 Domain DIM = 3 - Number of MPI tasks 2 2 2 - Tot MPI ranks 8 - Max threads per MPI rank 1 - Tot threads 8
-Global grid size from block 128 128 256 - Global number of points 4194304
-Domain local Np xyz no guards 64 64 128 - Domain local Np xyz guards = 66 66 130 - Guards size 1 1 1
-Total local number of points noguards 524288 - total local number of points guards 566280
-Total local number of points noguards per thread 524288 - total local number of points guards per thread 566280
-Domain global origin xyz 0 0 0 - domain global extension xyz 12.7 12.7 25.5 - Ds xyz  = 0.1 0.1 0.1
+Global grid size from block 64 64 64 - Global number of points 262144
+Domain local Np xyz no guards 32 32 32 - Domain local Np xyz guards = 34 34 34 - Guards size 1 1 1
+Total local number of points noguards 32768 - total local number of points guards 39304
+Total local number of points noguards per thread 32768 - total local number of points guards per thread 39304
+Domain global origin xyz 0 0 0 - domain global extension xyz 6.3 6.3 6.3 - Ds xyz  = 0.1 0.1 0.1
 Boundary condition type 0 1 0 1 0 1
-Debug in BiCGSTAB START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 65 1 65 1 129 indexLimitsSolver 2 65 2 65 2 129 norm fieldB 1.10747e+07
- Debug in BiCGSTAB iter 10 alpha 1.93567 omega 1.18092 rho0 1.11276e-05 error 0.079818
- Debug in BiCGSTAB iter 20 alpha 1.93671 omega 1.33548 rho0 2.29413e-09 error 0.0553125
- Debug in BiCGSTAB iter 30 alpha 2.76921 omega 0.877558 rho0 1.33149e-12 error 0.0368338
- Debug in BiCGSTAB iter 40 alpha 0.307143 omega 0.565044 rho0 2.46449e-12 error 0.0132298
- Debug in BiCGSTAB iter 50 alpha 1.0562 omega 0.900449 rho0 2.94834e-12 error 0.00379537
- Debug in BiCGSTAB iter 60 alpha -14.422 omega 0.546969 rho0 -1.61878e-11 error 0.00199983
- Debug in BiCGSTAB iter 70 alpha 2.16609 omega 0.787212 rho0 3.73008e-13 error 0.00114802
- Debug in BiCGSTAB iter 80 alpha 1.56623 omega 0.941957 rho0 1.09289e-14 error 0.000567414
- Debug in BiCGSTAB iter 90 alpha 1.74081 omega 55.0524 rho0 6.43564e-11 error 0.00011828
- Debug in BiCGSTAB iter 100 alpha 2.49632 omega 0.592061 rho0 3.21348e-13 error 2.5696e-05
- Debug in BiCGSTAB iter 110 alpha 2.43017 omega 0.604894 rho0 4.68238e-12 error 5.0472e-06
- Debug in BiCGSTAB iter 120 alpha 0.302728 omega 240.523 rho0 3.2157e-12 error 5.85361e-07
- Debug in BiCGSTAB iter 130 alpha -5.63679 omega 0.595857 rho0 2.13016e-14 error 1.23081e-07
- Debug in BiCGSTAB iter 140 alpha 9.29323 omega 0.756982 rho0 -1.17301e-15 error 1.53481e-08
-Iterative solver finished with iter: 143 error from algo 7.76145e-09 error r=b-Ax 7.76145e-09 errorAvgtot 1.85047e-15
-Max error local block avg 0.0104179 in rank 7
-Max error local point 0.0261657 in rank 7
-Solver time: 7.33174 seconds
-SolverInFunction time: 7.31205 seconds
-Elapsed time: 7.38675 seconds
+Using alpaka accelerator: AccGpuHipRt<3,unsigned long>
+Debug in BiCGSTAB START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 33 1 33 1 33 indexLimitsSolver 2 33 2 33 2 33 norm fieldB 364251
+ Debug in BiCGSTAB iter 10 alpha 2.36693 omega 0.846701 rho0 6.77941e-06 error 0.0614184
+ Debug in BiCGSTAB iter 20 alpha 2.24768 omega 1.1108 rho0 2.20167e-09 error 0.0338704
+ Debug in BiCGSTAB iter 30 alpha 2.17793 omega 0.923596 rho0 1.5425e-12 error 0.00849343
+ Debug in BiCGSTAB iter 40 alpha 14.1792 omega 0.812639 rho0 4.23933e-15 error 0.000800973
+ Debug in BiCGSTAB iter 50 alpha 0.163539 omega 35.5431 rho0 -4.22756e-14 error 1.40148e-05
+ Debug in BiCGSTAB iter 60 alpha 0.798215 omega 64.8856 rho0 6.56374e-16 error 5.60946e-07
+ Debug in BiCGSTAB iter 70 alpha 6.68816 omega 0.605459 rho0 -8.16086e-17 error 9.0982e-08
+Iterative solver finished with iter: 75 error from algo 6.64776e-09 error r=b-Ax 6.64776e-09 errorAvgtot 2.53592e-14
+Max error local block avg 0.00505938 in rank 7
+Max error local point 0.0131082 in rank 7
+Solver time: 0.262721 seconds
+SolverInFunction time: 0.259334 seconds
+Elapsed time: 0.78456 seconds
 End program. 

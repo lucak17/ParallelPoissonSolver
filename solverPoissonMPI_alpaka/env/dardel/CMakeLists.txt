@@ -25,7 +25,7 @@ endif()
 
 # Optimization flags for each build type
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")                 # Debug: No optimization, debug info
-set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")         # Release: High optimization
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")         # Release: High optimization
 
 set(alpaka_ACC_GPU_HIP_ENABLE ON CACHE BOOL "Enable HIP backend for Alpaka")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --offload-arch=gfx90a")

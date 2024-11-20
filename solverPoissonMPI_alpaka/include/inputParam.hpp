@@ -13,7 +13,7 @@
 #include "solvers.hpp"
 
 
-constexpr int DIM=3;
+
 
 constexpr bool ischebyshevMainLoop = false;
 constexpr bool isbiCGMainLoop1 = true;
@@ -33,12 +33,8 @@ using T_Preconditioner = BiCGSTAB<DIM, T_data, tollPreconditionerSolver, iterMax
 using T_Solver = BiCGSTAB<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_Preconditioner2>;
 //using T_Solver = BiCGSTABLocal<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, !communicationON, T_NoneSolver>;
 
-//using T_Solver = BiCGSTAB<DIM, T_data, tollMainSolver, iterMaxMainSolver, true, 
-//            BiCGSTAB<DIM, T_data, tollPrecHigh, itermaxPrec,false, ChebyshevIteration<DIM,T_data,tollPreconditionerSolver,chebyshevMax, false, T_NoneSolver>>>;
-//using T_Solver = NoneSolver<DIM, T_data, tollMainSolver, iterMaxMainSolver>;
 
-
-constexpr std::array<int,3> npglobal={128,128,256};
+constexpr std::array<int,3> npglobal={64,64,64};
 constexpr std::array<T_data,3> ds={0.1,0.1,0.1};
 constexpr std::array<T_data,3> origin={0,0,0};
 constexpr std::array<int,3> guards={1,1,1};
