@@ -1,76 +1,79 @@
-Current local time and date: 2024-11-21 17:42:18
-Domain DIM = 1 - Number of MPI tasks 4 1 1 - Tot MPI ranks 4 - Max threads per MPI rank 1 - Tot threads 4
-Global grid size from block 124 4 2 - Global number of points 124
-Domain local Np xyz no guards 31 1 1 - Domain local Np xyz guards = 33 1 1 - Guards size 1 1 1
-Total local number of points noguards 31 - total local number of points guards 33
-Total local number of points noguards per thread 31 - total local number of points guards per thread 33
-Domain global origin xyz 0 0 0 - domain global extension xyz 12.3 0.3 0.1 - Ds xyz  = 0.1 0.1 0.1
+Current local time and date: 2024-11-21 19:45:21
+Domain DIM = 3 - Number of MPI tasks 2 2 2 - Tot MPI ranks 8 - Max threads per MPI rank 1 - Tot threads 8
+Global grid size from block 32 32 64 - Global number of points 65536
+Domain local Np xyz no guards 16 16 32 - Domain local Np xyz guards = 18 18 34 - Guards size 1 1 1
+Total local number of points noguards 8192 - total local number of points guards 11016
+Total local number of points noguards per thread 8192 - total local number of points guards per thread 11016
+Domain global origin xyz 0 0 0 - domain global extension xyz 3.1 3.1 6.3 - Ds xyz  = 0.1 0.1 0.1
 Boundary condition type 0 1 0 1 0 1
 Using alpaka accelerator: AccGpuHipRt<3,unsigned long>
-Print field with guards, globalLocation 0 0 0
-indexZ = 0
- -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1 
-Print field with guards, globalLocation 1 0 0
-indexZ = 0
- -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1 
-Print field with guards, globalLocation 2 0 0
-indexZ = 0
- -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1 
-Print field with guards, globalLocation 3 0 0
-indexZ = 0
- -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1  -1 
-Rank 0
- extent(1, 1, 33)
- numNodes(1, 1, 31)
- halo(0, 0, 1) tmphalo (0, 0, 1) blockGrid.getGuards() 1 1 1
- pitches (64, 64, 1) 64 64 1 stride_j 64 stride_k 64
+Rank 7
+ extent(34, 18, 18)
+ numNodes(32, 16, 16)
+ halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
+ pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
  Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 1, 1), blockThreadExtent: (1, 1, 33), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
 Rank 2
- extent(1, 1, 33)
- numNodes(1, 1, 31)
- halo(0, 0, 1) tmphalo (0, 0, 1) blockGrid.getGuards() 1 1 1
- pitches (64, 64, 1) 64 64 1 stride_j 64 stride_k 64
+ extent(34, 18, 18)
+ numNodes(32, 16, 16)
+ halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
+ pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
  Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 1, 1), blockThreadExtent: (1, 1, 33), threadElemExtent: (1, 1, 1)}
-Rank 3
- extent(1, 1, 33)
- numNodes(1, 1, 31)
- halo(0, 0, 1) tmphalo (0, 0, 1) blockGrid.getGuards() 1 1 1
- pitches (64, 64, 1) 64 64 1 stride_j 64 stride_k 64
+	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+Rank 0
+ extent(34, 18, 18)
+ numNodes(32, 16, 16)
+ halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
+ pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
  Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 1, 1), blockThreadExtent: (1, 1, 33), threadElemExtent: (1, 1, 1)}
-Debug in communicator stride_j 33 stride_k 33
-Debug in communicator stride_j 33 stride_k 33
+	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+Rank 6
+ extent(34, 18, 18)
+ numNodes(32, 16, 16)
+ halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
+ pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
+ Workdivision[workDivExtent]:
+	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
 Rank 1
- extent(1, 1, 33)
- numNodes(1, 1, 31)
- halo(0, 0, 1) tmphalo (0, 0, 1) blockGrid.getGuards() 1 1 1
- pitches (64, 64, 1) 64 64 1 stride_j 64 stride_k 64
+ extent(34, 18, 18)
+ numNodes(32, 16, 16)
+ halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
+ pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
  Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 1, 1), blockThreadExtent: (1, 1, 33), threadElemExtent: (1, 1, 1)}
-Debug in communicator stride_j 33 stride_k 33
-Debug in communicator stride_j 33 stride_k 33
-Print field with guards, globalLocation 0 0 0
-indexZ = 0
-  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1 
-Print field with guards, globalLocation 1 0 0
-indexZ = 0
-  0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   2 
-Print field with guards, globalLocation 2 0 0
-indexZ = 0
-  1   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   3 
-Print field with guards, globalLocation 3 0 0
-indexZ = 0
-  2   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3 
-Iterative solver finished with iter: 0 error from algo -1 error r=b-Ax -1 errorAvgtot -0.00806452
-Debug in communicator stride_j 33 stride_k 33
-Debug in communicator stride_j 33 stride_k 33
-Debug in communicator stride_j 33 stride_k 33
-Debug in communicator stride_j 33 stride_k 33
-Max error local block avg 124.807 in rank 3
-Max error local point 159.027 in rank 3
-Solver time: 1.51e-07 seconds
-SolverInFunction time: 6.92382e-310 seconds
-Elapsed time: 2.11696 seconds
+	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+Rank 5
+ extent(34, 18, 18)
+ numNodes(32, 16, 16)
+ halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
+ pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
+ Workdivision[workDivExtent]:
+	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+Rank 4
+ extent(34, 18, 18)
+ numNodes(32, 16, 16)
+ halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
+ pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
+ Workdivision[workDivExtent]:
+	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+Rank 3
+ extent(34, 18, 18)
+ numNodes(32, 16, 16)
+ halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
+ pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
+ Workdivision[workDivExtent]:
+	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+Debug in BiCGSTAB START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 17 1 17 1 33 indexLimitsSolver 2 17 2 17 2 33 norm fieldB 105100
+ Debug in BiCGSTAB iter 10 alpha 9.52935 omega 0.672473 rho0 -5.04519e-05 error 0.0300927
+ Debug in BiCGSTAB iter 20 alpha 4.40036 omega 0.67599 rho0 -3.97584e-08 error 0.00192691
+ Debug in BiCGSTAB iter 30 alpha 1.40535 omega 7.1406 rho0 1.41856e-09 error 0.000308685
+ Debug in BiCGSTAB iter 40 alpha 0.803774 omega 2.12924 rho0 -9.30135e-11 error 2.97792e-05
+ Debug in BiCGSTAB iter 50 alpha 2.41485 omega 0.742254 rho0 3.84572e-11 error 2.96782e-06
+ Debug in BiCGSTAB iter 60 alpha -0.883885 omega 0.845399 rho0 2.49395e-13 error 3.5367e-08
+Iterative solver finished with iter: 62 error from algo 9.22705e-09 error r=b-Ax 9.22705e-09 errorAvgtot 1.40794e-13
+Max error local block avg 0.00160263 in rank 7
+Max error local point 0.00432834 in rank 7
+Solver time: 0.0696874 seconds
+SolverInFunction time: 0.0689328 seconds
+Elapsed time: 0.600217 seconds
 End program. 

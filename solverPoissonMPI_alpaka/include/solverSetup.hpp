@@ -4,7 +4,7 @@
 #pragma once
 #include <alpaka/alpaka.hpp>
 
-constexpr int DIM=1;
+constexpr int DIM=3;
 
 using T_data=double;
 

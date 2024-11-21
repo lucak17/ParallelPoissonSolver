@@ -35,12 +35,12 @@ using T_Solver = BiCGSTAB<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCG
 
 
 // X Y Z
-constexpr std::array<int,3> npglobal={124,4,2};
+constexpr std::array<int,3> npglobal={32,32,64};
 constexpr std::array<T_data,3> ds={0.1,0.1,0.1};
 constexpr std::array<T_data,3> origin={0,0,0};
 constexpr std::array<int,3> guards={1,1,1};
 constexpr std::array<int,6> bcsType={0,1,0,1,0,1}; //0 Dirichlet, 1 Neumann, -1 No dim; order x-x+ y-y+ z-z+
-const std::array<T_data,6> bcsValue={0,0,0,0,0,0}; //0 Dirichlet, 1 Neumann, -1 No dim
+constexpr std::array<T_data,6> bcsValue={0,0,0,0,0,0}; //0 Dirichlet, 1 Neumann, -1 No dim
 
 
 

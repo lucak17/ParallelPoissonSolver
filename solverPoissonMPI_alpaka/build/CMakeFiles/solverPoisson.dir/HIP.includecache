@@ -24,6 +24,22 @@ solverSetup.hpp
 communicationMPI.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/communicationMPI.hpp
 
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/alpakaHelper.hpp
+array
+-
+iostream
+-
+cstring
+-
+cmath
+-
+alpaka/alpaka.hpp
+-
+blockGrid.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/blockGrid.hpp
+communicationMPI.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/communicationMPI.hpp
+
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/baseCG.hpp
 array
 -
@@ -237,6 +253,8 @@ inputParam.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/inputParam.hpp
 communicationMPI.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/communicationMPI.hpp
+solvers.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/solvers.hpp
 blockGrid.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/blockGrid.hpp
 matrixFreeOperatorA.hpp
@@ -245,6 +263,8 @@ testAcc.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/testAcc.hpp
 operationGrid.hpp
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/operationGrid.hpp
+alpakaHelper.hpp
+/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/alpakaHelper.hpp
 
 /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/compressed_pair.hpp
 macros.hpp

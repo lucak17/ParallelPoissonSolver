@@ -11,11 +11,12 @@
 
 #include "inputParam.hpp"
 #include "communicationMPI.hpp"
-//#include "solvers.hpp"
+#include "solvers.hpp"
 #include "blockGrid.hpp"
 #include "matrixFreeOperatorA.hpp"
 #include "testAcc.hpp"
 #include "operationGrid.hpp"
+#include "alpakaHelper.hpp"
 //#include "solverSetup.hpp"
 
 
@@ -86,7 +87,7 @@ int main(int argc, char** argv) {
     CommunicatorMPI<DIM,T_data>  communicator(blockGrid);
     ExactSolutionAndBCs<DIM,T_data> exactSolutionAndBCs;
     MatrixFreeOperatorA<DIM,T_data> operatorA(blockGrid);
-    
+    AlpakaHelper<DIM,T_data> alpakaHelper(blockGrid); 
     TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator);
 
     
@@ -101,11 +102,11 @@ int main(int argc, char** argv) {
     std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), -1);
 
 
-    printFieldWithGuards(blockGrid,fieldX);
+    //printFieldWithGuards(blockGrid,fieldX);
     MPI_Barrier(MPI_COMM_WORLD);
     testAcc(blockGrid,fieldX,fieldB);
     MPI_Barrier(MPI_COMM_WORLD);
-    printFieldWithGuards(blockGrid,fieldX);
+    //printFieldWithGuards(blockGrid,fieldX);
     MPI_Barrier(MPI_COMM_WORLD);
     // set problem
     solver.setProblem(fieldX,fieldB);
@@ -113,7 +114,7 @@ int main(int argc, char** argv) {
     auto startSolver = std::chrono::high_resolution_clock::now();
     
     // iterative solver
-    //solver(fieldX,fieldB,operatorA);
+    solver(fieldX,fieldB,operatorA);
     
     auto endSolver = std::chrono::high_resolution_clock::now();
 

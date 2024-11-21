@@ -3,6 +3,7 @@
 
 CMakeFiles/solverPoisson.dir/src/main.cpp.o
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/BiCGSTAB.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/alpakaHelper.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/baseCG.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/blockGrid.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/chebyshevIteration.hpp
