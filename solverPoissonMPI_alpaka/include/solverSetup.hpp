@@ -4,11 +4,13 @@
 #pragma once
 #include <alpaka/alpaka.hpp>
 
-constexpr int DIM=3;
+constexpr int DIM=1;
 
 using T_data=double;
 
-using Dim = alpaka::DimInt<DIM>;
+
+// accelerator Alpaka
+using Dim = alpaka::DimInt<3>;
 using Idx = std::size_t;
 using Acc = alpaka::AccGpuHipRt<Dim,Idx>;
 

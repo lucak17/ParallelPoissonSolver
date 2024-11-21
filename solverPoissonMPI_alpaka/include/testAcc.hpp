@@ -11,7 +11,7 @@
 #include "blockGrid.hpp"
 #include "solverSetup.hpp"
 #include "communicationMPI.hpp"
-
+#include "kernelsAlpaka.hpp"
 
 template <int DIM, typename T_data, int maxIteration>
 class TestAcc : public IterativeSolverBase<DIM,T_data,maxIteration>{
@@ -33,34 +33,225 @@ class TestAcc : public IterativeSolverBase<DIM,T_data,maxIteration>{
         // get suitable device for this Acc
         auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
-        if constexpr (DIM==3){
-            // order Y X Z
-            const alpaka::Vec<alpaka::DimInt<3u>, Idx> numNodes{blockGrid.getNlocalNoGuards()[1], blockGrid.getNlocalNoGuards()[0], blockGrid.getNlocalNoGuards()[2]};
-            const alpaka::Vec<alpaka::DimInt<3u>, Idx> haloSize{blockGrid.getDs()[1], blockGrid.getDs()[0],blockGrid.getDs()[2]};
-            const alpaka::Vec<alpaka::DimInt<3u>, Idx> extent = numNodes + haloSize + haloSize;
-            constexpr alpaka::Vec<alpaka::DimInt<3u>, Idx> elemPerThread{1, 1, 1};
+        alpaka::Queue<Acc, alpaka::NonBlocking> queue{devAcc};
 
-            auto bufDevice = alpaka::allocBuf<T_data, Idx>(devAcc, extent);
+        alpaka::Vec<alpaka::DimInt<DIM>, Idx> tmpNumNodes;
+        alpaka::Vec<alpaka::DimInt<DIM>, Idx> tmpHaloSize;
+        alpaka::Vec<alpaka::DimInt<DIM>, Idx> tmpElemPerThread;
+
+        if constexpr (DIM==3){
+            // order Z Y X
+            //tmpNumNodes = {blockGrid.getNlocalNoGuards()[1], blockGrid.getNlocalNoGuards()[0], blockGrid.getNlocalNoGuards()[2]};
+            //tmpHaloSize = {blockGrid.getGuards()[1], blockGrid.getGuards()[0],blockGrid.getGuards()[2]};
+            tmpNumNodes = {blockGrid.getNlocalNoGuards()[2], blockGrid.getNlocalNoGuards()[1], blockGrid.getNlocalNoGuards()[0]};
+            tmpHaloSize = {blockGrid.getGuards()[2], blockGrid.getGuards()[1],blockGrid.getGuards()[0]};
+            tmpElemPerThread = {1,1,1};           
         }
         else if constexpr (DIM==2){
             // order Y X
-            const alpaka::Vec<alpaka::DimInt<2u>, Idx> numNodes{blockGrid.getNlocalNoGuards()[1], blockGrid.getNlocalNoGuards()[0]};
-            const alpaka::Vec<alpaka::DimInt<2u>, Idx> haloSize{blockGrid.getDs()[1], blockGrid.getDs()[0]};
-            const alpaka::Vec<alpaka::DimInt<2u>, Idx> extent = numNodes + haloSize + haloSize;
-            constexpr alpaka::Vec<alpaka::DimInt<2u>, Idx> elemPerThread{1, 1};
+            tmpNumNodes = {blockGrid.getNlocalNoGuards()[1], blockGrid.getNlocalNoGuards()[0]};
+            tmpHaloSize = {blockGrid.getGuards()[1], blockGrid.getGuards()[0]};
+            tmpElemPerThread = {1,1};
         }
         else if constexpr (DIM==1){
             // order X
-            const alpaka::Vec<alpaka::DimInt<1u>, Idx> numNodes{blockGrid.getNlocalNoGuards()[0]};
-            const alpaka::Vec<alpaka::DimInt<1u>, Idx> haloSize{blockGrid.getDs()[0]};
-            const alpaka::Vec<alpaka::DimInt<1u>, Idx> extent = numNodes + haloSize + haloSize;
-            constexpr alpaka::Vec<alpaka::DimInt<1u>, Idx> elemPerThread{1};
+            tmpNumNodes = {blockGrid.getNlocalNoGuards()[0]};
+            tmpHaloSize = {blockGrid.getGuards()[0]};
+            tmpElemPerThread = {1};
         }
         else
         {
             std::cerr << "Error: DIM is not valid, DIM = "<< DIM << std::endl;
             exit(-1); // Exit with failure status
         }
+
+        const alpaka::Vec<alpaka::DimInt<DIM>, Idx> numNodes = tmpNumNodes;
+        const alpaka::Vec<alpaka::DimInt<DIM>, Idx> haloSize = tmpHaloSize;
+        const alpaka::Vec<alpaka::DimInt<DIM>, Idx> extent = numNodes + haloSize + haloSize;
+        const alpaka::Vec<alpaka::DimInt<DIM>, Idx> elemPerThread = tmpElemPerThread;       
+        auto bufDevice = alpaka::allocBuf<T_data, Idx>(devAcc, extent);
+        auto bufMdSpan = alpaka::experimental::getMdSpan(bufDevice);
+        auto pitchBuffAcc{alpaka::getPitchesInBytes(bufDevice)};
+
+        for(int i=0; i<DIM; i++)
+        {
+            pitchBuffAcc[i] /= sizeof(T_data);
+        }
+
+        int stride_j;
+        int stride_k;
+        int ntotBuffAcc;
+        if constexpr(DIM==3)
+        {
+            stride_j=pitchBuffAcc[1];
+            stride_k=pitchBuffAcc[0];
+            ntotBuffAcc=stride_k*extent[0];
+        }
+        else if constexpr (DIM==2)
+        {
+            stride_j=pitchBuffAcc[0];
+            stride_k=pitchBuffAcc[0]*extent[0];
+            ntotBuffAcc=stride_k;
+        }
+        else
+        {
+            stride_j=pitchBuffAcc[0];
+            stride_k=1;
+        }
+        this-> communicatorMPI_.setStridesAlpaka(stride_j,stride_k);
+        
+        auto hostView = createView(devHost, fieldX, extent);
+        
+        memcpy(queue, bufDevice, hostView, extent);
+
+        InitializeBufferKernel<DIM> initBufferKernel;
+        
+        alpaka::KernelCfg<Acc> const cfgExtent = {extent, elemPerThread};
+        auto workDivExtent = alpaka::getValidWorkDiv(cfgExtent, devAcc, initBufferKernel, bufMdSpan, blockGrid.getMyrank(), stride_j,stride_k);
+        
+        std::cout << "Rank " << blockGrid.getMyrank() << "\n extent" << extent << "\n numNodes" << numNodes << "\n halo" << 
+                    haloSize << " tmphalo "<< tmpHaloSize<< " blockGrid.getGuards() " << blockGrid.getGuards()[0]<< " "<< blockGrid.getGuards()[1] << " " << blockGrid.getGuards()[2] <<
+                    "\n pitches" << " "<< pitchBuffAcc<< " " << pitchBuffAcc[0] << " "<< pitchBuffAcc[1] <<" "<< pitchBuffAcc[2] << "\n Workdivision[workDivExtent]:\n\t" << workDivExtent << std::endl;
+        //std::experimental::mdspan<T_data,extent> 
+
+        alpaka::exec<Acc>(queue, workDivExtent, initBufferKernel, bufMdSpan, blockGrid.getMyrank(),stride_j,stride_k);
+        alpaka::wait(queue);
+        
+        auto* ptr= getPtrNative(bufDevice);
+        /*
+        for(int i=0; i< ntotBuffAcc; i++)
+        {
+            std::cout<< "Indx "<< i << " val " << ptr[i] <<std::endl;
+        */
+
+
+        //CommunicatorMPI communicatorMPIAlpaka(blockGrid,pitchBuffAcc[0],pitchBuffAcc[0]*extent[0]);
+
+        //communicatorMPIAlpaka(getPtrNative(bufDevice));
+        //communicatorMPIAlpaka.waitAllandCheckRcv();
+        
+        //this-> communicatorMPI_.setStridesAlpaka(pitchBuffAcc[0],pitchBuffAcc[0]*extent[0]);       
+        this->communicatorMPI_.template operator()<true>(getPtrNative(bufDevice));
+        this->communicatorMPI_.waitAllandCheckRcv();
+
+        memcpy(queue, hostView,bufDevice, extent);
+
+    }
+
+    private:
+
+};
+
+
+template <int DIM, typename T_data, int maxIteration>
+class TestAcc2 : public IterativeSolverBase<DIM,T_data,maxIteration>{
+    public:
+
+    TestAcc2(const BlockGrid<DIM,T_data>& blockGrid, const ExactSolutionAndBCs<DIM,T_data>& exactSolutionAndBCs, CommunicatorMPI<DIM,T_data>& communicatorMPI):
+        IterativeSolverBase<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI)
+    {
+
+    }
+
+    void operator()(const BlockGrid<DIM,T_data>& blockGrid, T_data fieldX[], T_data fieldB[])
+    {
+        // alpaka offloading
+        // Select specific devices
+        auto const platformHost = alpaka::PlatformCpu{};
+        auto const devHost = alpaka::getDevByIdx(platformHost, 0);
+        auto const platformAcc = alpaka::Platform<Acc>{};
+        // get suitable device for this Acc
+        auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
+
+        alpaka::Queue<Acc, alpaka::NonBlocking> queue{devAcc};
+
+        alpaka::Vec<Dim, Idx> tmpNumNodes;
+        alpaka::Vec<Dim, Idx> tmpHaloSize;
+        alpaka::Vec<Dim, Idx> tmpElemPerThread;
+
+        if constexpr (DIM==3){
+            // order Z Y X
+            //tmpNumNodes = {blockGrid.getNlocalNoGuards()[1], blockGrid.getNlocalNoGuards()[0], blockGrid.getNlocalNoGuards()[2]};
+            //tmpHaloSize = {blockGrid.getGuards()[1], blockGrid.getGuards()[0],blockGrid.getGuards()[2]};
+            tmpNumNodes = {blockGrid.getNlocalNoGuards()[2], blockGrid.getNlocalNoGuards()[1], blockGrid.getNlocalNoGuards()[0]};
+            tmpHaloSize = {blockGrid.getGuards()[2], blockGrid.getGuards()[1],blockGrid.getGuards()[0]};
+            tmpElemPerThread = {1,1,1};           
+        }
+        else if constexpr (DIM==2){
+            // order Y X
+            tmpNumNodes = {1,blockGrid.getNlocalNoGuards()[1], blockGrid.getNlocalNoGuards()[0]};
+            tmpHaloSize = {0,blockGrid.getGuards()[1], blockGrid.getGuards()[0]};
+            tmpElemPerThread = {1,1,1};
+        }
+        else if constexpr (DIM==1){
+            // order X
+            tmpNumNodes = {1,1,blockGrid.getNlocalNoGuards()[0]};
+            tmpHaloSize = {0,0,blockGrid.getGuards()[0]};
+            tmpElemPerThread = {1,1,1};
+        }
+        else
+        {
+            std::cerr << "Error: DIM is not valid, DIM = "<< DIM << std::endl;
+            exit(-1); // Exit with failure status
+        }
+
+        const alpaka::Vec<Dim, Idx> numNodes = tmpNumNodes;
+        const alpaka::Vec<Dim, Idx> haloSize = tmpHaloSize;
+        const alpaka::Vec<Dim, Idx> extent = numNodes + haloSize + haloSize;
+        const alpaka::Vec<Dim, Idx> elemPerThread = tmpElemPerThread;       
+        auto bufDevice = alpaka::allocBuf<T_data, Idx>(devAcc, extent);
+        auto bufMdSpan = alpaka::experimental::getMdSpan(bufDevice);
+        auto pitchBuffAcc{alpaka::getPitchesInBytes(bufDevice)};
+
+        for(int i=0; i<3; i++)
+        {
+            pitchBuffAcc[i] /= sizeof(T_data);
+        }
+
+        int stride_j;
+        int stride_k;
+        int ntotBuffAcc;
+        stride_j=pitchBuffAcc[1];
+        stride_k=pitchBuffAcc[0];
+        ntotBuffAcc=stride_k*extent[0];
+        this-> communicatorMPI_.setStridesAlpaka(stride_j,stride_k);
+        
+        auto hostView = createView(devHost, fieldX, extent);
+        
+        memcpy(queue, bufDevice, hostView, extent);
+
+        InitializeBufferKernel<3> initBufferKernel;
+        
+        alpaka::KernelCfg<Acc> const cfgExtent = {extent, elemPerThread};
+        auto workDivExtent = alpaka::getValidWorkDiv(cfgExtent, devAcc, initBufferKernel, bufMdSpan, blockGrid.getMyrank(), stride_j,stride_k);
+        
+        std::cout << "Rank " << blockGrid.getMyrank() << "\n extent" << extent << "\n numNodes" << numNodes << "\n halo" << 
+                    haloSize << " tmphalo "<< tmpHaloSize<< " blockGrid.getGuards() " << blockGrid.getGuards()[0]<< " "<< blockGrid.getGuards()[1] << " " << blockGrid.getGuards()[2] <<
+                    "\n pitches" << " "<< pitchBuffAcc<< " " << pitchBuffAcc[0] << " "<< pitchBuffAcc[1] <<" "<< pitchBuffAcc[2] << " stride_j "<<stride_j << " stride_k " << stride_k << 
+                    "\n Workdivision[workDivExtent]:\n\t" << workDivExtent << std::endl;
+        //std::experimental::mdspan<T_data,extent> 
+
+        alpaka::exec<Acc>(queue, workDivExtent, initBufferKernel, bufMdSpan, blockGrid.getMyrank(),stride_j,stride_k);
+        alpaka::wait(queue);
+        
+        auto* ptr= getPtrNative(bufDevice);
+        /*
+        for(int i=0; i< ntotBuffAcc; i++)
+        {
+            std::cout<< "Indx "<< i << " val " << ptr[i] <<std::endl;
+        */
+
+
+        //CommunicatorMPI communicatorMPIAlpaka(blockGrid,pitchBuffAcc[0],pitchBuffAcc[0]*extent[0]);
+
+        //communicatorMPIAlpaka(getPtrNative(bufDevice));
+        //communicatorMPIAlpaka.waitAllandCheckRcv();
+        
+        //this-> communicatorMPI_.setStridesAlpaka(pitchBuffAcc[0],pitchBuffAcc[0]*extent[0]);       
+        this->communicatorMPI_.template operator()<true>(getPtrNative(bufDevice));
+        this->communicatorMPI_.waitAllandCheckRcv();
+
+        memcpy(queue, hostView,bufDevice, extent);
 
     }
 

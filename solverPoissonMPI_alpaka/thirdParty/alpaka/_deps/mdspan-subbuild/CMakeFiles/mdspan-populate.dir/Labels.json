@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/CMakeFiles/mdspan-populate"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/CMakeFiles/mdspan-populate.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/CMakeFiles/mdspan-populate-complete.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/mdspan-populate-prefix/src/mdspan-populate-stamp/mdspan-populate-build.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/mdspan-populate-prefix/src/mdspan-populate-stamp/mdspan-populate-configure.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/mdspan-populate-prefix/src/mdspan-populate-stamp/mdspan-populate-download.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/mdspan-populate-prefix/src/mdspan-populate-stamp/mdspan-populate-install.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/mdspan-populate-prefix/src/mdspan-populate-stamp/mdspan-populate-mkdir.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/mdspan-populate-prefix/src/mdspan-populate-stamp/mdspan-populate-patch.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/mdspan-populate-prefix/src/mdspan-populate-stamp/mdspan-populate-test.rule"
+		},
+		{
+			"file" : "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/_deps/mdspan-subbuild/mdspan-populate-prefix/src/mdspan-populate-stamp/mdspan-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"mdspan-populate"
+		],
+		"name" : "mdspan-populate"
+	}
+}

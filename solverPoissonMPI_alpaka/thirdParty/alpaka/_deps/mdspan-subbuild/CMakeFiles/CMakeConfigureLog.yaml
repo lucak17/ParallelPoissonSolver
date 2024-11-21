@@ -1,0 +1,11 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/CMakeDetermineSystem.cmake:211 (message)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      The system is: Linux - 5.14.21-150500.55.31_13.0.53-cray_shasta_c - x86_64
+...

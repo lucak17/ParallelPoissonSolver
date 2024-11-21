@@ -17,17 +17,20 @@ set(CMAKE_TARGET_DEFINITIONS_HIP
   "ALPAKA_ACC_GPU_HIP_ENABLED"
   "ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB=47"
   "ALPAKA_DEBUG=0"
+  "ALPAKA_USE_MDSPAN"
   "__HIP_ROCclr__=1"
   )
 
 # The include file search paths:
 set(CMAKE_HIP_TARGET_INCLUDE_PATH
+  "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include"
   "/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include"
   "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include"
   "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/include"
   "/pdc/software/23.12/spack/boost-1.83.0-f3qnoa2/include"
   "/opt/rocm-5.7.0/include/rocrand"
   "/opt/rocm-5.7.0/include/hiprand"
+  "_deps/mdspan-src/include"
   )
 
 # The set of dependency files which are needed:

@@ -9,12 +9,33 @@ CMakeFiles/solverPoisson.dir/src/main.cpp.o
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/communicationMPI.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/inputParam.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/iterativeSolverBase.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/kernelsAlpaka.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/matrixFreeOperatorA.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/noneSolver.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/operationGrid.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solverSetup.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solvers.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/testAcc.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/src/main.cpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/compressed_pair.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/config.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/default_accessor.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/dynamic_extent.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/extents.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/full_extent_t.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/layout_left.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/layout_right.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/layout_stride.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/macros.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/maybe_static_value.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/mdspan.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/no_unique_address.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/standard_layout_static_array.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/static_array.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/submdspan.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/trait_backports.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/__p0009_bits/type_list.hpp
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/_deps/mdspan-src/include/experimental/mdspan
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/include/alpaka/acc/AccCpuOmp2Blocks.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/include/alpaka/acc/AccCpuOmp2Threads.hpp
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/thirdParty/alpaka/include/alpaka/acc/AccCpuSerial.hpp

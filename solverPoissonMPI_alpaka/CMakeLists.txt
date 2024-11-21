@@ -30,25 +30,21 @@ set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")         # Release: High optimi
 set(alpaka_ACC_GPU_HIP_ENABLE ON CACHE BOOL "Enable HIP backend for Alpaka")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --offload-arch=gfx90a")
 
-
+# Set the alpaka_USE_MDSPAN flag
+# Options: OFF, SYSTEM, FETCH
+set(mdspan_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/alpaka/_deps/mdspan-build)
+list(APPEND CMAKE_PREFIX_PATH ${mdspan_DIR})
+set(alpaka_USE_MDSPAN SYSTEM)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/alpaka/_deps/mdspan-src/include/)
+#set(alpaka_USE_MDSPAN FETCH)
 
 # Add the executable
-#add_executable(solverPoisson src/main.cpp)
 add_subdirectory(thirdParty/alpaka)
 alpaka_add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC alpaka::alpaka)
 
 
-# MPI compiler for CXX
-# set(MPI_CXX_COMPILER /opt/cray/pe/mpich/8.1.28/ofi/crayclang/17.0/bin/mpicxx)
-# MPI CXX compiler wrapper include directories
-# set(MPI_CXX_COMPILER_INCLUDE_DIRS /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include)
-# MPI CXX header directory
-# set(MPI_CXX_HEADER_DIR /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include)
-# MPI compiler for C
-# set(MPI_C_COMPILER /opt/cray/pe/mpich/8.1.28/ofi/crayclang/17.0/bin/mpicc)
-# Location of the mpi_cray library for MPI
-# 
+ 
 set(MPI_mpi_cray_LIBRARY /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib/libmpi_cray.so)
 set(Cray_xpmem_LIBRARY /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64/libxpmem.so)
 set(MPI_GTL_amd_gfx90a_LIBRARY /opt/cray/pe/mpich/8.1.28/gtl/lib/libmpi_gtl_hsa.so)

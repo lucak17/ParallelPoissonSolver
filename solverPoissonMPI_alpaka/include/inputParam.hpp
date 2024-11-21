@@ -34,7 +34,8 @@ using T_Solver = BiCGSTAB<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCG
 //using T_Solver = BiCGSTABLocal<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, !communicationON, T_NoneSolver>;
 
 
-constexpr std::array<int,3> npglobal={64,64,64};
+// X Y Z
+constexpr std::array<int,3> npglobal={124,4,2};
 constexpr std::array<T_data,3> ds={0.1,0.1,0.1};
 constexpr std::array<T_data,3> origin={0,0,0};
 constexpr std::array<int,3> guards={1,1,1};

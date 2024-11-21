@@ -11,10 +11,11 @@
 
 #include "inputParam.hpp"
 #include "communicationMPI.hpp"
-#include "solvers.hpp"
+//#include "solvers.hpp"
 #include "blockGrid.hpp"
 #include "matrixFreeOperatorA.hpp"
 #include "testAcc.hpp"
+#include "operationGrid.hpp"
 //#include "solverSetup.hpp"
 
 
@@ -86,7 +87,9 @@ int main(int argc, char** argv) {
     ExactSolutionAndBCs<DIM,T_data> exactSolutionAndBCs;
     MatrixFreeOperatorA<DIM,T_data> operatorA(blockGrid);
     
-    TestAcc<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator);
+    TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator);
+
+    
     
     // iterative solver object
     T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
@@ -94,18 +97,23 @@ int main(int argc, char** argv) {
     // define fieldData
     T_data* fieldX = new T_data[blockGrid.getNtotLocalGuards()];
     T_data* fieldB = new T_data[blockGrid.getNtotLocalGuards()];
-    std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), 0);
-    std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), 0);
-    
+    std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), -1);
+    std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), -1);
 
 
+    printFieldWithGuards(blockGrid,fieldX);
+    MPI_Barrier(MPI_COMM_WORLD);
+    testAcc(blockGrid,fieldX,fieldB);
+    MPI_Barrier(MPI_COMM_WORLD);
+    printFieldWithGuards(blockGrid,fieldX);
+    MPI_Barrier(MPI_COMM_WORLD);
     // set problem
     solver.setProblem(fieldX,fieldB);
     
     auto startSolver = std::chrono::high_resolution_clock::now();
     
     // iterative solver
-    solver(fieldX,fieldB,operatorA);
+    //solver(fieldX,fieldB,operatorA);
     
     auto endSolver = std::chrono::high_resolution_clock::now();
 
