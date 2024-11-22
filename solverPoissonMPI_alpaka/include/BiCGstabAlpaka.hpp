@@ -20,7 +20,8 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
     BiCGstabAlpaka(const BlockGrid<DIM,T_data>& blockGrid, const ExactSolutionAndBCs<DIM,T_data>& exactSolutionAndBCs, 
                     CommunicatorMPI<DIM,T_data>& communicatorMPI, const AlpakaHelper<DIM,T_data>& alpakaHelper):
         IterativeSolverBase<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI),
-        alpakaHelper_(alpakaHelper)
+        alpakaHelper_(alpakaHelper),
+        preconditioner(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper)
     {
         toll_ = static_cast<T_data>(tolerance) * tollScalingFactor;
         pk = new T_data[this->ntotlocal_guards_];
@@ -105,6 +106,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         auto* const ptrDotPorductHost= getPtrNative(dotPorductHost);
         T_data* const ptrDotPorductDev{std::data(dotPorductDev)};
 
+        /*
         auto alphakHost = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
         auto alphakDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D);
         auto* const ptrAlphakHost= getPtrNative(alphakHost);
@@ -119,6 +121,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         auto omegakDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D);
         auto* const ptrOmegakHost= getPtrNative(omegakHost);
         T_data* const ptrOmegakDev{std::data(omegakDev)};
+        */
 
         const int imin=this->indexLimitsSolver_[0];
         const int imax=this->indexLimitsSolver_[1];
@@ -215,7 +218,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         
         while(iter<maxIteration)
         {
-            //preconditioner(Mpk,pk,operatorA);
+            preconditioner(MpkDev,pkDev);
             memcpy(queue, MpkDev, pkDev, this->alpakaHelper_.extent_);
             if constexpr(communicationON)
             {
@@ -453,7 +456,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
 
     private:
     const AlpakaHelper<DIM,T_data>& alpakaHelper_;
-    //T_Preconditioner preconditioner;
+    T_Preconditioner preconditioner;
     T_data toll_;
 
     T_data* pk;

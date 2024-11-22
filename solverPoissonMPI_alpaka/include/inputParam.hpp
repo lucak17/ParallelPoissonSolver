@@ -30,12 +30,14 @@ using T_Preconditioner3 = BaseCG<DIM, T_data, tollPreconditionerSolver, iterMaxP
 //using T_Preconditioner = BiCGSTABLocal<DIM, T_data, tollPreconditionerSolver, iterMaxPreconditioner, isbiCGMainLoop2, communicationOFF, T_NoneSolver>;
 using T_Preconditioner = BiCGSTAB<DIM, T_data, tollPreconditionerSolver, iterMaxPreconditioner, isbiCGMainLoop2, communicationOFF, T_NoneSolver>;
 //using T_Solver = BiCGSTAB<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_NoneSolver>;
+
+using T_PreconditionerAlpaka = ChebyshevIterationAlpaka<DIM,T_data,tollPreconditionerSolver,chebyshevMax, ischebyshevMainLoop, communicationOFF, T_NoneSolver>;
 using T_Solver = BiCGSTAB<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_NoneSolver>;
 //using T_Solver = BiCGSTABLocal<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, !communicationON, T_NoneSolver>;
 
 
 // X Y Z
-constexpr std::array<int,3> npglobal={256,256,256};
+constexpr std::array<int,3> npglobal={64,64,128};
 constexpr std::array<T_data,3> ds={0.1,0.1,0.1};
 constexpr std::array<T_data,3> origin={0,0,0};
 constexpr std::array<int,3> guards={1,1,1};

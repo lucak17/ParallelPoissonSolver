@@ -13,6 +13,8 @@ using T_data=double;
 using Dim = alpaka::DimInt<3>;
 using Idx = std::size_t;
 using Acc = alpaka::AccGpuHipRt<Dim,Idx>;
+using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
+using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
 
 

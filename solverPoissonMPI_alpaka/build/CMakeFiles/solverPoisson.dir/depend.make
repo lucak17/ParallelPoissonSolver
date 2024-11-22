@@ -8,6 +8,7 @@ CMakeFiles/solverPoisson.dir/src/main.cpp.o: \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/baseCG.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/blockGrid.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/chebyshevIteration.hpp \
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/chebyshevIterationAlpaka.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/communicationMPI.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/inputParam.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/iterativeSolverBase.hpp \
