@@ -95,7 +95,8 @@ int main(int argc, char** argv) {
     // iterative solver object
     //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
 
-    BiCGstabAlpaka<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_PreconditionerAlpaka> solver(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
+    T_Solver solver(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
+    //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
 
     // define fieldData
     T_data* fieldX = new T_data[blockGrid.getNtotLocalGuards()];

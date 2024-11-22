@@ -160,7 +160,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         if constexpr(isMainLoop)
         {
             if(this->my_rank_==0)
-            {    std::cout<<"Debug in BiCGSTAB START " << " main loop "<< isMainLoop << " globalLocation " << this->globalLocation_[0] << " "<< this->globalLocation_[1] <<" "<< this->globalLocation_[2] <<
+            {    std::cout<<"Debug in BiCGSTAB Alpaka START " << " main loop "<< isMainLoop << " globalLocation " << this->globalLocation_[0] << " "<< this->globalLocation_[1] <<" "<< this->globalLocation_[2] <<
                 " indexLimitsData "<< this->indexLimitsData_[0]<< " "<<this->indexLimitsData_[1] <<" "<< this->indexLimitsData_[2] << " " <<this->indexLimitsData_[3] << " "<< this->indexLimitsData_[4] << " "<< this->indexLimitsData_[5] <<
                 " indexLimitsSolver "<< this->indexLimitsSolver_[0]<< " "<<this->indexLimitsSolver_[1] <<" "<< this->indexLimitsSolver_[2] << " " <<this->indexLimitsSolver_[3] << " "<< this->indexLimitsSolver_[4] << " "<< this->indexLimitsSolver_[5] << 
                 " norm fieldB " <<this->normFieldB_ <<std::endl;
@@ -219,7 +219,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         while(iter<maxIteration)
         {
             preconditioner(MpkDev,pkDev);
-            memcpy(queue, MpkDev, pkDev, this->alpakaHelper_.extent_);
+            //memcpy(queue, MpkDev, pkDev, this->alpakaHelper_.extent_);
             if constexpr(communicationON)
             {
                 this->communicatorMPI_.template operator()<true>(getPtrNative(MpkDev));
@@ -280,8 +280,8 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
             alpaka::exec<Acc>(queue, workDivExtentUpdateField1, updateFieldWith1FieldKernel, rkMdSpan, AMpkMdSpan, 1, -alphak, this->alpakaHelper_.indexLimitsSolverAlpaka_);
 
             //std::fill(zk, zk + this->ntotlocal_guards_, 0);
-            //preconditioner(zk,rk,operatorA);
-            memcpy(queue, zkDev, rkDev, this->alpakaHelper_.extent_);
+            preconditioner(zkDev,rkDev);
+            //memcpy(queue, zkDev, rkDev, this->alpakaHelper_.extent_);
             if constexpr (communicationON)
             {
                 this->communicatorMPI_.template operator()<true>(getPtrNative(zkDev));

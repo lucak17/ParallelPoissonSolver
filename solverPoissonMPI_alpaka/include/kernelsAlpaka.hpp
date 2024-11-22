@@ -166,3 +166,67 @@ struct UpdateFieldWith2FieldsKernel
         }
     }
 };
+
+
+template<int DIM, typename T_data> 
+struct AssignFieldWith1FieldKernel
+{
+    template<typename TAcc, typename TMdSpan>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, const T_data constB,
+                                    const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver) const -> void
+    {
+        // Get indexes
+        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
+        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
+        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+
+        // Z Y X
+        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        {
+            bufDataA(k,j,i) =  constB * bufDataB(k,j,i);
+        }
+    }
+};
+
+template<int DIM, typename T_data> 
+struct AssignFieldWith2FieldsKernel
+{
+    template<typename TAcc, typename TMdSpan>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, TMdSpan bufDataC, const T_data constB, const T_data constC,
+                                    const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver) const -> void
+    {
+        // Get indexes
+        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
+        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
+        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+
+        // Z Y X
+        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        {
+            bufDataA(k,j,i) =  constB * bufDataB(k,j,i) + constC * bufDataC(k,j,i);
+        }
+    }
+};
+
+
+template<int DIM, typename T_data> 
+struct AssignFieldWith4FieldsKernel
+{
+    template<typename TAcc, typename TMdSpan>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, TMdSpan bufDataC, TMdSpan bufDataD, TMdSpan bufDataE, 
+                                    const T_data constB, const T_data constC, const T_data constD, const T_data constE,
+                                    const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver) const -> void
+    {
+        // Get indexes
+        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
+        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
+        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+
+        // Z Y X
+        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        {
+            bufDataA(k,j,i) =  constB * bufDataB(k,j,i) + constC * bufDataC(k,j,i) + constD * bufDataD(k,j,i) + constE * bufDataE(k,j,i);
+        }
+    }
+};
+

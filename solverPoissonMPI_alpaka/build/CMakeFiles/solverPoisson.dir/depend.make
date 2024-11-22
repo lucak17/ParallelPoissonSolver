@@ -15,6 +15,7 @@ CMakeFiles/solverPoisson.dir/src/main.cpp.o: \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/kernelsAlpaka.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/matrixFreeOperatorA.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/noneSolver.hpp \
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/noneSolverAlpaka.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/operationGrid.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solverSetup.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/solvers.hpp \
