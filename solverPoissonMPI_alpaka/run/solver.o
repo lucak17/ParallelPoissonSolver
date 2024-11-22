@@ -1,79 +1,518 @@
-Current local time and date: 2024-11-21 19:45:21
-Domain DIM = 3 - Number of MPI tasks 2 2 2 - Tot MPI ranks 8 - Max threads per MPI rank 1 - Tot threads 8
-Global grid size from block 32 32 64 - Global number of points 65536
-Domain local Np xyz no guards 16 16 32 - Domain local Np xyz guards = 18 18 34 - Guards size 1 1 1
-Total local number of points noguards 8192 - total local number of points guards 11016
-Total local number of points noguards per thread 8192 - total local number of points guards per thread 11016
-Domain global origin xyz 0 0 0 - domain global extension xyz 3.1 3.1 6.3 - Ds xyz  = 0.1 0.1 0.1
-Boundary condition type 0 1 0 1 0 1
+Current local time and date: 2024-11-22 16:09:09
+Domain DIM = 3 - Number of MPI tasks 2 4 4 - Tot MPI ranks 32 - Max threads per MPI rank 1 - Tot threads 32
+Global grid size from block 256 256 256 - Global number of points 16777216
+Domain local Np xyz no guards 128 64 64 - Domain local Np xyz guards = 130 66 66 - Guards size 1 1 1
+Total local number of points noguards 524288 - total local number of points guards 566280
+Total local number of points noguards per thread 524288 - total local number of points guards per thread 566280
+Domain global origin xyz 0 0 0 - domain global extension xyz 25.5 25.5 25.5 - Ds xyz  = 0.1 0.1 0.1
+Boundary condition type 0 0 0 0 0 0
 Using alpaka accelerator: AccGpuHipRt<3,unsigned long>
-Rank 7
- extent(34, 18, 18)
- numNodes(32, 16, 16)
- halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
- pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
- Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
-Rank 2
- extent(34, 18, 18)
- numNodes(32, 16, 16)
- halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
- pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
- Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
-Rank 0
- extent(34, 18, 18)
- numNodes(32, 16, 16)
- halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
- pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
- Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
-Rank 6
- extent(34, 18, 18)
- numNodes(32, 16, 16)
- halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
- pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
- Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+Debug in BiCGSTAB START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 129 1 65 1 65 indexLimitsSolver 2 129 2 65 2 65 norm fieldB 5.38188e+09
 Rank 1
- extent(34, 18, 18)
- numNodes(32, 16, 16)
- halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
- pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
- Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 7
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
 Rank 5
- extent(34, 18, 18)
- numNodes(32, 16, 16)
- halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
- pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
- Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 9
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 13
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 8
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
 Rank 4
- extent(34, 18, 18)
- numNodes(32, 16, 16)
- halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
- pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
- Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 11
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 12
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 15
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 0
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 10
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 2
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
 Rank 3
- extent(34, 18, 18)
- numNodes(32, 16, 16)
- halo(1, 1, 1) tmphalo (1, 1, 1) blockGrid.getGuards() 1 1 1
- pitches (576, 32, 1) 576 32 1 stride_j 32 stride_k 576
- Workdivision[workDivExtent]:
-	{gridBlockExtent: (1, 18, 1), blockThreadExtent: (34, 1, 18), threadElemExtent: (1, 1, 1)}
-Debug in BiCGSTAB START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 17 1 17 1 33 indexLimitsSolver 2 17 2 17 2 33 norm fieldB 105100
- Debug in BiCGSTAB iter 10 alpha 9.52935 omega 0.672473 rho0 -5.04519e-05 error 0.0300927
- Debug in BiCGSTAB iter 20 alpha 4.40036 omega 0.67599 rho0 -3.97584e-08 error 0.00192691
- Debug in BiCGSTAB iter 30 alpha 1.40535 omega 7.1406 rho0 1.41856e-09 error 0.000308685
- Debug in BiCGSTAB iter 40 alpha 0.803774 omega 2.12924 rho0 -9.30135e-11 error 2.97792e-05
- Debug in BiCGSTAB iter 50 alpha 2.41485 omega 0.742254 rho0 3.84572e-11 error 2.96782e-06
- Debug in BiCGSTAB iter 60 alpha -0.883885 omega 0.845399 rho0 2.49395e-13 error 3.5367e-08
-Iterative solver finished with iter: 62 error from algo 9.22705e-09 error r=b-Ax 9.22705e-09 errorAvgtot 1.40794e-13
-Max error local block avg 0.00160263 in rank 7
-Max error local point 0.00432834 in rank 7
-Solver time: 0.0696874 seconds
-SolverInFunction time: 0.0689328 seconds
-Elapsed time: 0.600217 seconds
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 6
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 14
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 27
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 29
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 31
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 25
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 24
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 26
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 30
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 28
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 16
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 17
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 21
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 19
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 20
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 23
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 18
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Rank 22
+ extent(66, 66, 130)
+ pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+ Debug in BiCGSTAB Alpaka iter 10 alpha -0.00271282 omega -0.00486704 rho0 8.68545e-06 error 0.0473636
+ Debug in BiCGSTAB Alpaka iter 20 alpha 0.000746876 omega -0.028484 rho0 1.82799e-06 error 0.0194744
+ Debug in BiCGSTAB Alpaka iter 30 alpha -0.00122355 omega -0.0012542 rho0 5.83183e-08 error 0.0128227
+ Debug in BiCGSTAB Alpaka iter 40 alpha -0.0229652 omega -0.000846017 rho0 -2.87382e-06 error 0.00740097
+ Debug in BiCGSTAB Alpaka iter 50 alpha 0.000770155 omega -0.000856703 rho0 2.84308e-06 error 0.00577152
+ Debug in BiCGSTAB Alpaka iter 60 alpha 0.0113929 omega -0.000857289 rho0 2.41168e-07 error 0.00441814
+ Debug in BiCGSTAB Alpaka iter 70 alpha -0.00287678 omega -0.00111756 rho0 7.18062e-07 error 0.00348209
+ Debug in BiCGSTAB Alpaka iter 80 alpha -0.001269 omega -0.00096266 rho0 1.04892e-08 error 0.00284869
+ Debug in BiCGSTAB Alpaka iter 90 alpha -0.00180387 omega -0.00488835 rho0 7.61048e-10 error 0.00234927
+ Debug in BiCGSTAB Alpaka iter 100 alpha 0.196092 omega -0.000958538 rho0 -5.08046e-07 error 0.00788164
+ Debug in BiCGSTAB Alpaka iter 110 alpha -0.0729562 omega -0.00341397 rho0 -6.54399e-08 error 0.00145139
+ Debug in BiCGSTAB Alpaka iter 120 alpha 0.00098571 omega -0.00563313 rho0 1.04437e-07 error 0.00119495
+ Debug in BiCGSTAB Alpaka iter 130 alpha -0.0344414 omega -0.000837625 rho0 -9.58526e-09 error 0.000891372
+ Debug in BiCGSTAB Alpaka iter 140 alpha 0.00476358 omega -0.000905088 rho0 6.06631e-08 error 0.00120966
+ Debug in BiCGSTAB Alpaka iter 150 alpha -0.0136201 omega -0.000842961 rho0 1.44045e-08 error 0.000906594
+ Debug in BiCGSTAB Alpaka iter 160 alpha -0.0215125 omega -0.000841933 rho0 -5.34198e-10 error 0.000744387
+ Debug in BiCGSTAB Alpaka iter 170 alpha 0.00160378 omega -0.00989932 rho0 -7.09791e-08 error 0.000627779
+ Debug in BiCGSTAB Alpaka iter 180 alpha -0.00254165 omega -0.00092332 rho0 3.19643e-08 error 0.000569401
+ Debug in BiCGSTAB Alpaka iter 190 alpha -0.0266107 omega -0.00156823 rho0 -1.8365e-09 error 0.000385153
+ Debug in BiCGSTAB Alpaka iter 200 alpha -0.0024038 omega -0.00207708 rho0 -4.0474e-09 error 0.000435362
+ Debug in BiCGSTAB Alpaka iter 210 alpha 0.00775645 omega -0.00129695 rho0 -4.38365e-10 error 0.000402501
+ Debug in BiCGSTAB Alpaka iter 220 alpha -0.00197918 omega -0.00793852 rho0 1.6882e-09 error 0.000334499
+ Debug in BiCGSTAB Alpaka iter 230 alpha -0.145339 omega -0.0032237 rho0 3.96046e-07 error 0.00997195
+ Debug in BiCGSTAB Alpaka iter 240 alpha -0.00215345 omega -0.000972985 rho0 -3.74892e-11 error 0.000268451
+ Debug in BiCGSTAB Alpaka iter 250 alpha 0.00377319 omega -0.000903099 rho0 1.26329e-08 error 0.000267263
+ Debug in BiCGSTAB Alpaka iter 260 alpha -0.00159514 omega -0.000866901 rho0 -9.85272e-10 error 0.000215027
+ Debug in BiCGSTAB Alpaka iter 270 alpha 0.0020056 omega -0.00083101 rho0 1.78783e-09 error 0.000241137
+ Debug in BiCGSTAB Alpaka iter 280 alpha 0.0144613 omega -0.00756767 rho0 -1.61922e-09 error 0.000174458
+ Debug in BiCGSTAB Alpaka iter 290 alpha -0.00313569 omega -0.00158565 rho0 2.27811e-09 error 0.000142493
+ Debug in BiCGSTAB Alpaka iter 300 alpha 0.0331955 omega -0.000885242 rho0 2.30526e-09 error 0.000126015
+ Debug in BiCGSTAB Alpaka iter 310 alpha -0.0149923 omega -0.00202397 rho0 -3.27689e-09 error 8.79013e-05
+ Debug in BiCGSTAB Alpaka iter 320 alpha -0.000409327 omega -0.00856499 rho0 -5.2638e-09 error 8.85336e-05
+ Debug in BiCGSTAB Alpaka iter 330 alpha -0.000799564 omega -0.00173042 rho0 -1.04399e-09 error 7.68668e-05
+ Debug in BiCGSTAB Alpaka iter 340 alpha -5.67204e-05 omega -0.000972549 rho0 1.676e-11 error 7.71087e-05
+ Debug in BiCGSTAB Alpaka iter 350 alpha -0.00274901 omega -0.0028874 rho0 1.24399e-10 error 7.68695e-05
+ Debug in BiCGSTAB Alpaka iter 360 alpha 0.00986463 omega -0.00100865 rho0 2.35039e-10 error 7.13887e-05
+ Debug in BiCGSTAB Alpaka iter 370 alpha -0.00488653 omega -0.00125499 rho0 5.51793e-10 error 7.23397e-05
+ Debug in BiCGSTAB Alpaka iter 380 alpha 0.00307673 omega -0.0104896 rho0 -6.72436e-11 error 7.83778e-05
+ Debug in BiCGSTAB Alpaka iter 390 alpha 0.0019726 omega -0.000894885 rho0 2.61965e-10 error 7.34026e-05
+ Debug in BiCGSTAB Alpaka iter 400 alpha 0.0034969 omega -0.00126986 rho0 4.16386e-09 error 6.44229e-05
+ Debug in BiCGSTAB Alpaka iter 410 alpha 0.000361959 omega -0.150126 rho0 8.41144e-09 error 6.33551e-05
+ Debug in BiCGSTAB Alpaka iter 420 alpha 0.00375799 omega -0.00134874 rho0 2.93647e-11 error 6.29773e-05
+ Debug in BiCGSTAB Alpaka iter 430 alpha -0.00024567 omega -0.000859025 rho0 2.79534e-10 error 6.23429e-05
+ Debug in BiCGSTAB Alpaka iter 440 alpha 0.00562609 omega -0.00179154 rho0 2.25147e-10 error 6.22626e-05
+ Debug in BiCGSTAB Alpaka iter 450 alpha -0.00144284 omega -0.00087726 rho0 -7.98015e-11 error 5.62175e-05
+ Debug in BiCGSTAB Alpaka iter 460 alpha 0.0260972 omega -0.000836507 rho0 2.66276e-09 error 5.68556e-05
+ Debug in BiCGSTAB Alpaka iter 470 alpha 0.00558807 omega -0.00115892 rho0 -7.85358e-09 error 0.000406263
+ Debug in BiCGSTAB Alpaka iter 480 alpha -0.000255139 omega -0.00497555 rho0 -6.92892e-09 error 0.000339815
+ Debug in BiCGSTAB Alpaka iter 490 alpha -0.000557052 omega -0.00695074 rho0 -4.22816e-10 error 3.89182e-05
+ Debug in BiCGSTAB Alpaka iter 500 alpha -0.00252766 omega -0.00908124 rho0 -1.49272e-09 error 0.000129285
+ Debug in BiCGSTAB Alpaka iter 510 alpha 0.000356427 omega -0.0020304 rho0 6.10869e-11 error 1.45109e-05
+ Debug in BiCGSTAB Alpaka iter 520 alpha 0.00201727 omega -0.00635548 rho0 2.66487e-11 error 7.76049e-06
+ Debug in BiCGSTAB Alpaka iter 530 alpha -0.0227393 omega -0.024793 rho0 -1.06591e-09 error 1.42297e-05
+ Debug in BiCGSTAB Alpaka iter 540 alpha -0.00123105 omega -0.0017172 rho0 -5.11513e-12 error 6.98485e-06
+ Debug in BiCGSTAB Alpaka iter 550 alpha -0.0147639 omega -0.00541979 rho0 5.73902e-12 error 6.29058e-06
+ Debug in BiCGSTAB Alpaka iter 560 alpha 0.022862 omega -0.00151897 rho0 4.44188e-09 error 2.87351e-05
+ Debug in BiCGSTAB Alpaka iter 570 alpha -0.00141821 omega -0.0179763 rho0 -1.11326e-10 error 1.29608e-05
+ Debug in BiCGSTAB Alpaka iter 580 alpha -0.000598737 omega -0.000986212 rho0 2.56926e-10 error 6.08671e-06
+ Debug in BiCGSTAB Alpaka iter 590 alpha -0.0236047 omega -0.000890743 rho0 2.5017e-11 error 1.35935e-05
+ Debug in BiCGSTAB Alpaka iter 600 alpha -0.00155912 omega -0.108797 rho0 1.38334e-09 error 1.68767e-05
+ Debug in BiCGSTAB Alpaka iter 610 alpha -0.000235796 omega -0.124543 rho0 -8.30485e-10 error 1.50958e-05
+ Debug in BiCGSTAB Alpaka iter 620 alpha 0.00093789 omega -0.00123915 rho0 -3.02305e-11 error 2.19011e-06
+ Debug in BiCGSTAB Alpaka iter 630 alpha -0.0199837 omega -0.0121867 rho0 -1.40293e-11 error 1.14844e-06
+ Debug in BiCGSTAB Alpaka iter 640 alpha -0.000979481 omega -0.00239113 rho0 6.74381e-12 error 4.73434e-07
+ Debug in BiCGSTAB Alpaka iter 650 alpha -0.0203568 omega -0.00086752 rho0 5.866e-11 error 3.72257e-07
+ Debug in BiCGSTAB Alpaka iter 660 alpha -0.00409945 omega -0.000848414 rho0 1.18708e-11 error 2.56601e-07
+ Debug in BiCGSTAB Alpaka iter 670 alpha 0.00340038 omega -0.000879824 rho0 -2.7717e-11 error 2.19331e-06
+ Debug in BiCGSTAB Alpaka iter 680 alpha -0.0943321 omega -0.000829348 rho0 8.3465e-13 error 1.61823e-07
+ Debug in BiCGSTAB Alpaka iter 690 alpha -0.00554544 omega -0.000952202 rho0 -1.17045e-12 error 5.5107e-08
+ Debug in BiCGSTAB Alpaka iter 700 alpha -0.00151445 omega -0.00284611 rho0 -2.61036e-14 error 3.14477e-08
+ Debug in BiCGSTAB Alpaka iter 710 alpha 0.000228485 omega -0.00159973 rho0 -2.34088e-13 error 2.54991e-08
+ Debug in BiCGSTAB Alpaka iter 720 alpha 0.000290974 omega -0.114066 rho0 -1.306e-12 error 2.19701e-08
+ Debug in BiCGSTAB Alpaka iter 730 alpha 0.000103558 omega -0.00140734 rho0 3.02918e-12 error 3.29685e-08
+ Debug in BiCGSTAB Alpaka iter 740 alpha -0.000117929 omega -0.00200926 rho0 -1.76747e-13 error 1.9779e-08
+ Debug in BiCGSTAB Alpaka iter 750 alpha -0.0385431 omega -0.000938571 rho0 -4.01352e-13 error 2.21232e-08
+ Debug in BiCGSTAB Alpaka iter 760 alpha 0.00307956 omega -0.00103064 rho0 6.61086e-14 error 2.36909e-08
+ Debug in BiCGSTAB Alpaka iter 770 alpha 0.00115804 omega -0.00456212 rho0 -6.04421e-15 error 2.34681e-08
+ Debug in BiCGSTAB Alpaka iter 780 alpha -0.00120915 omega -0.0155307 rho0 -5.10874e-15 error 2.31802e-08
+ Debug in BiCGSTAB Alpaka iter 790 alpha 0.0130185 omega -0.000874623 rho0 1.1079e-13 error 2.12596e-08
+ Debug in BiCGSTAB Alpaka iter 800 alpha -0.000375717 omega -0.00214775 rho0 -1.63533e-13 error 2.09606e-08
+ Debug in BiCGSTAB Alpaka iter 810 alpha -0.00926209 omega -0.00116652 rho0 6.10746e-13 error 2.11528e-08
+ Debug in BiCGSTAB Alpaka iter 820 alpha -0.00456568 omega -0.0817036 rho0 -7.22277e-13 error 1.91187e-08
+ Debug in BiCGSTAB Alpaka iter 830 alpha 0.00033971 omega -0.000906599 rho0 3.32987e-14 error 1.86849e-08
+ Debug in BiCGSTAB Alpaka iter 840 alpha -0.00494177 omega -0.00693828 rho0 -2.71584e-13 error 1.98373e-08
+ Debug in BiCGSTAB Alpaka iter 850 alpha -0.0259401 omega -0.000839798 rho0 -9.99012e-14 error 2.10156e-08
+ Debug in BiCGSTAB Alpaka iter 860 alpha -0.000523906 omega -0.0268798 rho0 -1.88721e-13 error 2.40072e-08
+ Debug in BiCGSTAB Alpaka iter 870 alpha -0.00167495 omega -0.00393732 rho0 -1.22824e-14 error 2.33073e-08
+ Debug in BiCGSTAB Alpaka iter 880 alpha 0.000574845 omega -0.000970412 rho0 -1.83826e-12 error 1.17134e-08
+ Debug in BiCGSTAB Alpaka iter 890 alpha -0.00834023 omega -0.000840505 rho0 -2.54024e-14 error 1.36491e-08
+ Debug in BiCGSTAB Alpaka iter 900 alpha -0.0334583 omega -0.000854192 rho0 -2.00156e-13 error 1.87955e-08
+ Debug in BiCGSTAB Alpaka iter 910 alpha 0.000528711 omega -0.00227522 rho0 1.19242e-12 error 7.6247e-09
+ Debug in BiCGSTAB Alpaka iter 920 alpha -0.000248396 omega -0.00689675 rho0 3.97077e-14 error 7.53957e-09
+ Debug in BiCGSTAB Alpaka iter 930 alpha -0.00756342 omega -0.000965838 rho0 9.26041e-15 error 7.73424e-09
+ Debug in BiCGSTAB Alpaka iter 940 alpha -0.000549842 omega -0.0365555 rho0 1.7116e-13 error 7.65912e-09
+ Debug in BiCGSTAB Alpaka iter 950 alpha 0.00354929 omega -0.000833908 rho0 1.05578e-13 error 7.64987e-09
+ Debug in BiCGSTAB Alpaka iter 960 alpha 0.00594271 omega -0.00123711 rho0 6.44186e-15 error 7.50719e-09
+ Debug in BiCGSTAB Alpaka iter 970 alpha 0.00383119 omega -0.000956411 rho0 -1.67613e-14 error 8.56127e-09
+ Debug in BiCGSTAB Alpaka iter 980 alpha -0.000475123 omega -0.0264805 rho0 3.76988e-13 error 7.04063e-09
+ Debug in BiCGSTAB Alpaka iter 990 alpha -0.00142214 omega -0.00118482 rho0 5.69857e-14 error 7.0799e-09
+ Debug in BiCGSTAB Alpaka iter 1000 alpha -0.000453899 omega -0.00546715 rho0 8.25386e-14 error 7.00242e-09
+ Debug in BiCGSTAB Alpaka iter 1010 alpha -0.0106314 omega -0.00145471 rho0 9.58074e-14 error 7.08545e-09
+ Debug in BiCGSTAB Alpaka iter 1020 alpha -0.000275642 omega -0.0062097 rho0 -1.51185e-14 error 8.21686e-09
+ Debug in BiCGSTAB Alpaka iter 1030 alpha -0.017539 omega -0.00130516 rho0 4.49227e-14 error 7.92754e-09
+ Debug in BiCGSTAB Alpaka iter 1040 alpha -0.0151422 omega -0.0168979 rho0 -4.45173e-14 error 7.93301e-09
+ Debug in BiCGSTAB Alpaka iter 1050 alpha 0.000152114 omega -0.244704 rho0 -5.06879e-12 error 3.50526e-08
+ Debug in BiCGSTAB Alpaka iter 1060 alpha -0.000566851 omega -0.0016865 rho0 -9.51405e-14 error 1.12246e-08
+ Debug in BiCGSTAB Alpaka iter 1070 alpha -0.00027602 omega -0.176766 rho0 4.33476e-13 error 8.303e-09
+ Debug in BiCGSTAB Alpaka iter 1080 alpha -0.000265633 omega -0.217944 rho0 3.65028e-13 error 8.32155e-09
+ Debug in BiCGSTAB Alpaka iter 1090 alpha 0.000399638 omega -0.000836481 rho0 1.55695e-12 error 5.76625e-09
+ Debug in BiCGSTAB Alpaka iter 1100 alpha -0.00511593 omega -0.00107896 rho0 4.68858e-14 error 7.68222e-09
+ Debug in BiCGSTAB Alpaka iter 1110 alpha -0.0031998 omega -0.000854205 rho0 -1.36703e-15 error 8.60571e-09
+ Debug in BiCGSTAB Alpaka iter 1120 alpha 0.0390232 omega -0.000835871 rho0 -2.74373e-14 error 8.1145e-09
+ Debug in BiCGSTAB Alpaka iter 1130 alpha 0.00233451 omega -0.00196664 rho0 2.89814e-13 error 7.67752e-09
+ Debug in BiCGSTAB Alpaka iter 1140 alpha -0.00413131 omega -0.00151242 rho0 -2.75274e-14 error 7.92138e-09
+ Debug in BiCGSTAB Alpaka iter 1150 alpha -0.0144403 omega -0.000844694 rho0 5.42313e-14 error 7.88314e-09
+ Debug in BiCGSTAB Alpaka iter 1160 alpha 0.000624241 omega -0.00558165 rho0 -1.01859e-14 error 7.84627e-09
+ Debug in BiCGSTAB Alpaka iter 1170 alpha -0.000778345 omega -0.0053004 rho0 -1.15984e-14 error 7.46838e-09
+ Debug in BiCGSTAB Alpaka iter 1180 alpha -0.000949551 omega -0.00097619 rho0 -6.28996e-15 error 7.54411e-09
+ Debug in BiCGSTAB Alpaka iter 1190 alpha 0.00296096 omega -0.000836256 rho0 -3.29514e-13 error 8.33322e-09
+ Debug in BiCGSTAB Alpaka iter 1200 alpha 0.000589839 omega -0.000915659 rho0 2.82902e-14 error 7.56492e-09
+ Debug in BiCGSTAB Alpaka iter 1210 alpha -0.0419349 omega -0.000853229 rho0 -1.02243e-13 error 3.72912e-09
+ Debug in BiCGSTAB Alpaka iter 1220 alpha 0.0010083 omega -0.00321588 rho0 3.03588e-13 error 7.28385e-09
+ Debug in BiCGSTAB Alpaka iter 1230 alpha 0.000221578 omega -0.00123766 rho0 6.18842e-14 error 7.4533e-09
+ Debug in BiCGSTAB Alpaka iter 1240 alpha 0.00133139 omega -0.0046863 rho0 -3.66852e-14 error 7.6813e-09
+ Debug in BiCGSTAB Alpaka iter 1250 alpha 0.00372268 omega -0.000863706 rho0 -2.28339e-15 error 7.78197e-09
+ Debug in BiCGSTAB Alpaka iter 1260 alpha 0.00581349 omega -0.000935826 rho0 7.61138e-15 error 5.45427e-09
+ Debug in BiCGSTAB Alpaka iter 1270 alpha -0.0243079 omega -0.00089 rho0 1.00379e-14 error 1.33605e-08
+ Debug in BiCGSTAB Alpaka iter 1280 alpha -0.00446172 omega -0.000883739 rho0 -4.93896e-14 error 2.16502e-08
+ Debug in BiCGSTAB Alpaka iter 1290 alpha 0.00140874 omega -0.0009371 rho0 2.61139e-14 error 1.90968e-08
+ Debug in BiCGSTAB Alpaka iter 1300 alpha -0.000744909 omega -0.030083 rho0 -2.0147e-12 error 5.05095e-09
+ Debug in BiCGSTAB Alpaka iter 1310 alpha 0.254448 omega -0.00135959 rho0 4.97879e-14 error 3.80799e-09
+ Debug in BiCGSTAB Alpaka iter 1320 alpha -0.000490554 omega -0.0265954 rho0 -8.43173e-14 error 4.65365e-09
+ Debug in BiCGSTAB Alpaka iter 1330 alpha -0.00112043 omega -0.0271936 rho0 9.12655e-15 error 1.06528e-09
+ Debug in BiCGSTAB Alpaka iter 1340 alpha -0.00667982 omega -0.00161734 rho0 4.95282e-15 error 3.64495e-10
+ Debug in BiCGSTAB Alpaka iter 1350 alpha -0.00263108 omega -0.0203779 rho0 1.62464e-14 error 1.61128e-09
+ Debug in BiCGSTAB Alpaka iter 1360 alpha 0.00163715 omega -0.00084835 rho0 -4.18364e-16 error 1.61343e-09
+ Debug in BiCGSTAB Alpaka iter 1370 alpha -0.000573902 omega -0.00959338 rho0 -3.30616e-14 error 1.54033e-09
+ Debug in BiCGSTAB Alpaka iter 1380 alpha 0.000317688 omega -0.148586 rho0 -9.27911e-14 error 1.56231e-09
+ Debug in BiCGSTAB Alpaka iter 1390 alpha 0.0157316 omega -0.000835284 rho0 -2.80445e-15 error 1.41245e-09
+ Debug in BiCGSTAB Alpaka iter 1400 alpha 0.0023142 omega -0.000862917 rho0 -2.07419e-14 error 1.61018e-09
+ Debug in BiCGSTAB Alpaka iter 1410 alpha 0.0278469 omega -0.0184525 rho0 -7.18906e-14 error 1.61418e-09
+ Debug in BiCGSTAB Alpaka iter 1420 alpha -0.00387055 omega -0.00180722 rho0 -2.79353e-15 error 1.6209e-09
+ Debug in BiCGSTAB Alpaka iter 1430 alpha 0.00227148 omega -0.00113772 rho0 5.29183e-15 error 1.6262e-09
+ Debug in BiCGSTAB Alpaka iter 1440 alpha -0.00989137 omega -0.000869591 rho0 -9.68684e-14 error 8.14844e-10
+ Debug in BiCGSTAB Alpaka iter 1450 alpha -0.00124602 omega -0.00208239 rho0 -8.14182e-15 error 8.42006e-11
+ Debug in BiCGSTAB Alpaka iter 1460 alpha -0.00241865 omega -0.00696427 rho0 -1.52827e-15 error 3.2743e-10
+ Debug in BiCGSTAB Alpaka iter 1470 alpha -0.000291539 omega -0.514299 rho0 8.67119e-14 error 2.59562e-10
+ Debug in BiCGSTAB Alpaka iter 1480 alpha -0.00404263 omega -0.000860715 rho0 -1.12032e-16 error 2.11412e-11
+ Debug in BiCGSTAB Alpaka iter 1490 alpha 0.0175278 omega -0.000927784 rho0 1.4093e-18 error 2.43838e-11
+Iterative solver finished with iter: 1497 error from algo 6.09206e-12 error r=b-Ax 6.09279e-12 errorAvgtot 3.63159e-19
+Max error local block avg 0.00164399 in rank 26
+Max error local point 0.00466751 in rank 29
+Solver time: 4e-08 seconds
+SolverInFunction time: 28.8726 seconds
+Elapsed time: 29.6435 seconds
 End program. 

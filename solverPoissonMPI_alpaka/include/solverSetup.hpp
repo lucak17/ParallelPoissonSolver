@@ -30,12 +30,12 @@ inline MPI_Datatype getMPIType<double>() {
 
 constexpr T_data PI = 3.141592653589793;
 
-constexpr T_data tollScalingFactor = 1e-10;
+constexpr T_data tollScalingFactor = 1e-12;
 
 // Order Neuman BCs scheme
 constexpr int orderNeumanBcs=2;
 
-constexpr int tollMainSolver=1e2; //effective toll = tollMainSolver*tollScalingFactor
+constexpr int tollMainSolver=10; //effective toll = tollMainSolver*tollScalingFactor
 constexpr int iterMaxMainSolver=1700;
 constexpr bool trackErrorFromIterationHistory=1;
 
@@ -61,7 +61,7 @@ class ExactSolutionAndBCs
             return -sin(x) - cos(y) - 3*sin(z) + 2*y*z + 2; 
             //return -sin(x) - cos(y) - 3*sin(z) + 2 ;
             //return -sin(x);
-            //return -sin(x) - cos(y);
+            //return -sin(x) - cos(y) + 2;
             //return -sin(x) - cos(y); 
         }
         inline T_data trueSolutionFxyz(const T_data x, const T_data y, const T_data z) const

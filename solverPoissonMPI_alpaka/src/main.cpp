@@ -88,33 +88,38 @@ int main(int argc, char** argv) {
     ExactSolutionAndBCs<DIM,T_data> exactSolutionAndBCs;
     MatrixFreeOperatorA<DIM,T_data> operatorA(blockGrid);
     AlpakaHelper<DIM,T_data> alpakaHelper(blockGrid); 
-    TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator);
+    TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
 
     
     
     // iterative solver object
-    T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
+    //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
+
+    BiCGstabAlpaka<DIM, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_NoneSolver> solver(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
 
     // define fieldData
     T_data* fieldX = new T_data[blockGrid.getNtotLocalGuards()];
     T_data* fieldB = new T_data[blockGrid.getNtotLocalGuards()];
-    std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), -1);
-    std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), -1);
-
+    std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), 0);
+    std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), 0);
 
     //printFieldWithGuards(blockGrid,fieldX);
+    solver.setProblem(fieldX,fieldB);
+    //printFieldWithGuards(blockGrid,fieldX);
     MPI_Barrier(MPI_COMM_WORLD);
-    testAcc(blockGrid,fieldX,fieldB);
+    solver(fieldX,fieldB,operatorA);
+
+    //testAcc(blockGrid,fieldX,fieldB);
     MPI_Barrier(MPI_COMM_WORLD);
     //printFieldWithGuards(blockGrid,fieldX);
     MPI_Barrier(MPI_COMM_WORLD);
     // set problem
-    solver.setProblem(fieldX,fieldB);
+    //solver.setProblem(fieldX,fieldB);
     
     auto startSolver = std::chrono::high_resolution_clock::now();
     
     // iterative solver
-    solver(fieldX,fieldB,operatorA);
+    //solver(fieldX,fieldB,operatorA);
     
     auto endSolver = std::chrono::high_resolution_clock::now();
 
