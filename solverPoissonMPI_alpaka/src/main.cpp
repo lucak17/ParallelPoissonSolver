@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
     
     // iterative solver object
     //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
-
+    
     T_Solver solver(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
     //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
 

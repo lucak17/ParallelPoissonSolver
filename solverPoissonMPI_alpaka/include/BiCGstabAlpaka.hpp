@@ -187,11 +187,16 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         auto pkHostView = createView(this->alpakaHelper_.devHost_, pk, this->alpakaHelper_.extent_);
         auto rkHostView = createView(this->alpakaHelper_.devHost_, rk, this->alpakaHelper_.extent_);
         auto r0HostView = createView(this->alpakaHelper_.devHost_, r0, this->alpakaHelper_.extent_);
+        auto MpkHostView = createView(this->alpakaHelper_.devHost_, Mpk, this->alpakaHelper_.extent_);
 
         memcpy(queue, fieldXDev, fieldXHostView, this->alpakaHelper_.extent_);
         memcpy(queue, pkDev, pkHostView, this->alpakaHelper_.extent_);
         memcpy(queue, rkDev, rkHostView, this->alpakaHelper_.extent_);
         memcpy(queue, r0Dev, r0HostView, this->alpakaHelper_.extent_);
+        memcpy(queue, MpkDev, MpkHostView, this->alpakaHelper_.extent_);
+        memcpy(queue, AMpkDev, MpkHostView, this->alpakaHelper_.extent_);
+        memcpy(queue, zkDev, MpkHostView, this->alpakaHelper_.extent_);
+        memcpy(queue, AzkDev, MpkHostView, this->alpakaHelper_.extent_);
 
         InitializeBufferKernel<3> initBufferKernel;
         alpaka::KernelCfg<Acc> const cfgExtent = {this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_};
