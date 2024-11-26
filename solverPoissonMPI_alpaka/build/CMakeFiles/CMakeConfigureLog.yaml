@@ -1234,3 +1234,39 @@ events:
         
       exitCode: 2
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/share/cmake-3.27/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:19 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/CMakeScratch/TryCompile-FbE4sB"
+      binary: "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/CMakeScratch/TryCompile-FbE4sB"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_HIP_ARCHITECTURES: "gfx906"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/CMakeScratch/TryCompile-FbE4sB'
+        
+        Run Build Command(s): /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_5573c/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_5573c.dir/build.make CMakeFiles/cmTC_5573c.dir/build
+        gmake[1]: Entering directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/CMakeScratch/TryCompile-FbE4sB'
+        Building CXX object CMakeFiles/cmTC_5573c.dir/test_mpi.cpp.o
+        /opt/cray/pe/craype/2.7.30/bin/CC -D_HIP_PLATFORM_HCC_  -std=gnu++17 -MD -MT CMakeFiles/cmTC_5573c.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_5573c.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_5573c.dir/test_mpi.cpp.o -c /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/CMakeScratch/TryCompile-FbE4sB/test_mpi.cpp
+        Linking CXX executable cmTC_5573c
+        /cfs/klemming/pdc/software/dardel/eb/software/cmake/3.27.7/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5573c.dir/link.txt --verbose=1
+        /opt/cray/pe/craype/2.7.30/bin/CC -L/opt/rocm-5.7.0/lib64 -L/opt/rocm-5.7.0/rocprofiler/lib -L/opt/rocm-5.7.0/rocprofiler/tool -L/opt/rocm-5.7.0/roctracer/lib -L/opt/rocm-5.7.0/roctracer/tool -L/opt/rocm-5.7.0/hip/lib CMakeFiles/cmTC_5573c.dir/test_mpi.cpp.o -o cmTC_5573c 
+        gmake[1]: Leaving directory '/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/CMakeFiles/CMakeScratch/TryCompile-FbE4sB'
+        
+      exitCode: 0
+...

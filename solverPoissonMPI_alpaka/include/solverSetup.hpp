@@ -48,9 +48,9 @@ constexpr int iterMaxPreconditioner=150;
 
 // chebyshev preconditioner
 constexpr T_data epsilon=1e-4;
-constexpr T_data rescaleEigMin= 200;
-constexpr T_data rescaleEigMax= 1 - 1e-4;
-constexpr int chebyshevMax=32;
+constexpr T_data rescaleEigMin= 500;
+constexpr T_data rescaleEigMax= 1 - 5e-4;
+constexpr int chebyshevMax=24;
 
 
 

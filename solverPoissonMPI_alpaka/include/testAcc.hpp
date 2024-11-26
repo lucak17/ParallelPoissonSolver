@@ -11,7 +11,7 @@
 #include "blockGrid.hpp"
 #include "solverSetup.hpp"
 #include "communicationMPI.hpp"
-#include "kernelsAlpaka.hpp"
+#include "kernelsAlpakaBiCGstab.hpp"
 
 template <int DIM, typename T_data, int maxIteration>
 class TestAcc : public IterativeSolverBase<DIM,T_data,maxIteration>{

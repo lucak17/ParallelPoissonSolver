@@ -302,16 +302,19 @@ MPI_CXX_ADDITIONAL_INCLUDE_DIRS:STRING=
 MPI_CXX_COMPILER:FILEPATH=/opt/cray/pe/craype/2.7.30/bin/CC
 
 //MPI CXX compiler wrapper include directories
-MPI_CXX_COMPILER_INCLUDE_DIRS:STRING=
+MPI_CXX_COMPILER_INCLUDE_DIRS:STRING=/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include;/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include;/opt/rocm-5.7.0/include;/opt/rocm-5.7.0/rocprofiler/include;/opt/rocm-5.7.0/roctracer/include;/opt/rocm-5.7.0/hip/include;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include;/opt/cray/pe/dsmml/0.2.2/dsmml/include
 
 //MPI CXX compilation definitions
-MPI_CXX_COMPILE_DEFINITIONS:STRING=
+MPI_CXX_COMPILE_DEFINITIONS:STRING=_HIP_PLATFORM_HCC_
 
-//MPI CXX compilation flags
+//MPI CXX compilation options
 MPI_CXX_COMPILE_OPTIONS:STRING=
 
+//MPI CXX libraries to link against
+MPI_CXX_LIB_NAMES:STRING=amdhip64;sci_cray_mpi;mpi_cray;mpi_gtl_hsa;sci_cray;dl;dsmml;xpmem;stdc++;pgas-shmem;quadmath;modules;fi;craymath;f;u;csup
+
 //MPI CXX linker flags
-MPI_CXX_LINK_FLAGS:STRING=
+MPI_CXX_LINK_FLAGS:STRING=-L/opt/rocm-5.7.0/lib64 -L/opt/rocm-5.7.0/rocprofiler/lib -L/opt/rocm-5.7.0/rocprofiler/tool -L/opt/rocm-5.7.0/roctracer/lib -L/opt/rocm-5.7.0/roctracer/tool -L/opt/rocm-5.7.0/hip/lib
 
 //If true, the MPI-2 C++ bindings are disabled using definitions.
 MPI_CXX_SKIP_MPICXX:BOOL=OFF
@@ -323,16 +326,70 @@ MPI_C_ADDITIONAL_INCLUDE_DIRS:STRING=
 MPI_C_COMPILER:FILEPATH=/opt/cray/pe/craype/2.7.30/bin/cc
 
 //MPI C compiler wrapper include directories
-MPI_C_COMPILER_INCLUDE_DIRS:STRING=
+MPI_C_COMPILER_INCLUDE_DIRS:STRING=/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include;/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/include;/opt/rocm-5.7.0/include;/opt/rocm-5.7.0/rocprofiler/include;/opt/rocm-5.7.0/roctracer/include;/opt/rocm-5.7.0/hip/include;/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/include;/opt/cray/pe/dsmml/0.2.2/dsmml/include
 
 //MPI C compilation definitions
-MPI_C_COMPILE_DEFINITIONS:STRING=
+MPI_C_COMPILE_DEFINITIONS:STRING=_HIP_PLATFORM_HCC_
 
-//MPI C compilation flags
+//MPI C compilation options
 MPI_C_COMPILE_OPTIONS:STRING=
 
+//MPI C libraries to link against
+MPI_C_LIB_NAMES:STRING=amdhip64;sci_cray_mpi;mpi_cray;mpi_gtl_hsa;sci_cray;dl;dsmml;xpmem;stdc++;pgas-shmem;quadmath;modules;fi;craymath;f;u;csup
+
 //MPI C linker flags
-MPI_C_LINK_FLAGS:STRING=
+MPI_C_LINK_FLAGS:STRING=-L/opt/rocm-5.7.0/lib64 -L/opt/rocm-5.7.0/rocprofiler/lib -L/opt/rocm-5.7.0/rocprofiler/tool -L/opt/rocm-5.7.0/roctracer/lib -L/opt/rocm-5.7.0/roctracer/tool -L/opt/rocm-5.7.0/hip/lib
+
+//Location of the amdhip64 library for MPI
+MPI_amdhip64_LIBRARY:FILEPATH=/opt/rocm-5.7.0/lib/libamdhip64.so
+
+//Location of the craymath library for MPI
+MPI_craymath_LIBRARY:FILEPATH=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/libcraymath.so
+
+//Location of the csup library for MPI
+MPI_csup_LIBRARY:FILEPATH=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/libcsup.so
+
+//Location of the dl library for MPI
+MPI_dl_LIBRARY:FILEPATH=/usr/lib64/libdl.so
+
+//Location of the dsmml library for MPI
+MPI_dsmml_LIBRARY:FILEPATH=/opt/cray/pe/dsmml/0.2.2/dsmml/lib/libdsmml.so
+
+//Location of the f library for MPI
+MPI_f_LIBRARY:FILEPATH=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/libf.so
+
+//Location of the fi library for MPI
+MPI_fi_LIBRARY:FILEPATH=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/libfi.so
+
+//Location of the modules library for MPI
+MPI_modules_LIBRARY:FILEPATH=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/libmodules.so
+
+//Location of the mpi_cray library for MPI
+MPI_mpi_cray_LIBRARY:FILEPATH=/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib/libmpi_cray.so
+
+//Location of the mpi_gtl_hsa library for MPI
+MPI_mpi_gtl_hsa_LIBRARY:FILEPATH=/opt/cray/pe/mpich/8.1.28/gtl/lib/libmpi_gtl_hsa.so
+
+//Location of the pgas-shmem library for MPI
+MPI_pgas-shmem_LIBRARY:FILEPATH=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/libpgas-shmem.so
+
+//Location of the quadmath library for MPI
+MPI_quadmath_LIBRARY:FILEPATH=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/libquadmath.so
+
+//Location of the sci_cray library for MPI
+MPI_sci_cray_LIBRARY:FILEPATH=/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib/libsci_cray.so
+
+//Location of the sci_cray_mpi library for MPI
+MPI_sci_cray_mpi_LIBRARY:FILEPATH=/opt/cray/pe/libsci/23.12.5/CRAY/17.0/x86_64/lib/libsci_cray_mpi.so
+
+//Location of the stdc++ library for MPI
+MPI_stdc++_LIBRARY:FILEPATH=/usr/lib64/gcc/x86_64-suse-linux/12/libstdc++.so
+
+//Location of the u library for MPI
+MPI_u_LIBRARY:FILEPATH=/opt/cray/pe/cce/17.0.0/cce/x86_64/lib/libu.so
+
+//Location of the xpmem library for MPI
+MPI_xpmem_LIBRARY:FILEPATH=/opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64/libxpmem.so
 
 //Arguments to supply to pkg-config
 PKG_CONFIG_ARGN:STRING=
@@ -671,6 +728,8 @@ MPI_CXX_COMPILER_INCLUDE_DIRS-ADVANCED:INTERNAL=1
 MPI_CXX_COMPILE_DEFINITIONS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MPI_CXX_COMPILE_OPTIONS
 MPI_CXX_COMPILE_OPTIONS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_CXX_LIB_NAMES
+MPI_CXX_LIB_NAMES-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MPI_CXX_LINK_FLAGS
 MPI_CXX_LINK_FLAGS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MPI_CXX_SKIP_MPICXX
@@ -685,6 +744,8 @@ MPI_C_COMPILER_INCLUDE_DIRS-ADVANCED:INTERNAL=1
 MPI_C_COMPILE_DEFINITIONS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MPI_C_COMPILE_OPTIONS
 MPI_C_COMPILE_OPTIONS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_C_LIB_NAMES
+MPI_C_LIB_NAMES-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MPI_C_LINK_FLAGS
 MPI_C_LINK_FLAGS-ADVANCED:INTERNAL=1
 //Result of TRY_COMPILE
@@ -693,6 +754,40 @@ MPI_RESULT_CXX_test_mpi_MPICXX:INTERNAL=TRUE
 MPI_RESULT_CXX_test_mpi_normal:INTERNAL=TRUE
 //Result of TRY_COMPILE
 MPI_RESULT_C_test_mpi_normal:INTERNAL=TRUE
+//ADVANCED property for variable: MPI_amdhip64_LIBRARY
+MPI_amdhip64_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_craymath_LIBRARY
+MPI_craymath_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_csup_LIBRARY
+MPI_csup_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_dl_LIBRARY
+MPI_dl_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_dsmml_LIBRARY
+MPI_dsmml_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_f_LIBRARY
+MPI_f_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_fi_LIBRARY
+MPI_fi_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_modules_LIBRARY
+MPI_modules_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_mpi_cray_LIBRARY
+MPI_mpi_cray_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_mpi_gtl_hsa_LIBRARY
+MPI_mpi_gtl_hsa_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_pgas-shmem_LIBRARY
+MPI_pgas-shmem_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_quadmath_LIBRARY
+MPI_quadmath_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_sci_cray_LIBRARY
+MPI_sci_cray_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_sci_cray_mpi_LIBRARY
+MPI_sci_cray_mpi_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_stdc++_LIBRARY
+MPI_stdc++_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_u_LIBRARY
+MPI_u_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: MPI_xpmem_LIBRARY
+MPI_xpmem_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PKG_CONFIG_ARGN
 PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PKG_CONFIG_EXECUTABLE

@@ -12,7 +12,7 @@
 #include "solverSetup.hpp"
 #include "communicationMPI.hpp"
 #include "alpakaHelper.hpp"
-#include "kernelsAlpaka.hpp"
+//#include "kernelsAlpaka.hpp"
 
 
 template <int DIM,typename T_data, int tolerance, int maxIteration>

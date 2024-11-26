@@ -12,7 +12,8 @@ CMakeFiles/solverPoisson.dir/src/main.cpp.o: \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/communicationMPI.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/inputParam.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/iterativeSolverBase.hpp \
- /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/kernelsAlpaka.hpp \
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/kernelsAlpakaBiCGstab.hpp \
+ /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/kernelsAlpakaChebyshev.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/matrixFreeOperatorA.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/noneSolver.hpp \
  /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/include/noneSolverAlpaka.hpp \

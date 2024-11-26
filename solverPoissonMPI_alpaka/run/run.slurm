@@ -3,8 +3,8 @@
 #SBATCH -t 00:01:00
 #SBATCH -A naiss2024-22-531
 #SBATCH -p gpu
-#SBATCH --nodes=16
-#SBATCH --ntasks=128
+#SBATCH --nodes=4
+#SBATCH --ntasks=32
 ##SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=7
 #SBATCH --mem=400G
@@ -17,4 +17,4 @@
 export OMP_NUM_THREADS=1
 
 # CC main.cpp -Wall -O3 -o solver.out
-srun ../build/solverPoisson 4 4 8
+srun ../build/solverPoisson 2 4 4
