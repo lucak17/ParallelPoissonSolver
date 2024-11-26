@@ -1,381 +1,207 @@
-Current local time and date: 2024-11-26 14:48:41
-Domain DIM = 3 - Number of MPI tasks 2 4 4 - Tot MPI ranks 32 - Max threads per MPI rank 1 - Tot threads 32
+Current local time and date: 2024-11-26 19:08:19
+Domain DIM = 3 - Number of MPI tasks 2 2 4 - Tot MPI ranks 16 - Max threads per MPI rank 1 - Tot threads 16
 Global grid size from block 256 256 256 - Global number of points 16777216
-Domain local Np xyz no guards 128 64 64 - Domain local Np xyz guards = 130 66 66 - Guards size 1 1 1
-Total local number of points noguards 524288 - total local number of points guards 566280
-Total local number of points noguards per thread 524288 - total local number of points guards per thread 566280
+Domain local Np xyz no guards 128 128 64 - Domain local Np xyz guards = 130 130 66 - Guards size 1 1 1
+Total local number of points noguards 1048576 - total local number of points guards 1115400
+Total local number of points noguards per thread 1048576 - total local number of points guards per thread 1115400
 Domain global origin xyz 0 0 0 - domain global extension xyz 25.5 25.5 25.5 - Ds xyz  = 0.1 0.1 0.1
 Boundary condition type 0 0 0 0 0 0
 Using alpaka accelerator: AccGpuHipRt<3,unsigned long>
-Debug in BiCGSTAB Alpaka START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 129 1 65 1 65 indexLimitsSolver 2 129 2 65 2 65 norm fieldB 5.38188e+09
-Rank 14
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 26
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 15
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 28
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 12
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 24
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 13
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 29
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+Debug in BiCGSTAB Alpaka START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 129 1 129 1 65 indexLimitsSolver 2 129 2 129 2 65 norm fieldB 5.38188e+09
 Rank 8
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 25
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 14
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 9
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 13
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 27
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
 Rank 10
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 30
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 11
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 31
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
 Rank 4
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 2
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 5
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 6
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 0
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 7
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
 Rank 1
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
 Rank 3
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 23
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 5
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 18
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 12
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 22
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 6
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 19
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 0
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 16
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 2
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 21
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 7
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 17
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 11
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
-Rank 20
- extent(66, 66, 130)
- pitches (10560, 160, 1) stride_j 160 stride_k 10560
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 9
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
  workDivExtentDotProduct:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentStencil:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (66, 22, 1), blockThreadExtent: (1, 3, 130), threadElemExtent: (1, 1, 1)}
- Debug in BiCGSTAB Alpaka iter 10 alpha 1.88369 omega 1.06773 rho0 1.03477e-07 error 0.00518518
- Debug in BiCGSTAB Alpaka iter 20 alpha 0.0691833 omega 5.52938 rho0 3.55566e-07 error 0.00116348
- Debug in BiCGSTAB Alpaka iter 30 alpha 11.9067 omega 0.540826 rho0 -1.86089e-08 error 0.000393518
- Debug in BiCGSTAB Alpaka iter 40 alpha -1.39303 omega 3.4427 rho0 3.38891e-08 error 0.000289056
- Debug in BiCGSTAB Alpaka iter 50 alpha 2.42182 omega 2.48189 rho0 9.19232e-09 error 9.82804e-05
- Debug in BiCGSTAB Alpaka iter 60 alpha 53.8445 omega 0.518882 rho0 -9.58242e-10 error 1.28781e-05
- Debug in BiCGSTAB Alpaka iter 70 alpha 0.312823 omega 4.58467 rho0 3.60795e-09 error 3.76529e-06
- Debug in BiCGSTAB Alpaka iter 80 alpha 0.901764 omega 1.06413 rho0 -1.18786e-13 error 3.85596e-07
- Debug in BiCGSTAB Alpaka iter 90 alpha 0.695731 omega 46.1785 rho0 -1.16746e-12 error 1.78193e-08
- Debug in BiCGSTAB Alpaka iter 100 alpha 5.37232 omega 1.11999 rho0 -1.22019e-13 error 1.24204e-08
- Debug in BiCGSTAB Alpaka iter 110 alpha -0.920479 omega 0.518706 rho0 4.85354e-13 error 4.76815e-09
- Debug in BiCGSTAB Alpaka iter 120 alpha 0.869155 omega 1.40615 rho0 -1.89206e-15 error 5.83537e-10
-Iterative solver finished with iter: 127 error from algo 7.1318e-11 error r=b-Ax 7.15057e-11 errorAvgtot 4.26207e-18
-Max error local block avg 0.00210758 in rank 10
-Max error local point 0.00675536 in rank 10
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+Rank 15
+ extent(66, 130, 130)
+ pitches (20800, 160, 1) stride_j 160 stride_k 20800
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1:
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2:
+	{gridBlockExtent: (66, 65, 1), blockThreadExtent: (1, 2, 130), threadElemExtent: (1, 1, 1)}
+ Debug in BiCGSTAB Alpaka iter 10 alpha 2.95405 omega 0.666558 rho0 4.40478e-08 error 0.00445521
+ Debug in BiCGSTAB Alpaka iter 20 alpha 1.19294 omega 11.7827 rho0 6.20315e-08 error 0.00110063
+ Debug in BiCGSTAB Alpaka iter 30 alpha -17.5074 omega 0.743232 rho0 5.61469e-10 error 0.00043236
+ Debug in BiCGSTAB Alpaka iter 40 alpha 2.50879 omega 0.55896 rho0 5.0472e-09 error 0.000155197
+ Debug in BiCGSTAB Alpaka iter 50 alpha 3.15665 omega 0.952921 rho0 -9.77479e-11 error 5.26169e-05
+ Debug in BiCGSTAB Alpaka iter 60 alpha 0.443776 omega 1.18457 rho0 2.45923e-10 error 1.95531e-05
+ Debug in BiCGSTAB Alpaka iter 70 alpha 1.27382 omega 3.10404 rho0 -1.19288e-10 error 8.178e-07
+ Debug in BiCGSTAB Alpaka iter 80 alpha 0.635458 omega 0.63784 rho0 4.6885e-12 error 2.41188e-07
+ Debug in BiCGSTAB Alpaka iter 90 alpha 0.635255 omega 4.11402 rho0 3.76919e-13 error 3.70262e-08
+ Debug in BiCGSTAB Alpaka iter 100 alpha -7.68336 omega 0.519692 rho0 2.20002e-13 error 2.7543e-08
+ Debug in BiCGSTAB Alpaka iter 110 alpha -1.82768 omega 126.957 rho0 5.94882e-14 error 3.43332e-08
+ Debug in BiCGSTAB Alpaka iter 120 alpha 0.662281 omega 2.0211 rho0 1.52987e-14 error 5.79393e-09
+ Debug in BiCGSTAB Alpaka iter 130 alpha -1.47561 omega 2.75152 rho0 6.87498e-15 error 2.28034e-09
+ Debug in BiCGSTAB Alpaka iter 140 alpha 0.460535 omega 119.16 rho0 -3.35672e-15 error 7.53047e-11
+Iterative solver finished with iter: 140 error from algo 7.53047e-11 error r=b-Ax 7.53712e-11 errorAvgtot 4.49247e-18
+Max error local block avg 0.00172821 in rank 6
+Max error local point 0.00653639 in rank 6
 Solver time: 4e-08 seconds
-SolverInFunction time: 2.50644 seconds
-Elapsed time: 3.41402 seconds
+SolverInFunction time: 5.32798 seconds
+Elapsed time: 6.13258 seconds
 End program. 
