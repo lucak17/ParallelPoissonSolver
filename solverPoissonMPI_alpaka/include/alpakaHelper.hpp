@@ -24,11 +24,11 @@ class AlpakaHelper {
         numCells_(setNumCells(blockGrid)),
         haloSize_(setHaloSize(blockGrid)),
         extent_(setNumCells(blockGrid) + setHaloSize(blockGrid) + setHaloSize(blockGrid) ),
+        extentNoHalo_(setNumCells(blockGrid)),
         indexLimitsSolverAlpaka_({blockGrid.getIndexLimitsSolver()[0],blockGrid.getIndexLimitsSolver()[1],blockGrid.getIndexLimitsSolver()[2],blockGrid.getIndexLimitsSolver()[3],blockGrid.getIndexLimitsSolver()[4],blockGrid.getIndexLimitsSolver()[5]}),
         ds_({blockGrid.getDs()[0],blockGrid.getDs()[1],blockGrid.getDs()[2]})
     {
     }
-
 
 
     const BlockGrid<DIM,T_data>& blockGrid_;
@@ -40,6 +40,7 @@ class AlpakaHelper {
     const alpaka::Vec<Dim, Idx> numCells_;
     const alpaka::Vec<Dim, Idx> haloSize_;
     const alpaka::Vec<Dim, Idx> extent_;
+    const alpaka::Vec<Dim, Idx> extentNoHalo_;
     const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolverAlpaka_;
     const alpaka::Vec<alpaka::DimInt<3>, T_data> ds_;
 

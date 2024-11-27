@@ -253,7 +253,6 @@ struct Chebyshev2Kernel
 
 
 
-
 template<int DIM, typename T_data> 
 struct Chebyshev1KernelSharedMem
 {
@@ -281,10 +280,16 @@ struct Chebyshev1KernelSharedMem
     {
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
-        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
-        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        auto const gridThreadIdxShifted = gridThreadIdx + haloSize;
+        auto const iGrid = gridThreadIdxShifted[2];
+        auto const jGrid = gridThreadIdxShifted[1];
+        auto const kGrid = gridThreadIdxShifted[0];
         
+        /*
+        auto const iGrid = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
+        auto const jGrid = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
+        auto const kGrid = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        */
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
         auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
@@ -299,77 +304,74 @@ struct Chebyshev1KernelSharedMem
         T_data f2 = 2 * rhoCurr / delta * (  1/r2 /theta );
                 
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
+        auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const gridBlockIdx = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc);
+        auto const blockStartThreadIdx = gridBlockIdx * blockThreadExtent;
         auto const chunck = blockThreadExtent + haloSize + haloSize;
         //auto& sdata = alpaka::declareSharedVar<T_data[4096], __COUNTER__>(acc);
         auto* sdata = alpaka::getDynSharedMem<T_data>(acc);
         auto sdataMdSpan = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
- 
-        auto localIdx = blockThreadIdx + haloSize;
-        auto globalIdx = gridThreadIdx;
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+
+        //auto globalIdx = gridThreadIdx;
+            
+        // fill shared memory
+        //if( iGrid>0 && iGrid<(gridThreadExtent[2]-1) && jGrid>0 && jGrid<(gridThreadExtent[1]-1) && kGrid>0 && kGrid<(gridThreadExtent[0]-1) )
         {
-            
-            sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) = bufDataB(k,j,i);
-
-            alpaka::Vec<alpaka::DimInt<3>,Idx> shift = {0,0,0}; 
-            
-            for(int dir=2; dir >= 0; dir=dir-1)
+            for(auto k = blockThreadIdx[0]; k < chunck[0]; k += blockThreadExtent[0])
             {
-                if(blockThreadIdx[dir] == 0 || gridThreadIdx[dir] == indexLimitsSolver[2*(2-dir)] )
-                {                    
-                    shift = {0, 0, 0};
-                    shift[dir] -= haloSize[dir]; 
-                    localIdx = blockThreadIdx + haloSize + shift;
-                    globalIdx = gridThreadIdx + shift;
-                    //printf("hello1 dir %lu, blockThreadIdx %lu %lu %lu - gridThreadIdx %lu %lu %lu - globalIdx %lu %lu %lu\n",
-                     //       dir,blockThreadIdx[0],blockThreadIdx[1],blockThreadIdx[2], gridThreadIdx[0],gridThreadIdx[1],gridThreadIdx[2],globalIdx[0],globalIdx[1],globalIdx[2]);
-                    sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) = bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]);
-                }
-                if(blockThreadIdx[dir] == ( blockThreadExtent[dir] -1 ) || (gridThreadIdx[dir] == indexLimitsSolver[2*(2-dir)+1]-1))
+                for(auto j = blockThreadIdx[1]; j < chunck[1]; j += blockThreadExtent[1])
                 {
-                    shift = {0,0,0};
-                    shift[dir] += haloSize[dir];
-                    localIdx = blockThreadIdx + haloSize + shift;
-                    globalIdx = gridThreadIdx + shift;
-                    //printf("hello2 dir %d, blockThreadIdx %lu %lu %lu - gridThreadIdx %lu %lu %lu - globalIdx %lu %lu %lu\n",
-                     //       dir,blockThreadIdx[0],blockThreadIdx[1],blockThreadIdx[2], gridThreadIdx[0],gridThreadIdx[1],gridThreadIdx[2],globalIdx[0],globalIdx[1],globalIdx[2]);
-                    sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) = bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]);
+                    for(auto i = blockThreadIdx[2]; i < chunck[2]; i += blockThreadExtent[2])
+                    {
+                        auto localIdx3D = alpaka::Vec<alpaka::DimInt<3>,Idx>(k,j,i);
+                        auto globalIdx = localIdx3D + blockStartThreadIdx;
+                        //if( globalIdx[2]>=0 && globalIdx[2]<(gridThreadExtent[2]) && globalIdx[1]>=0 && globalIdx[1]<(gridThreadExtent[1]) && globalIdx[0]>=0 && globalIdx[0]<(gridThreadExtent[0]) )
+                        {
+                            sdataMdSpan(localIdx3D[0], localIdx3D[1],localIdx3D[2]) = bufDataB(globalIdx[0], globalIdx[1],globalIdx[2]);
+                        }
+                    }
                 }
-            }
-        
-            
+            }   
             alpaka::syncBlockThreads(acc);
-            
-            localIdx = blockThreadIdx + haloSize;
-            bufDataZ(k,j,i) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2])/theta;
         
-            if constexpr (DIM==3)
+            if( iGrid>=indexLimitsSolver[0] && iGrid<indexLimitsSolver[1] && jGrid>=indexLimitsSolver[2] && jGrid<indexLimitsSolver[3] && kGrid>=indexLimitsSolver[4] && kGrid<indexLimitsSolver[5] )
             {
-                // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
-                bufDataY(k,j,i) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
-                                    ( sdataMdSpan(localIdx[0] - 1,localIdx[1],localIdx[2]) + sdataMdSpan(localIdx[0] + 1,localIdx[1],localIdx[2]) ) * f2;  
-             }
-            else if constexpr (DIM==2)
-            {
-                fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
-                // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
-                bufDataY(k,j,i) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1; 
-            }
-            else
-            {
-                fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
-                // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
-                bufDataY(k,j,i) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0; 
-            }
+                
+                //localIdx = blockThreadIdx + haloSize;
 
-        }   
+                // offset for halo, as we only want to go over core cells
+                //auto localIdx = blockThreadIdx + haloSize;
+                auto const globalIdx = gridThreadIdx + haloSize;
+                auto localIdx = blockThreadIdx + haloSize;
+                bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2])/theta;
+                if constexpr (DIM==3)
+                {
+                    // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
+                    bufDataY(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                                                        ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
+                                                        ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
+                                                        ( sdataMdSpan(localIdx[0] - 1,localIdx[1],localIdx[2]) + sdataMdSpan(localIdx[0] + 1,localIdx[1],localIdx[2]) ) * f2;  
+                }
+                else if constexpr (DIM==2)
+                {
+                    fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
+                    // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
+                    bufDataY(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                                        ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
+                                        ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1; 
+                }
+                else
+                {
+                    fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
+                    // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
+                    bufDataY(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                                        ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0; 
+                }
+            } 
+        }  
     }
 };
+
 
 
 
@@ -414,9 +416,10 @@ struct Chebyshev2KernelSharedMem
     {
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
-        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
-        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        auto const gridThreadIdxShifted = gridThreadIdx + haloSize;
+        auto const iGrid = gridThreadIdxShifted[2];
+        auto const jGrid = gridThreadIdxShifted[1];
+        auto const kGrid = gridThreadIdxShifted[0];
         
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
@@ -434,6 +437,9 @@ struct Chebyshev2KernelSharedMem
         T_data fZ = - rhoCurr * rhoOld;
                 
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
+        auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const gridBlockIdx = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc);
+        auto const blockStartThreadIdx = gridBlockIdx * blockThreadExtent;
         auto const chunck = blockThreadExtent + haloSize + haloSize;
         auto* sdata = alpaka::getDynSharedMem<T_data>(acc);
         auto sdataMdSpan = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
@@ -441,63 +447,59 @@ struct Chebyshev2KernelSharedMem
         auto localIdx = blockThreadIdx + haloSize;
         auto globalIdx = gridThreadIdx;
 
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
-        {            
-            sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) = bufDataY(k,j,i);
-
-            alpaka::Vec<alpaka::DimInt<3>,Idx> shift = {0,0,0}; 
-            
-            for(int dir=2; dir >= 0; dir=dir-1)
+        for(auto k = blockThreadIdx[0]; k < chunck[0]; k += blockThreadExtent[0])
+        {
+            for(auto j = blockThreadIdx[1]; j < chunck[1]; j += blockThreadExtent[1])
             {
-                if(blockThreadIdx[dir] == 0 || gridThreadIdx[dir] == indexLimitsSolver[2*(2-dir)] )
-                {                    
-                    shift = {0, 0, 0};
-                    shift[dir] -= haloSize[dir]; 
-                    localIdx = blockThreadIdx + haloSize + shift;
-                    globalIdx = gridThreadIdx + shift;
-                    sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) = bufDataY(globalIdx[0],globalIdx[1],globalIdx[2]);
-                }
-                if(blockThreadIdx[dir] == ( blockThreadExtent[dir] -1 ) || (gridThreadIdx[dir] == indexLimitsSolver[2*(2-dir)+1]-1))
+                for(auto i = blockThreadIdx[2]; i < chunck[2]; i += blockThreadExtent[2])
                 {
-                    shift = {0,0,0};
-                    shift[dir] += haloSize[dir];
-                    localIdx = blockThreadIdx + haloSize + shift;
-                    globalIdx = gridThreadIdx + shift;
-                    sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) = bufDataY(globalIdx[0],globalIdx[1],globalIdx[2]);
+                    auto localIdx3D = alpaka::Vec<alpaka::DimInt<3>,Idx>(k,j,i);
+                    auto globalIdx = localIdx3D + blockStartThreadIdx;
+                    //if( globalIdx[2]>=0 && globalIdx[2]<(gridThreadExtent[2]) && globalIdx[1]>=0 && globalIdx[1]<(gridThreadExtent[1]) && globalIdx[0]>=0 && globalIdx[0]<(gridThreadExtent[0]) )
+                    {
+                        sdataMdSpan(localIdx3D[0], localIdx3D[1],localIdx3D[2]) = bufDataY(globalIdx[0], globalIdx[1],globalIdx[2]);
+                    }
                 }
             }
-        
-            alpaka::syncBlockThreads(acc);
+        }   
+        alpaka::syncBlockThreads(acc);
+    
+        if( iGrid>=indexLimitsSolver[0] && iGrid<indexLimitsSolver[1] && jGrid>=indexLimitsSolver[2] && jGrid<indexLimitsSolver[3] && kGrid>=indexLimitsSolver[4] && kGrid<indexLimitsSolver[5] )
+        {
             
-            localIdx = blockThreadIdx + haloSize;        
+            //localIdx = blockThreadIdx + haloSize;
+
+            // offset for halo, as we only want to go over core cells
+            //auto localIdx = blockThreadIdx + haloSize;
+            auto const globalIdx = gridThreadIdx + haloSize;
+            auto localIdx = blockThreadIdx + haloSize;
             if constexpr (DIM==3)
             {
                 // Z Y X fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
-                bufDataW(k,j,i) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
-                                    ( sdataMdSpan(localIdx[0] - 1,localIdx[1],localIdx[2]) + sdataMdSpan(localIdx[0] + 1,localIdx[1],localIdx[2]) ) * f2 +
-                                    bufDataB(k,j,i) * fB + bufDataZ(k,j,i) * fZ ;  
-             }
+            bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                                ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
+                                ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
+                                ( sdataMdSpan(localIdx[0] - 1,localIdx[1],localIdx[2]) + sdataMdSpan(localIdx[0] + 1,localIdx[1],localIdx[2]) ) * f2 +
+                                bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ;  
+            }
             else if constexpr (DIM==2)
             {
-                T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
+                fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
                 // Z Y X
-                bufDataW(k,j,i) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
-                                    bufDataB(k,j,i) * fB + bufDataZ(k,j,i) * fZ ; 
+                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
             else
             {
-                T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
+                fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                 // Z Y X
-                bufDataW(k,j,i) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 +
-                                    bufDataB(k,j,i) * fB + bufDataZ(k,j,i) * fZ ;
-
+                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
-        }   
+        }  
     }
 };
 

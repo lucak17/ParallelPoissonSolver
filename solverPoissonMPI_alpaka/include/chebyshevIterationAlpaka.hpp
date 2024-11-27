@@ -69,6 +69,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
 
 
         alpaka::KernelCfg<Acc> const cfgExtent = {this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_};
+        alpaka::KernelCfg<Acc> const cfgExtentNoHalo = {this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_};
         /*
         StencilKernel<DIM, T_data> stencilKernel;
         auto workDivExtentStencil = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, stencilKernel, alpaka::experimental::getMdSpan(this->Abuf), bufBMdSpan, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_);
@@ -84,12 +85,12 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
         */
         //Chebyshev1Kernel<DIM,T_data> chebyshev1Kernel;
         Chebyshev1KernelSharedMem<DIM,T_data> chebyshev1Kernel;
-        auto workDivExtentKernel1 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, chebyshev1Kernel, 
+        auto workDivExtentKernel1 = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, chebyshev1Kernel, 
                                                             bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufZ), delta_, theta_, rhoCurr,
                                                             this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
         Chebyshev2KernelSharedMem<DIM,T_data> chebyshev2Kernel;
         //Chebyshev2Kernel<DIM,T_data> chebyshev2Kernel;
-        auto workDivExtentKernel2 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, chebyshev2Kernel, 
+        auto workDivExtentKernel2 = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, chebyshev2Kernel, 
                                                             bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, rhoCurr, rhoOld,
                                                             this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
         AssignFieldWith1FieldKernel<DIM, T_data> assignFieldWith1FieldKernel;
