@@ -33,7 +33,7 @@ using T_Solver = BiCGstabAlpaka<DIM, T_data, tollMainSolver, iterMaxMainSolver, 
 //using T_Solver = ChebyshevIterationAlpaka2<DIM, T_data, tollMainSolver, chebyshevMax, isbiCGMainLoop1, communicationOFF, T_NoneSolver>;
 //using T_Solver = ChebyshevIteration<DIM,T_data,tollPreconditionerSolver,chebyshevMax, isbiCGMainLoop1, communicationOFF, T_NoneSolver>;
 // X Y Z
-constexpr std::array<int,3> npglobal={1024,1024,1024};
+constexpr std::array<int,3> npglobal={512,512,512};
 constexpr std::array<T_data,3> ds={0.1,0.1,0.1};
 constexpr std::array<T_data,3> origin={0,0,0};
 constexpr std::array<int,3> guards={1,1,1};

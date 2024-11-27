@@ -1,9 +1,10 @@
+module --force purge
+module load LUMI/24.03  partition/G
 module load PrgEnv-cray/8.5.0
 module load craype-accel-amd-gfx90a
 module load rocm/6.0.3 
 export MPICH_GPU_SUPPORT_ENABLED=1
 module load cray-mpich/8.1.29 
-module load LUMI/24.03  partition/G
 module load Boost/1.83.0-cpeCray-24.03
 
 module load buildtools/24.03
@@ -14,8 +15,8 @@ module load buildtools/24.03
 export MPICH_GPU_SUPPORT_ENABLED=1
 
 export PATH=$ROCM_PATH/llvm/bin:$PATH
-export CC=clang
-export CXX=clang++
+export CC=hipcc
+export CXX=hipcc
 
 export CXXFLAGS="$CXXFLAGS -I${MPICH_DIR}/include"
 export HIPFLAGS=$CXXFLAGS

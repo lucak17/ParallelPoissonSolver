@@ -50,7 +50,7 @@ constexpr int iterMaxPreconditioner=150;
 constexpr T_data epsilon=1e-4;
 constexpr T_data rescaleEigMin= 500;
 constexpr T_data rescaleEigMax= 1 - 5e-4;
-constexpr int chebyshevMax=64;
+constexpr int chebyshevMax=24;
 
 
 
