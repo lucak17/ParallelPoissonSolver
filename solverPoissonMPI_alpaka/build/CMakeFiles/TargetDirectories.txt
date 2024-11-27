@@ -1,0 +1,8 @@
+/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/CMakeFiles/solverPoisson.dir
+/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/CMakeFiles/edit_cache.dir
+/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/CMakeFiles/rebuild_cache.dir
+/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/alpakaIde.dir
+/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/edit_cache.dir
+/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/rebuild_cache.dir
+/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/thirdParty/CMakeFiles/edit_cache.dir
+/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/thirdParty/CMakeFiles/rebuild_cache.dir
