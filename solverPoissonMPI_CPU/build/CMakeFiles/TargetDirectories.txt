@@ -1,3 +1,0 @@
-/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/solverPoisson.dir
-/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/edit_cache.dir
-/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_CPU/build/CMakeFiles/rebuild_cache.dir
