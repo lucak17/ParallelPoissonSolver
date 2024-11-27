@@ -1,2 +1,0 @@
-/pfs/lustrep3/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/CheckHIP/CMakeFiles/edit_cache.dir
-/pfs/lustrep3/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/CheckHIP/CMakeFiles/rebuild_cache.dir
