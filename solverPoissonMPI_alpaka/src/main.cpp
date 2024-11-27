@@ -11,11 +11,12 @@
 
 #include "inputParam.hpp"
 #include "communicationMPI.hpp"
-//#include "solvers.hpp"
+#include "solvers.hpp"
 #include "blockGrid.hpp"
 #include "matrixFreeOperatorA.hpp"
 #include "testAcc.hpp"
 #include "operationGrid.hpp"
+#include "alpakaHelper.hpp"
 //#include "solverSetup.hpp"
 
 
@@ -86,29 +87,35 @@ int main(int argc, char** argv) {
     CommunicatorMPI<DIM,T_data>  communicator(blockGrid);
     ExactSolutionAndBCs<DIM,T_data> exactSolutionAndBCs;
     MatrixFreeOperatorA<DIM,T_data> operatorA(blockGrid);
-    
-    TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator);
+    AlpakaHelper<DIM,T_data> alpakaHelper(blockGrid); 
+    TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
 
     
     
     // iterative solver object
-    T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
+    //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
+    
+    T_Solver solver(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
+    //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
 
     // define fieldData
     T_data* fieldX = new T_data[blockGrid.getNtotLocalGuards()];
     T_data* fieldB = new T_data[blockGrid.getNtotLocalGuards()];
-    std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), -1);
-    std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), -1);
+    std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), 0);
+    std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), 0);
 
+    //printFieldWithGuards(blockGrid,fieldX);
+    solver.setProblem(fieldX,fieldB);
+    //printFieldWithGuards(blockGrid,fieldX);
+    MPI_Barrier(MPI_COMM_WORLD);
+    solver(fieldX,fieldB,operatorA);
 
-    printFieldWithGuards(blockGrid,fieldX);
+    //testAcc(blockGrid,fieldX,fieldB);
     MPI_Barrier(MPI_COMM_WORLD);
-    testAcc(blockGrid,fieldX,fieldB);
-    MPI_Barrier(MPI_COMM_WORLD);
-    printFieldWithGuards(blockGrid,fieldX);
+    //printFieldWithGuards(blockGrid,fieldX);
     MPI_Barrier(MPI_COMM_WORLD);
     // set problem
-    solver.setProblem(fieldX,fieldB);
+    //solver.setProblem(fieldX,fieldB);
     
     auto startSolver = std::chrono::high_resolution_clock::now();
     
