@@ -407,6 +407,44 @@ class IterativeSolverBase{
         return errorLocal;
     }
 
+
+
+    void printFieldWithGuards(T_data data[])
+    {
+        const std::array<int,3>  globalLocation = blockGrid_.getGlobalLocation();
+        const std::array<int,3>  nlocal_guards = blockGrid_.getNlocalGuards();
+        const int totRanks = blockGrid_.getNranks()[0]*blockGrid_.getNranks()[1]*blockGrid_.getNranks()[2];
+        int i,j,k,indx;
+        MPI_Barrier(MPI_COMM_WORLD);
+        for(int n=0; n<totRanks; n++)    
+        {   
+            MPI_Barrier(MPI_COMM_WORLD);
+            if(blockGrid_.getMyrank()==n)
+            {
+                std::cout<<"Print field with guards, globalLocation "<<globalLocation[0]<< " " <<globalLocation[1]<< " "<<globalLocation[2] <<std::endl;
+                std::cout.flush();
+                for(k=0;k<nlocal_guards[2];k++)
+                {   
+                    std::cout<<"indexZ = "<< k <<std::endl;
+                    for(j=0;j<nlocal_guards[1];j++)
+                    {
+                        for(i=0;i<nlocal_guards[0];i++)
+                        {
+                            indx= i + nlocal_guards[0]*j + nlocal_guards[0]*nlocal_guards[1]*k;
+                            std::cout<< std::setw(3) << data[indx];
+                            std::cout<< " ";
+                        }
+                        std::cout<<std::endl;
+                        std::cout.flush();
+                    }
+                }
+                std::cout.flush();
+            }
+            MPI_Barrier(MPI_COMM_WORLD);
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        }
+    }
+
     std::chrono::duration<double> getDurationSolver() const
     {
         return durationSolver_;

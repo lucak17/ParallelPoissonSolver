@@ -97,7 +97,7 @@ class CommunicatorMPI{
             stride_k = stride_k_;
         }
 
-        std::cout<< "Debug in communicator stride_j "<< stride_j << " stride_k "<< stride_k <<std::endl;
+        //std::cout<< "Debug in communicator stride_j "<< stride_j << " stride_k "<< stride_k <<std::endl;
 
         if(numCommunication_>0)
         {

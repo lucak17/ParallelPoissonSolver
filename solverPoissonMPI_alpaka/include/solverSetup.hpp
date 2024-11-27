@@ -4,7 +4,7 @@
 #pragma once
 #include <alpaka/alpaka.hpp>
 
-constexpr int DIM=1;
+constexpr int DIM=3;
 
 using T_data=double;
 
@@ -13,6 +13,8 @@ using T_data=double;
 using Dim = alpaka::DimInt<3>;
 using Idx = std::size_t;
 using Acc = alpaka::AccGpuHipRt<Dim,Idx>;
+using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
+using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
 
 
@@ -35,8 +37,8 @@ constexpr T_data tollScalingFactor = 1e-10;
 // Order Neuman BCs scheme
 constexpr int orderNeumanBcs=2;
 
-constexpr int tollMainSolver=1e2; //effective toll = tollMainSolver*tollScalingFactor
-constexpr int iterMaxMainSolver=1700;
+constexpr int tollMainSolver=1; //effective toll = tollMainSolver*tollScalingFactor
+constexpr int iterMaxMainSolver=1000;
 constexpr bool trackErrorFromIterationHistory=1;
 
 // preconditioner
@@ -47,8 +49,8 @@ constexpr int iterMaxPreconditioner=150;
 // chebyshev preconditioner
 constexpr T_data epsilon=1e-4;
 constexpr T_data rescaleEigMin= 500;
-constexpr T_data rescaleEigMax= 1 - 1e-4;
-constexpr int chebyshevMax=11;
+constexpr T_data rescaleEigMax= 1 - 5e-4;
+constexpr int chebyshevMax=24;
 
 
 
@@ -61,7 +63,7 @@ class ExactSolutionAndBCs
             return -sin(x) - cos(y) - 3*sin(z) + 2*y*z + 2; 
             //return -sin(x) - cos(y) - 3*sin(z) + 2 ;
             //return -sin(x);
-            //return -sin(x) - cos(y);
+            //return -sin(x) - cos(y) + 2;
             //return -sin(x) - cos(y); 
         }
         inline T_data trueSolutionFxyz(const T_data x, const T_data y, const T_data z) const
