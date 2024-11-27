@@ -1,4 +1,4 @@
-# Install script for directory: /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka
+# Install script for directory: /users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,12 +39,12 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/opt/cray/pe/cce/17.0.0/binutils/x86_64/x86_64-pc-linux-gnu/bin/objdump")
+  set(CMAKE_OBJDUMP "/opt/rocm-6.0.3/llvm/bin/llvm-objdump")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/thirdParty/alpaka/cmake_install.cmake")
+  include("/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -55,5 +55,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

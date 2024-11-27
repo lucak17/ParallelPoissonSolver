@@ -1,5 +1,14 @@
-#ifndef __HIP__
-# error "A C or C++ compiler has been selected for HIP"
+/* This source file must have a .cpp extension so that all C++ compilers
+   recognize the extension without flags.  Borland does not know .cxx for
+   example.  */
+#ifndef __cplusplus
+# error "A C compiler has been selected for C++."
+#endif
+
+#if !defined(__has_include)
+/* If the compiler does not have __has_include, pretend the answer is
+   always no.  */
+#  define __has_include(x) 0
 #endif
 
 
@@ -128,40 +137,40 @@
 #  define COMPILER_VERSION_PATCH DEC(__WATCOMC__ % 10)
 # endif
 
-#elif defined(__SUNPRO_C)
+#elif defined(__SUNPRO_CC)
 # define COMPILER_ID "SunPro"
-# if __SUNPRO_C >= 0x5100
-   /* __SUNPRO_C = 0xVRRP */
-#  define COMPILER_VERSION_MAJOR HEX(__SUNPRO_C>>12)
-#  define COMPILER_VERSION_MINOR HEX(__SUNPRO_C>>4 & 0xFF)
-#  define COMPILER_VERSION_PATCH HEX(__SUNPRO_C    & 0xF)
+# if __SUNPRO_CC >= 0x5100
+   /* __SUNPRO_CC = 0xVRRP */
+#  define COMPILER_VERSION_MAJOR HEX(__SUNPRO_CC>>12)
+#  define COMPILER_VERSION_MINOR HEX(__SUNPRO_CC>>4 & 0xFF)
+#  define COMPILER_VERSION_PATCH HEX(__SUNPRO_CC    & 0xF)
 # else
    /* __SUNPRO_CC = 0xVRP */
-#  define COMPILER_VERSION_MAJOR HEX(__SUNPRO_C>>8)
-#  define COMPILER_VERSION_MINOR HEX(__SUNPRO_C>>4 & 0xF)
-#  define COMPILER_VERSION_PATCH HEX(__SUNPRO_C    & 0xF)
+#  define COMPILER_VERSION_MAJOR HEX(__SUNPRO_CC>>8)
+#  define COMPILER_VERSION_MINOR HEX(__SUNPRO_CC>>4 & 0xF)
+#  define COMPILER_VERSION_PATCH HEX(__SUNPRO_CC    & 0xF)
 # endif
 
-#elif defined(__HP_cc)
+#elif defined(__HP_aCC)
 # define COMPILER_ID "HP"
-  /* __HP_cc = VVRRPP */
-# define COMPILER_VERSION_MAJOR DEC(__HP_cc/10000)
-# define COMPILER_VERSION_MINOR DEC(__HP_cc/100 % 100)
-# define COMPILER_VERSION_PATCH DEC(__HP_cc     % 100)
+  /* __HP_aCC = VVRRPP */
+# define COMPILER_VERSION_MAJOR DEC(__HP_aCC/10000)
+# define COMPILER_VERSION_MINOR DEC(__HP_aCC/100 % 100)
+# define COMPILER_VERSION_PATCH DEC(__HP_aCC     % 100)
 
-#elif defined(__DECC)
+#elif defined(__DECCXX)
 # define COMPILER_ID "Compaq"
-  /* __DECC_VER = VVRRTPPPP */
-# define COMPILER_VERSION_MAJOR DEC(__DECC_VER/10000000)
-# define COMPILER_VERSION_MINOR DEC(__DECC_VER/100000  % 100)
-# define COMPILER_VERSION_PATCH DEC(__DECC_VER         % 10000)
+  /* __DECCXX_VER = VVRRTPPPP */
+# define COMPILER_VERSION_MAJOR DEC(__DECCXX_VER/10000000)
+# define COMPILER_VERSION_MINOR DEC(__DECCXX_VER/100000  % 100)
+# define COMPILER_VERSION_PATCH DEC(__DECCXX_VER         % 10000)
 
-#elif defined(__IBMC__) && defined(__COMPILER_VER__)
+#elif defined(__IBMCPP__) && defined(__COMPILER_VER__)
 # define COMPILER_ID "zOS"
-  /* __IBMC__ = VRP */
-# define COMPILER_VERSION_MAJOR DEC(__IBMC__/100)
-# define COMPILER_VERSION_MINOR DEC(__IBMC__/10 % 10)
-# define COMPILER_VERSION_PATCH DEC(__IBMC__    % 10)
+  /* __IBMCPP__ = VRP */
+# define COMPILER_VERSION_MAJOR DEC(__IBMCPP__/100)
+# define COMPILER_VERSION_MINOR DEC(__IBMCPP__/10 % 10)
+# define COMPILER_VERSION_PATCH DEC(__IBMCPP__    % 10)
 
 #elif defined(__open_xl__) && defined(__clang__)
 # define COMPILER_ID "IBMClang"
@@ -179,19 +188,19 @@
 # define COMPILER_VERSION_TWEAK DEC(__ibmxl_ptf_fix_level__)
 
 
-#elif defined(__IBMC__) && !defined(__COMPILER_VER__) && __IBMC__ >= 800
+#elif defined(__IBMCPP__) && !defined(__COMPILER_VER__) && __IBMCPP__ >= 800
 # define COMPILER_ID "XL"
-  /* __IBMC__ = VRP */
-# define COMPILER_VERSION_MAJOR DEC(__IBMC__/100)
-# define COMPILER_VERSION_MINOR DEC(__IBMC__/10 % 10)
-# define COMPILER_VERSION_PATCH DEC(__IBMC__    % 10)
+  /* __IBMCPP__ = VRP */
+# define COMPILER_VERSION_MAJOR DEC(__IBMCPP__/100)
+# define COMPILER_VERSION_MINOR DEC(__IBMCPP__/10 % 10)
+# define COMPILER_VERSION_PATCH DEC(__IBMCPP__    % 10)
 
-#elif defined(__IBMC__) && !defined(__COMPILER_VER__) && __IBMC__ < 800
+#elif defined(__IBMCPP__) && !defined(__COMPILER_VER__) && __IBMCPP__ < 800
 # define COMPILER_ID "VisualAge"
-  /* __IBMC__ = VRP */
-# define COMPILER_VERSION_MAJOR DEC(__IBMC__/100)
-# define COMPILER_VERSION_MINOR DEC(__IBMC__/10 % 10)
-# define COMPILER_VERSION_PATCH DEC(__IBMC__    % 10)
+  /* __IBMCPP__ = VRP */
+# define COMPILER_VERSION_MAJOR DEC(__IBMCPP__/100)
+# define COMPILER_VERSION_MINOR DEC(__IBMCPP__/10 % 10)
+# define COMPILER_VERSION_PATCH DEC(__IBMCPP__    % 10)
 
 #elif defined(__NVCOMPILER)
 # define COMPILER_ID "NVHPC"
@@ -208,6 +217,14 @@
 # if defined(__PGIC_PATCHLEVEL__)
 #  define COMPILER_VERSION_PATCH DEC(__PGIC_PATCHLEVEL__)
 # endif
+
+#elif defined(__clang__) && defined(__cray__)
+# define COMPILER_ID "CrayClang"
+# define COMPILER_VERSION_MAJOR DEC(__cray_major__)
+# define COMPILER_VERSION_MINOR DEC(__cray_minor__)
+# define COMPILER_VERSION_PATCH DEC(__cray_patchlevel__)
+# define COMPILER_VERSION_INTERNAL_STR __clang_version__
+
 
 #elif defined(_CRAYC)
 # define COMPILER_ID "Cray"
@@ -260,6 +277,12 @@
   # define COMPILER_VERSION_MINOR DEC(__VERSION__ % 100)
 # define COMPILER_VERSION_INTERNAL DEC(__VERSION__)
 
+#elif defined(__ORANGEC__)
+# define COMPILER_ID "OrangeC"
+# define COMPILER_VERSION_MAJOR DEC(__ORANGEC_MAJOR__)
+# define COMPILER_VERSION_MINOR DEC(__ORANGEC_MINOR__)
+# define COMPILER_VERSION_PATCH DEC(__ORANGEC_PATCHLEVEL__)
+
 #elif defined(__SCO_VERSION__)
 # define COMPILER_ID "SCO"
 
@@ -300,6 +323,13 @@
   # define COMPILER_VERSION_PATCH DEC(__ARMCOMPILER_VERSION/100   % 100)
 # define COMPILER_VERSION_INTERNAL DEC(__ARMCOMPILER_VERSION)
 
+#elif defined(__clang__) && defined(__ti__)
+# define COMPILER_ID "TIClang"
+  # define COMPILER_VERSION_MAJOR DEC(__ti_major__)
+  # define COMPILER_VERSION_MINOR DEC(__ti_minor__)
+  # define COMPILER_VERSION_PATCH DEC(__ti_patchlevel__)
+# define COMPILER_VERSION_INTERNAL DEC(__ti_version__)
+
 #elif defined(__clang__)
 # define COMPILER_ID "Clang"
 # if defined(_MSC_VER)
@@ -330,9 +360,13 @@
 #  endif
 # endif
 
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) || defined(__GNUG__)
 # define COMPILER_ID "GNU"
-# define COMPILER_VERSION_MAJOR DEC(__GNUC__)
+# if defined(__GNUC__)
+#  define COMPILER_VERSION_MAJOR DEC(__GNUC__)
+# else
+#  define COMPILER_VERSION_MAJOR DEC(__GNUG__)
+# endif
 # if defined(__GNUC_MINOR__)
 #  define COMPILER_VERSION_MINOR DEC(__GNUC_MINOR__)
 # endif
@@ -400,6 +434,14 @@
 char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";
 #ifdef SIMULATE_ID
 char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";
+#endif
+
+#ifdef __QNXNTO__
+char const* qnxnto = "INFO" ":" "qnxnto[]";
+#endif
+
+#if defined(__CRAYXT_COMPUTE_LINUX_TARGET)
+char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";
 #endif
 
 #define STRINGIFY_HELPER(X) #X
@@ -623,6 +665,14 @@ char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";
 #  define ARCHITECTURE_ID ""
 # endif
 
+#elif defined(__clang__) && defined(__ti__)
+# if defined(__ARM_ARCH)
+#  define ARCHITECTURE_ID "Arm"
+
+# else /* unknown architecture */
+#  define ARCHITECTURE_ID ""
+# endif
+
 #elif defined(__TI_COMPILER_VERSION__)
 # if defined(__TI_ARM__)
 #  define ARCHITECTURE_ID "ARM"
@@ -756,16 +806,32 @@ char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";
 
 
 
+#if defined(__INTEL_COMPILER) && defined(_MSVC_LANG) && _MSVC_LANG < 201403L
+#  if defined(__INTEL_CXX11_MODE__)
+#    if defined(__cpp_aggregate_nsdmi)
+#      define CXX_STD 201402L
+#    else
+#      define CXX_STD 201103L
+#    endif
+#  else
+#    define CXX_STD 199711L
+#  endif
+#elif defined(_MSC_VER) && defined(_MSVC_LANG)
+#  define CXX_STD _MSVC_LANG
+#else
+#  define CXX_STD __cplusplus
+#endif
+
 const char* info_language_standard_default = "INFO" ":" "standard_default["
-#if __cplusplus > 202002L
+#if CXX_STD > 202002L
   "23"
-#elif __cplusplus > 201703L
+#elif CXX_STD > 201703L
   "20"
-#elif __cplusplus >= 201703L
+#elif CXX_STD >= 201703L
   "17"
-#elif __cplusplus >= 201402L
+#elif CXX_STD >= 201402L
   "14"
-#elif __cplusplus >= 201103L
+#elif CXX_STD >= 201103L
   "11"
 #else
   "98"
@@ -773,7 +839,9 @@ const char* info_language_standard_default = "INFO" ":" "standard_default["
 "]";
 
 const char* info_language_extensions_default = "INFO" ":" "extensions_default["
-#if (defined(__clang__) || defined(__GNUC__)) && !defined(__STRICT_ANSI__)
+#if (defined(__clang__) || defined(__GNUC__) || defined(__xlC__) ||           \
+     defined(__TI_COMPILER_VERSION__)) &&                                     \
+  !defined(__STRICT_ANSI__)
   "ON"
 #else
   "OFF"
@@ -787,14 +855,21 @@ int main(int argc, char* argv[])
   int require = 0;
   require += info_compiler[argc];
   require += info_platform[argc];
+  require += info_arch[argc];
 #ifdef COMPILER_VERSION_MAJOR
   require += info_version[argc];
+#endif
+#ifdef COMPILER_VERSION_INTERNAL
+  require += info_version_internal[argc];
 #endif
 #ifdef SIMULATE_ID
   require += info_simulate[argc];
 #endif
 #ifdef SIMULATE_VERSION_MAJOR
   require += info_simulate_version[argc];
+#endif
+#if defined(__CRAYXT_COMPUTE_LINUX_TARGET)
+  require += info_cray[argc];
 #endif
   require += info_language_standard_default[argc];
   require += info_language_extensions_default[argc];

@@ -1,4 +1,4 @@
-# Install script for directory: /cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/CheckHIP
+# Install script for directory: /pfs/lustrep3/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/CheckHIP
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/opt/rocm-5.7.0/llvm/bin/llvm-objdump")
+  set(CMAKE_OBJDUMP "/opt/rocm-6.0.3/llvm/bin/llvm-objdump")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/cfs/klemming/home/p/pennati/solverPoisson/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/CheckHIP/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/pfs/lustrep3/users/pennatil/ParallelPoissonSolver/solverPoissonMPI_alpaka/build/thirdParty/alpaka/CMakeFiles/CheckHIP/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
