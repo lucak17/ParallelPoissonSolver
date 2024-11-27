@@ -221,6 +221,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
 
         InitializeBufferKernel<3> initBufferKernel;
         alpaka::KernelCfg<Acc> const cfgExtent = {this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_};
+        alpaka::KernelCfg<Acc> const cfgExtentNoHalo = {this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_};
         auto workDivExtent0 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, initBufferKernel, pkMdSpan, this->blockGrid_.getMyrank(), stride_j_alpaka,stride_k_alpaka);
         DotProductKernel<DIM,T_data>  dotProductKernel;
         auto workDivExtentDotProduct = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, dotProductKernel, r0MdSpan, r0MdSpan, ptrDotPorductDev1, this->alpakaHelper_.indexLimitsSolverAlpaka_);
@@ -234,6 +235,8 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         BiCGstab1Kernel<DIM, T_data> biCGstab1Kernel;
         auto workDivExtentKernel1 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+        auto workDivExtentKernel1NoHalo = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
         BiCGstab2Kernel<DIM, T_data> biCGstab2Kernel;
         auto workDivExtentKernel2 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab2Kernel, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D,
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);                                  
@@ -246,7 +249,8 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
                     "\n workDivExtentDotProduct:\n\t" << workDivExtentDotProduct << 
                     "\n workDivExtentStencil:\n\t" << workDivExtentStencil << 
                     "\n workDivExtentUpdateField1:\n\t" << workDivExtentUpdateField1 << 
-                    "\n workDivExtentUpdateField2:\n\t" << workDivExtentUpdateField2 << std::endl;
+                    "\n workDivExtentUpdateField2:\n\t" << workDivExtentUpdateField2 <<
+                    "\n workDivExtentKernel1NoHalo:\n\t" << workDivExtentKernel1NoHalo << std::endl;
 
         rho0=1;
         rho1=rho0;

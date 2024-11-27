@@ -7,6 +7,10 @@
 #include "blockGrid.hpp"
 #include "solverSetup.hpp"
 
+/*
+If the domain is too large and there are too few processes, MPI buffers might
+be full causing crash
+*/
 
 template<int DIM, typename T_data>
 class CommunicatorMPI{

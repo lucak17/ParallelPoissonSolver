@@ -32,7 +32,7 @@ inline MPI_Datatype getMPIType<double>() {
 
 constexpr T_data PI = 3.141592653589793;
 
-constexpr T_data tollScalingFactor = 1e-10;
+constexpr T_data tollScalingFactor = 1e-13;
 
 // Order Neuman BCs scheme
 constexpr int orderNeumanBcs=2;
@@ -50,7 +50,7 @@ constexpr int iterMaxPreconditioner=150;
 constexpr T_data epsilon=1e-4;
 constexpr T_data rescaleEigMin= 500;
 constexpr T_data rescaleEigMax= 1 - 5e-4;
-constexpr int chebyshevMax=24;
+constexpr int chebyshevMax=64;
 
 
 
