@@ -1,8 +1,8 @@
 #!/bin/bash -l
 #SBATCH -J test
 #SBATCH -t 00:01:00
-#SBATCH --account=project_465001586
-#SBATCH --partition=standard-g
+#SBATCH -A naiss2024-22-531
+#SBATCH -p gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=4
 ##SBATCH --ntasks-per-node=4
@@ -15,7 +15,6 @@
 #SBATCH -o solver.o
 
 export OMP_NUM_THREADS=1
-export MPICH_GPU_SUPPORT_ENABLED=1
 
 # CC main.cpp -Wall -O3 -o solver.out
 srun ../build/solverPoisson 4 1 1

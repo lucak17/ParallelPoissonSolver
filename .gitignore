@@ -1,2 +1,2 @@
-./solverPoissonMPI_CPU/build/
-./solverPoissonMPI_alpaka/build/
+/solverPoissonMPI_CPU/build/
+/solverPoissonMPI_alpaka/build/
