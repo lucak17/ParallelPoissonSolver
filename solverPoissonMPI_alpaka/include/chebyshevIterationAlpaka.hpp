@@ -39,7 +39,8 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
                                                             alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, sigma_, sigma_,
                                                             this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_)),
         workDivExtentKernel2Fixed(alpaka::WorkDivMembers<Dim,Idx>(this->alpakaHelper_.numBlocksGrid_,blockExtentFixed,this->alpakaHelper_.elemPerThread_)),
-        workDivExtentAssign1(alpaka::getValidWorkDiv(cfgExtent_, this->alpakaHelper_.devAcc_, assignFieldWith1FieldKernel, alpaka::experimental::getMdSpan(this->bufZ), alpaka::experimental::getMdSpan(this->bufY), static_cast<T_data>(1.0)/theta_, this->alpakaHelper_.indexLimitsSolverAlpaka_))
+        workDivExtentAssign1(alpaka::getValidWorkDiv(cfgExtent_, this->alpakaHelper_.devAcc_, assignFieldWith1FieldKernel, alpaka::experimental::getMdSpan(this->bufZ), alpaka::experimental::getMdSpan(this->bufY), static_cast<T_data>(1.0)/theta_, 
+                            this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_))
      
         
     {
@@ -212,7 +213,8 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
             }
         }
         */
-       alpaka::exec<Acc>(queue, workDivExtentAssign1, assignFieldWith1FieldKernel, bufXMdSpan, alpaka::experimental::getMdSpan(this->bufW), static_cast<T_data>(-1.0), this->alpakaHelper_.indexLimitsSolverAlpaka_ );
+       alpaka::exec<Acc>(queue, workDivExtentKernel2Fixed, assignFieldWith1FieldKernel, bufXMdSpan, alpaka::experimental::getMdSpan(this->bufW), static_cast<T_data>(-1.0),
+                         this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_);
 
         auto endSolver = std::chrono::high_resolution_clock::now();
         /*
