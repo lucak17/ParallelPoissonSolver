@@ -26,7 +26,8 @@ class AlpakaHelper {
         haloSize_(setHaloSize(blockGrid)),
         extent_(setNumCells(blockGrid) + setHaloSize(blockGrid) + setHaloSize(blockGrid) ),
         extentNoHalo_(setNumCells(blockGrid)),
-        extentSolver_({blockGrid.getIndexLimitsSolver()[5] - blockGrid.getIndexLimitsSolver()[4],blockGrid.getIndexLimitsSolver()[3] - blockGrid.getIndexLimitsSolver()[2],blockGrid.getIndexLimitsSolver()[1] - blockGrid.getIndexLimitsSolver()[0]}),
+        extentSolver_({blockGrid.getIndexLimitsSolver()[5] - blockGrid.getIndexLimitsSolver()[4], blockGrid.getIndexLimitsSolver()[3] - blockGrid.getIndexLimitsSolver()[2], blockGrid.getIndexLimitsSolver()[1] - blockGrid.getIndexLimitsSolver()[0]}),
+        offsetSolver_({blockGrid.getIndexLimitsSolver()[4],blockGrid.getIndexLimitsSolver()[2],blockGrid.getIndexLimitsSolver()[0]}),
         numBlocksGrid_(setNumBlocks()),
         indexLimitsSolverAlpaka_({blockGrid.getIndexLimitsSolver()[0],blockGrid.getIndexLimitsSolver()[1],blockGrid.getIndexLimitsSolver()[2],blockGrid.getIndexLimitsSolver()[3],blockGrid.getIndexLimitsSolver()[4],blockGrid.getIndexLimitsSolver()[5]}),
         ds_({blockGrid.getDs()[0],blockGrid.getDs()[1],blockGrid.getDs()[2]})
@@ -45,6 +46,7 @@ class AlpakaHelper {
     const alpaka::Vec<Dim, Idx> extent_;
     const alpaka::Vec<Dim, Idx> extentNoHalo_;
     const alpaka::Vec<Dim, Idx> extentSolver_;
+    const alpaka::Vec<Dim, Idx> offsetSolver_;
     const alpaka::Vec<Dim, Idx> numBlocksGrid_;
     const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolverAlpaka_;
     const alpaka::Vec<alpaka::DimInt<3>, T_data> ds_;

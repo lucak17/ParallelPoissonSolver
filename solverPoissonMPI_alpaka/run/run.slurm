@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #SBATCH -J test
-#SBATCH -t 00:00:15
+#SBATCH -t 00:00:10
 #SBATCH --account=project_465001586
 #SBATCH --partition=standard-g
 #SBATCH --nodes=8              # Total number of nodes 

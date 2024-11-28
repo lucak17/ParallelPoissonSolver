@@ -32,6 +32,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
         Abuf(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         cfgExtent_({this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_}),
         cfgExtentNoHalo_({this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_}),
+        cfgExtentSolver_({this->alpakaHelper_.extentSolver_, this->alpakaHelper_.elemPerThread_}),
         workDivExtentKernel1(alpaka::getValidWorkDiv(cfgExtentNoHalo_, this->alpakaHelper_.devAcc_, chebyshev1Kernel, 
                                                             alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufZ), delta_, theta_, sigma_,
                                                             this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_) ),
@@ -176,6 +177,17 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
             std::swap(fieldW,fieldY);
         }
         */
+        
+        //Chebyshev2Kernel<DIM, T_data> chebyshev2KernelSolver;
+        //auto workDivExtentKernel2Solver =  alpaka::getValidWorkDiv(cfgExtentSolver_, this->alpakaHelper_.devAcc_, chebyshev2KernelSolver, 
+        //                                                    alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, sigma_, sigma_,
+        //                                                   this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
+
+        Chebyshev2KernelSharedMemSolver<DIM, T_data> chebyshev2KernelSharedMemSolver;
+        auto workDivExtentKernel2Solver =  alpaka::getValidWorkDiv(cfgExtentSolver_, this->alpakaHelper_.devAcc_, chebyshev2KernelSharedMemSolver, 
+                                                            alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, sigma_, sigma_,
+                                                            this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
+
         for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
         {   
             rhoOld=rhoCurr;
@@ -185,8 +197,13 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
                 this->communicatorMPI_.template operator()<true>(getPtrNative(bufY));
                 this->communicatorMPI_.waitAllandCheckRcv();
             }
-            alpaka::exec<Acc>(queue, workDivExtentKernel2Fixed, chebyshev2Kernel, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), 
-                                        alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+            //alpaka::exec<Acc>(queue, workDivExtentKernel2Fixed, chebyshev2Kernel, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), 
+             //                           alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+            alpaka::exec<Acc>(queue, workDivExtentKernel2Solver, chebyshev2KernelSharedMemSolver, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), 
+                                        alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
+                                        this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
+           
+           
            // alpaka::exec<Acc>(queue, workDivExtentKernel2, chebyshev2Kernel, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), 
             //                            alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             
@@ -213,8 +230,13 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
             }
         }
         */
-       alpaka::exec<Acc>(queue, workDivExtentKernel2Fixed, assignFieldWith1FieldKernel, bufXMdSpan, alpaka::experimental::getMdSpan(this->bufW), static_cast<T_data>(-1.0),
-                         this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_);
+        AssignFieldWith1FieldKernelSolver<DIM, T_data> assignFieldWith1FieldKernelSolver;
+        auto workDivExtentAssign1Solver = alpaka::getValidWorkDiv(cfgExtentSolver_, this->alpakaHelper_.devAcc_, assignFieldWith1FieldKernelSolver, alpaka::experimental::getMdSpan(this->bufZ), alpaka::experimental::getMdSpan(this->bufY), static_cast<T_data>(1.0)/theta_, 
+                            this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
+        //alpaka::exec<Acc>(queue, workDivExtentKernel2Fixed, assignFieldWith1FieldKernel, bufXMdSpan, alpaka::experimental::getMdSpan(this->bufW), static_cast<T_data>(-1.0),
+         //                this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_);
+        alpaka::exec<Acc>(queue, workDivExtentAssign1Solver, assignFieldWith1FieldKernelSolver, bufXMdSpan, alpaka::experimental::getMdSpan(this->bufW), static_cast<T_data>(-1.0),
+                         this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
 
         auto endSolver = std::chrono::high_resolution_clock::now();
         /*
@@ -259,6 +281,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
 
     alpaka::KernelCfg<Acc> const cfgExtent_;
     alpaka::KernelCfg<Acc> const cfgExtentNoHalo_;
+    alpaka::KernelCfg<Acc> const cfgExtentSolver_;
     Chebyshev1KernelSharedMem<DIM,T_data> chebyshev1Kernel;
     Chebyshev2KernelSharedMem<DIM,T_data> chebyshev2Kernel;
     AssignFieldWith1FieldKernel<DIM, T_data> assignFieldWith1FieldKernel;
