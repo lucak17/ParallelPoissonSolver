@@ -3,7 +3,7 @@
 #SBATCH -t 00:01:00
 #SBATCH --account=project_465001586
 #SBATCH --partition=standard-g
-#SBATCH --nodes=2              # Total number of nodes 
+#SBATCH --nodes=128              # Total number of nodes 
 #SBATCH --ntasks-per-node=8     # 8 MPI ranks per node, 16 total (2x8)
 #SBATCH --gpus-per-node=8       # Allocate one gpu per MPI rank
 ####SBATCH --ntasks-per-node=4
@@ -29,5 +29,5 @@ export OMP_NUM_THREADS=1
 export MPICH_GPU_SUPPORT_ENABLED=1
 
 
-srun --cpu-bind=${CPU_BIND} ./select_gpu ../build/solverPoisson 2 2 4
+srun --cpu-bind=${CPU_BIND} ./select_gpu ../build/solverPoisson 8 8 16
 rm -rf ./select_gpu

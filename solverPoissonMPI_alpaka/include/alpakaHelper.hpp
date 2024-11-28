@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include <cmath> 
+#include <cassert>
 
 #pragma once
 
@@ -25,6 +26,7 @@ class AlpakaHelper {
         haloSize_(setHaloSize(blockGrid)),
         extent_(setNumCells(blockGrid) + setHaloSize(blockGrid) + setHaloSize(blockGrid) ),
         extentNoHalo_(setNumCells(blockGrid)),
+        numBlocksGrid_(setNumBlocks()),
         indexLimitsSolverAlpaka_({blockGrid.getIndexLimitsSolver()[0],blockGrid.getIndexLimitsSolver()[1],blockGrid.getIndexLimitsSolver()[2],blockGrid.getIndexLimitsSolver()[3],blockGrid.getIndexLimitsSolver()[4],blockGrid.getIndexLimitsSolver()[5]}),
         ds_({blockGrid.getDs()[0],blockGrid.getDs()[1],blockGrid.getDs()[2]})
     {
@@ -41,6 +43,7 @@ class AlpakaHelper {
     const alpaka::Vec<Dim, Idx> haloSize_;
     const alpaka::Vec<Dim, Idx> extent_;
     const alpaka::Vec<Dim, Idx> extentNoHalo_;
+    const alpaka::Vec<Dim, Idx> numBlocksGrid_;
     const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolverAlpaka_;
     const alpaka::Vec<alpaka::DimInt<3>, T_data> ds_;
 
@@ -91,6 +94,26 @@ class AlpakaHelper {
             exit(-1); // Exit with failure status
         }
         return haloSizeTmp;
+    }
+
+    auto setNumBlocks()
+    {
+        alpaka::Vec<Dim, Idx> numBlocksTmp;
+        
+        numBlocksTmp[0] = extentNoHalo_[0]/blockExtentFixed[0];
+        numBlocksTmp[1] = extentNoHalo_[1]/blockExtentFixed[1];
+        numBlocksTmp[2] = extentNoHalo_[2]/blockExtentFixed[2];
+
+        for(int i=0; i<3; i++)
+        {
+            if (extentNoHalo_[i] != numBlocksTmp[i] * blockExtentFixed[i])
+            {
+                std::cerr << "Error: extensions in direction "<< i <<" is not divisible by blockExtentFixed" << std::endl;
+                exit(-1);
+            }
+        }
+        
+        return numBlocksTmp;
     }
     
 };

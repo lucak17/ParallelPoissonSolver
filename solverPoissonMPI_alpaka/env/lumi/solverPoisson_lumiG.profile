@@ -1,4 +1,4 @@
-module --force purge
+#module --force purge
 module load LUMI/24.03  partition/G
 module load PrgEnv-cray/8.5.0
 module load craype-accel-amd-gfx90a

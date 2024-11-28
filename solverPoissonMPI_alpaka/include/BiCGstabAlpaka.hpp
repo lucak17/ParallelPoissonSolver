@@ -232,11 +232,12 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         UpdateFieldWith2FieldsKernel<DIM, T_data> updateFieldWith2FieldsKernel;
         auto workDivExtentUpdateField2 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, updateFieldWith2FieldsKernel, pkMdSpan, rkMdSpan, AMpkMdSpan, alphak, betak, omegak, this->alpakaHelper_.indexLimitsSolverAlpaka_);
 
-        BiCGstab1Kernel<DIM, T_data> biCGstab1Kernel;
+        BiCGstab1KernelSharedMem<DIM, T_data> biCGstab1Kernel;
         auto workDivExtentKernel1 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
         auto workDivExtentKernel1NoHalo = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+        auto workDivExtentKernel1Fixed = alpaka::WorkDivMembers<Dim,Idx>(this->alpakaHelper_.numBlocksGrid_,blockExtentFixed,this->alpakaHelper_.elemPerThread_);
         BiCGstab2Kernel<DIM, T_data> biCGstab2Kernel;
         auto workDivExtentKernel2 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab2Kernel, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D,
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);                                  
@@ -290,8 +291,10 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
             //memcpy(queue, dotPorductDev, dotPorductHost, extent1D);
             //alpaka::exec<Acc>(queue, workDivExtentDotProduct, dotProductKernel, r0MdSpan, AMpkMdSpan, ptrDotPorductDev, this->alpakaHelper_.indexLimitsSolverAlpaka_);
 
-            alpaka::exec<Acc>(queue, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+            alpaka::exec<Acc>(queue, workDivExtentKernel1Fixed, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+            //alpaka::exec<Acc>(queue, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+            //                        this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             
             memcpy(queue, dotPorductHost1, dotPorductDev1, extent1D);
             pSum2 = ptrDotPorductHost1[0];

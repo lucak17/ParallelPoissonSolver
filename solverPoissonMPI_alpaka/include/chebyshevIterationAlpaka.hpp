@@ -29,7 +29,19 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
         bufY(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         bufW(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         bufZ(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
-        Abuf(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_))
+        Abuf(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
+        cfgExtent_({this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_}),
+        cfgExtentNoHalo_({this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_}),
+        workDivExtentKernel1(alpaka::getValidWorkDiv(cfgExtentNoHalo_, this->alpakaHelper_.devAcc_, chebyshev1Kernel, 
+                                                            alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufZ), delta_, theta_, sigma_,
+                                                            this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_) ),
+        workDivExtentKernel2(alpaka::getValidWorkDiv(cfgExtentNoHalo_, this->alpakaHelper_.devAcc_, chebyshev2Kernel, 
+                                                            alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, sigma_, sigma_,
+                                                            this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_)),
+        workDivExtentKernel2Fixed(alpaka::WorkDivMembers<Dim,Idx>(this->alpakaHelper_.numBlocksGrid_,blockExtentFixed,this->alpakaHelper_.elemPerThread_)),
+        workDivExtentAssign1(alpaka::getValidWorkDiv(cfgExtent_, this->alpakaHelper_.devAcc_, assignFieldWith1FieldKernel, alpaka::experimental::getMdSpan(this->bufZ), alpaka::experimental::getMdSpan(this->bufY), static_cast<T_data>(1.0)/theta_, this->alpakaHelper_.indexLimitsSolverAlpaka_))
+     
+        
     {
         tmp = new T_data[this->ntotlocal_guards_];
         std::fill(tmp, tmp + this->ntotlocal_guards_, 0.0);
@@ -68,8 +80,8 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
         auto bufBMdSpan = alpaka::experimental::getMdSpan(bufB);
 
 
-        alpaka::KernelCfg<Acc> const cfgExtent = {this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_};
-        alpaka::KernelCfg<Acc> const cfgExtentNoHalo = {this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_};
+        //alpaka::KernelCfg<Acc> const cfgExtent = {this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_};
+        //alpaka::KernelCfg<Acc> const cfgExtentNoHalo = {this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_};
         /*
         StencilKernel<DIM, T_data> stencilKernel;
         auto workDivExtentStencil = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, stencilKernel, alpaka::experimental::getMdSpan(this->Abuf), bufBMdSpan, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_);
@@ -84,6 +96,8 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
                                                             static_cast<T_data>(2)*rhoCurr*sigma_, static_cast<T_data>(2)*rhoCurr/delta_, static_cast<T_data>(2)*rhoCurr/delta_, -rhoCurr*rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_);
         */
         //Chebyshev1Kernel<DIM,T_data> chebyshev1Kernel;
+        
+        /*
         Chebyshev1KernelSharedMem<DIM,T_data> chebyshev1Kernel;
         auto workDivExtentKernel1 = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, chebyshev1Kernel, 
                                                             bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufZ), delta_, theta_, rhoCurr,
@@ -93,9 +107,10 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
         auto workDivExtentKernel2 = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, chebyshev2Kernel, 
                                                             bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, rhoCurr, rhoOld,
                                                             this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+        auto workDivExtentKernel2Fixed = alpaka::WorkDivMembers<Dim,Idx>(this->alpakaHelper_.numBlocksGrid_,blockExtentFixed,this->alpakaHelper_.elemPerThread_);
         AssignFieldWith1FieldKernel<DIM, T_data> assignFieldWith1FieldKernel;
         auto workDivExtentAssign1 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, assignFieldWith1FieldKernel, alpaka::experimental::getMdSpan(this->bufZ), bufBMdSpan, static_cast<T_data>(1.0)/theta_, this->alpakaHelper_.indexLimitsSolverAlpaka_);
-     
+        */
 
         //this-> template resetNeumanBCs<isMainLoop,false>(fieldB);
 
@@ -122,8 +137,13 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
        // alpaka::exec<Acc>(queue, workDivExtentAssign2, assignFieldWith2FieldsKernel, alpaka::experimental::getMdSpan(this->bufY), bufBMdSpan, alpaka::experimental::getMdSpan(this->Abuf), 
         //                    static_cast<T_data>(4)*rhoCurr/delta_, static_cast<T_data>(2)*rhoCurr/delta_/theta_, this->alpakaHelper_.indexLimitsSolverAlpaka_);
 
+        if constexpr(communicationON)
+        {
+            this->communicatorMPI_.template operator()<true>(getPtrNative(bufB));
+            this->communicatorMPI_.waitAllandCheckRcv();
+        }
        
-       alpaka::exec<Acc>(queue, workDivExtentKernel1, chebyshev1Kernel, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufZ), 
+        alpaka::exec<Acc>(queue, workDivExtentKernel1, chebyshev1Kernel, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY), alpaka::experimental::getMdSpan(this->bufZ), 
                        delta_, theta_, rhoCurr, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
 
 
@@ -159,11 +179,15 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
         {   
             rhoOld=rhoCurr;
             rhoCurr=1/(2*sigma_ - rhoOld);
-            
-
-
-            alpaka::exec<Acc>(queue, workDivExtentKernel2, chebyshev2Kernel, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), 
+            if constexpr(communicationON)
+            {
+                this->communicatorMPI_.template operator()<true>(getPtrNative(bufY));
+                this->communicatorMPI_.waitAllandCheckRcv();
+            }
+            alpaka::exec<Acc>(queue, workDivExtentKernel2Fixed, chebyshev2Kernel, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), 
                                         alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+           // alpaka::exec<Acc>(queue, workDivExtentKernel2, chebyshev2Kernel, bufBMdSpan, alpaka::experimental::getMdSpan(this->bufY),alpaka::experimental::getMdSpan(this->bufW), 
+            //                            alpaka::experimental::getMdSpan(this->bufZ), delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             
             /*
             alpaka::exec<Acc>(queue, workDivExtentStencil, stencilKernel, alpaka::experimental::getMdSpan(this->Abuf), alpaka::experimental::getMdSpan(this->bufY), this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_);
@@ -230,4 +254,14 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
     alpaka::Buf<T_Dev, T_data, Dim, Idx> bufW;
     alpaka::Buf<T_Dev, T_data, Dim, Idx> bufZ;
     alpaka::Buf<T_Dev, T_data, Dim, Idx> Abuf;
+
+    alpaka::KernelCfg<Acc> const cfgExtent_;
+    alpaka::KernelCfg<Acc> const cfgExtentNoHalo_;
+    Chebyshev1KernelSharedMem<DIM,T_data> chebyshev1Kernel;
+    Chebyshev2KernelSharedMem<DIM,T_data> chebyshev2Kernel;
+    AssignFieldWith1FieldKernel<DIM, T_data> assignFieldWith1FieldKernel;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentKernel1;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentKernel2;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentKernel2Fixed;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentAssign1;
 };
