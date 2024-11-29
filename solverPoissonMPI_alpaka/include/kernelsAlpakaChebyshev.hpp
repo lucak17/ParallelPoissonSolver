@@ -393,6 +393,132 @@ struct Chebyshev1KernelSharedMem
 
 
 
+template<int DIM, typename T_data> 
+struct Chebyshev1KernelSharedMemSolver
+{
+
+    // apply s0 and s1
+    /*
+    for(k=kmin; k<kmax; k++)
+    {
+        for(j=jmin; j<jmax; j++)
+        {
+            for(i=imin; i<imax; i++)
+            {
+                indx=i + this->stride_j_*j + this->stride_k_*k;
+                fieldZ[indx] = fieldB[indx]/theta_;
+                fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
+            }
+        }
+    }
+    */
+
+    template<typename TAcc, typename TMdSpan>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataZ, const T_data delta, const T_data theta, const T_data rhoCurr, 
+                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+                                const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize, const alpaka::Vec<alpaka::DimInt<3>, Idx> offset ) const -> void
+    {
+        // Get indexes
+        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        /*
+        auto const gridThreadIdxShifted = gridThreadIdx + haloSize;
+        auto const iGrid = gridThreadIdxShifted[2];
+        auto const jGrid = gridThreadIdxShifted[1];
+        auto const kGrid = gridThreadIdxShifted[0];
+        */
+        /*
+        auto const iGrid = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
+        auto const jGrid = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
+        auto const kGrid = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        */
+        auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
+        /*
+        auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
+        auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
+        auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
+        */
+
+        const T_data r0 = ds[0]*ds[0];
+        const T_data r1 = ds[1]*ds[1];
+        const T_data r2 = ds[2]*ds[2];
+        const T_data f0 = 2 * rhoCurr / delta * (  1/r0 /theta );
+        const T_data f1 = 2 * rhoCurr / delta * (  1/r1 /theta );
+        const T_data f2 = 2 * rhoCurr / delta * (  1/r2 /theta );
+                
+        auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
+        //auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const gridBlockIdx = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc);
+        auto const blockStartThreadIdx = gridBlockIdx * blockThreadExtent;
+        auto const chunck = blockThreadExtent + haloSize + haloSize;
+        //auto& sdata = alpaka::declareSharedVar<T_data[4096], __COUNTER__>(acc);
+        auto* sdata = alpaka::getDynSharedMem<T_data>(acc);
+        auto sdataMdSpan = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
+
+        //auto globalIdx = gridThreadIdx;
+            
+        // fill shared memory
+        //if( iGrid>0 && iGrid<(gridThreadExtent[2]-1) && jGrid>0 && jGrid<(gridThreadExtent[1]-1) && kGrid>0 && kGrid<(gridThreadExtent[0]-1) )
+        {
+            for(auto k = blockThreadIdx[0]; k < chunck[0]; k += blockThreadExtent[0])
+            {
+                for(auto j = blockThreadIdx[1]; j < chunck[1]; j += blockThreadExtent[1])
+                {
+                    for(auto i = blockThreadIdx[2]; i < chunck[2]; i += blockThreadExtent[2])
+                    {
+                        auto localIdx3D = alpaka::Vec<alpaka::DimInt<3>,Idx>(k,j,i);
+                        auto globalIdx = localIdx3D + blockStartThreadIdx + offset - haloSize;
+                        //if( globalIdx[2]>=0 && globalIdx[2]<(gridThreadExtent[2]) && globalIdx[1]>=0 && globalIdx[1]<(gridThreadExtent[1]) && globalIdx[0]>=0 && globalIdx[0]<(gridThreadExtent[0]) )
+                        {
+                            sdataMdSpan(localIdx3D[0], localIdx3D[1],localIdx3D[2]) = bufDataB(globalIdx[0], globalIdx[1],globalIdx[2]);
+                        }
+                    }
+                }
+            }   
+            alpaka::syncBlockThreads(acc);
+        
+            //if( iGrid>=indexLimitsSolver[0] && iGrid<indexLimitsSolver[1] && jGrid>=indexLimitsSolver[2] && jGrid<indexLimitsSolver[3] && kGrid>=indexLimitsSolver[4] && kGrid<indexLimitsSolver[5] )
+            {
+                
+                //localIdx = blockThreadIdx + haloSize;
+
+                // offset for halo, as we only want to go over core cells
+                //auto localIdx = blockThreadIdx + haloSize;
+                auto const gridThreadIdxShifted = gridThreadIdx + offset;
+                const auto localIdx = blockThreadIdx + haloSize;
+                
+                bufDataZ(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2])/theta;
+
+                if constexpr (DIM==3)
+                {
+                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1 + 1/r2)/theta );
+                    // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
+                    bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                                                        ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
+                                                        ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
+                                                        ( sdataMdSpan(localIdx[0] - 1,localIdx[1],localIdx[2]) + sdataMdSpan(localIdx[0] + 1,localIdx[1],localIdx[2]) ) * f2;  
+                }
+                else if constexpr (DIM==2)
+                {
+                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
+                    // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
+                    bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                                        ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
+                                        ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1; 
+                }
+                else
+                {
+                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
+                    // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
+                    bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                                        ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0; 
+                }
+            } 
+        }  
+    }
+};
+
+
+
 
 
 
@@ -563,11 +689,12 @@ struct Chebyshev2KernelSharedMemSolver
     {
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        /*
         auto const gridThreadIdxShifted = gridThreadIdx + offset;
         auto const iGrid = gridThreadIdxShifted[2];
         auto const jGrid = gridThreadIdxShifted[1];
         auto const kGrid = gridThreadIdxShifted[0];
-        
+        */
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         //auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
         //auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
@@ -711,6 +838,39 @@ namespace alpaka::trait
         }
     };
 } // namespace alpaka::trait
+
+
+
+// The specialisation used for calculation of dynamic shared memory size
+namespace alpaka::trait
+{
+    //! The trait for getting the size of the block shared dynamic memory for a kernel.
+    template<typename TAcc>
+    struct BlockSharedMemDynSizeBytes<Chebyshev1KernelSharedMemSolver<DIM,T_data>, TAcc>
+    {
+        template<typename TVec, typename TMdSpan, typename T_data, typename Idx>
+        ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+            Chebyshev1KernelSharedMemSolver<DIM,T_data> const&  kernel ,
+            TVec const& blockThreadExtent, // dimensions of thread per block
+            TVec const& threadElemExtent, // dimensions of elements per thread
+            TMdSpan bufDataB, 
+            TMdSpan bufDataY, 
+            TMdSpan bufDataZ, 
+            const T_data delta, 
+            const T_data theta, 
+            const T_data rhoCurr,
+            const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, 
+            const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+            const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize,
+            const alpaka::Vec<alpaka::DimInt<3>, Idx> offset) // allocated filter width
+        {
+            // Reserve the buffer, buffers size is the number of elements in a block (tile)
+            auto blockThreadExtentNew = blockThreadExtent + haloSize + haloSize;
+            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data);
+        }
+    };
+}
+
 
 // The specialisation used for calculation of dynamic shared memory size
 namespace alpaka::trait

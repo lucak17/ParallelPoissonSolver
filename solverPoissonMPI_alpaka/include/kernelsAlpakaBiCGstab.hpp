@@ -134,7 +134,7 @@ struct DotProductKernel
 
 
 template<int DIM, typename T_data> 
-struct UpdateFieldWith1FieldKernel
+struct UpdateFieldWith1FieldKernelV0
 {
     template<typename TAcc, typename TMdSpan>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, const T_data constA, const T_data constB,
@@ -152,6 +152,25 @@ struct UpdateFieldWith1FieldKernel
         }
     }
 };
+
+
+
+template<int DIM, typename T_data> 
+struct UpdateFieldWith1FieldKernelSolver
+{
+    template<typename TAcc, typename TMdSpan>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, const T_data constA, const T_data constB,
+                                    const alpaka::Vec<alpaka::DimInt<3>, Idx> offset) const -> void
+    {
+        // Get indexes
+        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const gridThreadIdxShifted = gridThreadIdx + offset;
+
+        // Z Y X
+        bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = constA * bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) + constB * bufDataB(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]);
+    }
+};
+
 
 
 template<int DIM, typename T_data> 
@@ -197,6 +216,24 @@ struct UpdateFieldWith2FieldsKernel
     }
 };
 
+
+template<int DIM, typename T_data> 
+struct UpdateFieldWith2FieldsKernelSolver
+{
+    template<typename TAcc, typename TMdSpan>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, TMdSpan bufDataC, const T_data constA, const T_data constB, const T_data constC,
+                                    const alpaka::Vec<alpaka::DimInt<3>, Idx> offset) const -> void
+    {
+        // Get indexes
+        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const gridThreadIdxShifted = gridThreadIdx + offset;
+
+        // Z Y X
+        bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = constA * bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) + 
+                                                                                            constB * bufDataB(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) + 
+                                                                                            constC * bufDataC(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) ;
+    }
+};
 
 
 template<int DIM, typename T_data> 
