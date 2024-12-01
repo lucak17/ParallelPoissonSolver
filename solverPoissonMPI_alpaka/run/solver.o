@@ -1,4 +1,4 @@
-Current local time and date: 2024-11-29 02:38:37
+Current local time and date: 2024-11-29 12:47:50
 Domain DIM = 3 - Number of MPI tasks 4 4 4 - Tot MPI ranks 64 - Max threads per MPI rank 1 - Tot threads 64
 Global grid size from block 256 256 256 - Global number of points 16777216
 Domain local Np xyz no guards 64 64 64 - Domain local Np xyz guards = 66 66 66 - Guards size 1 1 1
@@ -8,20 +8,7 @@ Domain global origin xyz 0 0 0 - domain global extension xyz 25.5 25.5 25.5 - Ds
 Boundary condition type 0 0 0 0 0 0
 Using alpaka accelerator: AccGpuHipRt<3,unsigned long>
 Debug in BiCGSTAB Alpaka START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 65 1 65 1 65 indexLimitsSolver 2 65 2 65 2 65 norm fieldB 5.38188e+09
-Rank 5
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 4
+Rank 11
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -34,33 +21,7 @@ Rank 4
 	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 45
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 53
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 13
+Rank 50
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -73,85 +34,7 @@ Rank 13
 	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 29
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 21
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 58
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 37
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 0
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 44
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 52
+Rank 55
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -164,7 +47,7 @@ Rank 52
 	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 12
+Rank 39
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -172,9 +55,9 @@ Rank 12
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
 Rank 30
@@ -190,72 +73,7 @@ Rank 30
 	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 20
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 61
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 36
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 6
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 40
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 48
+Rank 51
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -266,32 +84,6 @@ Rank 48
 	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
 	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 8
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 28
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
 Rank 16
@@ -307,150 +99,7 @@ Rank 16
 	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 59
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 35
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 1
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 41
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 51
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 14
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 25
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 22
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 60
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 38
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 3
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 43
+Rank 27
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -476,7 +125,7 @@ Rank 54
 	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 9
+Rank 59
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -484,12 +133,12 @@ Rank 9
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 24
+Rank 20
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -502,7 +151,7 @@ Rank 24
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 17
+Rank 41
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -510,9 +159,9 @@ Rank 17
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
 Rank 62
@@ -528,7 +177,7 @@ Rank 62
 	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 32
+Rank 61
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -536,12 +185,12 @@ Rank 32
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 7
+Rank 24
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -549,9 +198,9 @@ Rank 7
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
 Rank 42
@@ -567,20 +216,7 @@ Rank 42
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 49
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 10
+Rank 57
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -593,7 +229,7 @@ Rank 10
 	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 27
+Rank 8
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -601,12 +237,64 @@ Rank 27
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 23
+Rank 6
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 33
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 19
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 26
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 40
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -632,6 +320,32 @@ Rank 56
 	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 9
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 0
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
 Rank 34
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
@@ -645,7 +359,7 @@ Rank 34
 	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 2
+Rank 21
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -653,12 +367,12 @@ Rank 2
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 46
+Rank 43
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -666,12 +380,12 @@ Rank 46
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 50
+Rank 58
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -679,12 +393,25 @@ Rank 50
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 11
+Rank 12
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 4
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -697,7 +424,85 @@ Rank 11
 	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 31
+Rank 35
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 17
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 44
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 60
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 14
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 3
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 32
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -723,6 +528,19 @@ Rank 18
 	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 45
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
 Rank 63
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
@@ -736,7 +554,46 @@ Rank 63
 	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 33
+Rank 2
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 36
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 22
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 46
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -747,6 +604,58 @@ Rank 33
 	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
 	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 13
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 5
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 38
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 23
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
 Rank 47
@@ -762,19 +671,6 @@ Rank 47
 	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 55
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
 Rank 15
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
@@ -788,7 +684,20 @@ Rank 15
 	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 26
+Rank 1
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 37
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -801,20 +710,7 @@ Rank 26
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 19
- extent(66, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
- workDivExtentDotProduct:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentStencil:
-	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
- workDivExtentKernel1NoHalo:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 57
+Rank 10
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -827,7 +723,7 @@ Rank 57
 	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
-Rank 39
+Rank 7
  extent(66, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
  workDivExtentDotProduct:
@@ -835,52 +731,134 @@ Rank 39
  workDivExtentStencil:
 	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2Solver:
-	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1NoHalo:
 	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- Debug in BiCGSTAB Alpaka iter 10 alpha 1.70365 omega 2.1059 rho0 7.88362e-06 error 0.00521543
- Debug in BiCGSTAB Alpaka iter 20 alpha -1.59041 omega 0.532119 rho0 2.29243e-08 error 0.0017754
- Debug in BiCGSTAB Alpaka iter 30 alpha 4.35465 omega 0.783731 rho0 2.87445e-08 error 0.000501821
- Debug in BiCGSTAB Alpaka iter 40 alpha -4.61171 omega 1.08059 rho0 2.50541e-08 error 0.000260132
- Debug in BiCGSTAB Alpaka iter 50 alpha 0.693741 omega 0.865301 rho0 -5.46898e-08 error 0.000203584
- Debug in BiCGSTAB Alpaka iter 60 alpha 2.471 omega 0.854602 rho0 9.07752e-09 error 3.4472e-05
- Debug in BiCGSTAB Alpaka iter 70 alpha 3.28042 omega 0.643779 rho0 -2.04524e-09 error 1.31877e-05
- Debug in BiCGSTAB Alpaka iter 80 alpha -35.5744 omega 0.566391 rho0 6.99535e-09 error 1.46051e-05
- Debug in BiCGSTAB Alpaka iter 90 alpha 0.226168 omega 3.48638 rho0 3.38409e-09 error 4.64461e-06
- Debug in BiCGSTAB Alpaka iter 100 alpha 1.26428 omega 0.929516 rho0 5.88478e-10 error 1.68259e-05
- Debug in BiCGSTAB Alpaka iter 110 alpha 0.674586 omega 9.37353 rho0 -1.94463e-09 error 4.44106e-06
- Debug in BiCGSTAB Alpaka iter 120 alpha 0.414481 omega 1.18761 rho0 -2.32091e-10 error 2.06229e-06
- Debug in BiCGSTAB Alpaka iter 130 alpha -23.7085 omega 0.528588 rho0 -4.75671e-11 error 1.91742e-06
- Debug in BiCGSTAB Alpaka iter 140 alpha 0.386513 omega 0.562123 rho0 -2.1967e-10 error 3.71943e-06
- Debug in BiCGSTAB Alpaka iter 150 alpha -0.169367 omega 0.660123 rho0 -3.15827e-09 error 4.25775e-06
- Debug in BiCGSTAB Alpaka iter 160 alpha -25.4937 omega 0.646814 rho0 -7.69965e-10 error 8.85181e-06
- Debug in BiCGSTAB Alpaka iter 170 alpha 0.649416 omega 0.552808 rho0 -1.28631e-11 error 5.84846e-06
- Debug in BiCGSTAB Alpaka iter 180 alpha 122.992 omega 0.518993 rho0 6.52331e-10 error 3.69766e-06
- Debug in BiCGSTAB Alpaka iter 190 alpha 1.18199 omega 16.909 rho0 1.24969e-09 error 8.18963e-07
- Debug in BiCGSTAB Alpaka iter 200 alpha 0.890705 omega 0.638994 rho0 9.43922e-12 error 1.4075e-07
- Debug in BiCGSTAB Alpaka iter 210 alpha -0.0113637 omega 0.813643 rho0 -1.08297e-10 error 1.8669e-07
- Debug in BiCGSTAB Alpaka iter 220 alpha 0.554068 omega 0.648563 rho0 6.04263e-11 error 1.39747e-07
- Debug in BiCGSTAB Alpaka iter 230 alpha -0.720152 omega 0.820207 rho0 -1.99779e-10 error 3.06997e-06
- Debug in BiCGSTAB Alpaka iter 240 alpha 0.692773 omega 0.530934 rho0 1.3583e-13 error 2.51398e-08
- Debug in BiCGSTAB Alpaka iter 250 alpha 0.310131 omega 0.797694 rho0 -1.19829e-11 error 1.04563e-08
- Debug in BiCGSTAB Alpaka iter 260 alpha 1.67256 omega 0.785805 rho0 -6.70162e-13 error 5.90442e-09
- Debug in BiCGSTAB Alpaka iter 270 alpha 0.719689 omega 0.730317 rho0 -4.17645e-14 error 2.93217e-09
- Debug in BiCGSTAB Alpaka iter 280 alpha -0.139053 omega 1.41161 rho0 5.09567e-13 error 9.13196e-10
- Debug in BiCGSTAB Alpaka iter 290 alpha 0.00689139 omega 1.20916 rho0 1.35645e-12 error 4.55796e-09
- Debug in BiCGSTAB Alpaka iter 300 alpha 23.7476 omega 0.870745 rho0 5.73901e-12 error 9.98689e-09
- Debug in BiCGSTAB Alpaka iter 310 alpha 1.97238 omega 0.521909 rho0 1.54611e-14 error 1.27871e-10
- Debug in BiCGSTAB Alpaka iter 320 alpha -18.3524 omega 0.55145 rho0 5.27361e-16 error 3.85467e-11
- Debug in BiCGSTAB Alpaka iter 330 alpha -22.443 omega 0.520273 rho0 -9.90644e-19 error 2.78359e-11
- Debug in BiCGSTAB Alpaka iter 340 alpha 1.14838 omega 0.567855 rho0 6.90438e-17 error 1.61827e-11
- Debug in BiCGSTAB Alpaka iter 350 alpha 2.14555 omega 1.44971 rho0 4.67179e-17 error 2.23251e-11
- Debug in BiCGSTAB Alpaka iter 360 alpha 0.763856 omega 0.532782 rho0 1.13813e-15 error 1.08102e-10
- Debug in BiCGSTAB Alpaka iter 370 alpha 0.747629 omega 0.527222 rho0 -1.62044e-16 error 2.80562e-13
-Iterative solver finished with iter: 370 error from algo 2.80562e-13 error r=b-Ax 2.87405e-13 errorAvgtot 1.71307e-20
-Max error local block avg 0.00176465 in rank 57
-Max error local point 0.00474085 in rank 33
-Solver time: 3e-08 seconds
-SolverInFunction time: 2.31651 seconds
-Elapsed time: 3.12177 seconds
+Rank 31
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 48
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 52
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 25
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 49
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 7, 1), blockThreadExtent: (1, 9, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 28
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 53
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (63, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Rank 29
+ extent(66, 66, 66)
+ pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ workDivExtentDotProduct:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentStencil:
+	{gridBlockExtent: (66, 11, 1), blockThreadExtent: (1, 6, 66), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField1Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentUpdateField2Solver:
+	{gridBlockExtent: (4, 63, 1), blockThreadExtent: (16, 1, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel1NoHalo:
+	{gridBlockExtent: (64, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ Debug in BiCGSTAB Alpaka iter 10 alpha 8.97294 omega 0.559715 rho0 -9.86848e-08 error 0.00522425
+ Debug in BiCGSTAB Alpaka iter 20 alpha 0.838183 omega 0.674765 rho0 9.74506e-08 error 0.00152299
+ Debug in BiCGSTAB Alpaka iter 30 alpha 5.96692 omega 0.714683 rho0 4.48607e-09 error 0.00061912
+ Debug in BiCGSTAB Alpaka iter 40 alpha 2.39815 omega 0.525369 rho0 1.44718e-08 error 0.000647373
+ Debug in BiCGSTAB Alpaka iter 50 alpha 0.161195 omega 0.525117 rho0 -2.19695e-09 error 8.91301e-05
+ Debug in BiCGSTAB Alpaka iter 60 alpha -0.405895 omega 3.66569 rho0 3.84994e-10 error 2.27252e-05
+ Debug in BiCGSTAB Alpaka iter 70 alpha -0.455244 omega 24.5206 rho0 -1.31047e-09 error 5.84475e-06
+ Debug in BiCGSTAB Alpaka iter 80 alpha 4.1697 omega 0.522837 rho0 -6.18576e-12 error 9.74955e-07
+ Debug in BiCGSTAB Alpaka iter 90 alpha -0.498822 omega 4.29141 rho0 3.27888e-11 error 1.7583e-07
+ Debug in BiCGSTAB Alpaka iter 100 alpha 0.239744 omega 7.47105 rho0 4.66238e-13 error 1.17285e-08
+ Debug in BiCGSTAB Alpaka iter 110 alpha 2.12355 omega 0.633836 rho0 2.18248e-13 error 1.48011e-09
+ Debug in BiCGSTAB Alpaka iter 120 alpha 1.07289 omega 0.519553 rho0 -1.36515e-15 error 2.28413e-10
+ Debug in BiCGSTAB Alpaka iter 130 alpha -1.09421 omega 0.740976 rho0 2.77807e-15 error 1.10715e-10
+ Debug in BiCGSTAB Alpaka iter 140 alpha 2.29627 omega 0.568996 rho0 1.35835e-16 error 6.58964e-11
+ Debug in BiCGSTAB Alpaka iter 150 alpha 3.69134 omega 0.518914 rho0 1.00189e-17 error 6.7828e-12
+Iterative solver finished with iter: 155 error from algo 4.90326e-13 error r=b-Ax 4.91781e-13 errorAvgtot 2.93125e-20
+Max error local block avg 0.00176416 in rank 57
+Max error local point 0.00474175 in rank 33
+Solver time: 4e-08 seconds
+SolverInFunction time: 3.52943 seconds - average time cycle 0.0227705 seconds
+Elapsed time: 4.73119 seconds
 End program. 

@@ -144,7 +144,7 @@ int main(int argc, char** argv) {
     if(my_rank==0)
     {
         std::cout << "Solver time: " << durationSolver.count() << " seconds" << std::endl;
-        std::cout << "SolverInFunction time: " << solver.getDurationSolver().count() << " seconds" << std::endl;
+        std::cout << "SolverInFunction time: " << solver.getDurationSolver().count() << " seconds" << " - average time cycle " << solver.getDurationSolver().count()/solver.getNumIterationFinal() << " seconds" << std::endl;
         std::cout << "Elapsed time: " << duration.count() << " seconds" << std::endl;
         std::cout<<  "End program. "<< std::endl;
     }

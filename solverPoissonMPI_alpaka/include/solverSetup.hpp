@@ -17,7 +17,7 @@ using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
 using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
 constexpr std::array<int,3> guards={1,1,1};
-constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {8,8,16};
+constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {4,8,16};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,8,8};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,32};
 constexpr alpaka::Vec<Dim, Idx> haloSizeFixed = {guards[2],guards[1],guards[0]};
