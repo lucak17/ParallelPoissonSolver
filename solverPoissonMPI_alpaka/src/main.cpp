@@ -145,6 +145,7 @@ int main(int argc, char** argv) {
     {
         std::cout << "Solver time: " << durationSolver.count() << " seconds" << std::endl;
         std::cout << "SolverInFunction time: " << solver.getDurationSolver().count() << " seconds" << " - average time cycle " << solver.getDurationSolver().count()/solver.getNumIterationFinal() << " seconds" << std::endl;
+        solver.timeCounter.printAverageTime(solver.getNumIterationFinal());
         std::cout << "Elapsed time: " << duration.count() << " seconds" << std::endl;
         std::cout<<  "End program. "<< std::endl;
     }

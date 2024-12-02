@@ -462,6 +462,8 @@ class IterativeSolverBase{
         return numIterationFinal_;
     }
 
+    TimeCounter<DIM, T_data> timeCounter;
+
     protected:
 
     void adjustFieldBForDirichletNeumanBCs(T_data fieldX[],T_data fieldB[])

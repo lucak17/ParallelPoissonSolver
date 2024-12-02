@@ -3,6 +3,9 @@
 
 #pragma once
 #include <alpaka/alpaka.hpp>
+#include <chrono>
+#include <iomanip>  // For std::put_time
+#include <ctime>
 
 constexpr int DIM=3;
 
@@ -45,7 +48,7 @@ constexpr T_data tollScalingFactor = 1e-12;
 constexpr int orderNeumanBcs=2;
 
 constexpr int tollMainSolver=1;  //effective toll = tollMainSolver*tollScalingFactor
-constexpr int iterMaxMainSolver=1500;
+constexpr int iterMaxMainSolver=1000;
 constexpr bool trackErrorFromIterationHistory=1;
 
 // preconditioner
@@ -133,3 +136,78 @@ class ExactSolutionAndBCs
 
 #endif
 
+
+template<int DIM,typename T_data>
+class TimeCounter
+{
+    public:
+    TimeCounter():
+    timeTotPreconditioner1(std::chrono::duration<double>(0)),
+    timeTotPreconditioner2(std::chrono::duration<double>(0)),
+    timeTotCommunication1(std::chrono::duration<double>(0)),
+    timeTotCommunication2(std::chrono::duration<double>(0)),
+    timeTotKernel1(std::chrono::duration<double>(0)),
+    timeTotKernel2(std::chrono::duration<double>(0)),
+    timeTotKernel3(std::chrono::duration<double>(0)),
+    timeTotKernel4(std::chrono::duration<double>(0)),
+    timeTotKernel5(std::chrono::duration<double>(0)),
+    timeTotKernel6(std::chrono::duration<double>(0)),
+    timeTotAllReduction1(std::chrono::duration<double>(0)),
+    timeTotAllReduction2(std::chrono::duration<double>(0))
+    {}
+
+    std::chrono::duration<double> getTimeTotal()
+    {
+        timeTotal = timeTotPreconditioner1
+                    + timeTotPreconditioner2
+                    + timeTotCommunication1
+                    + timeTotCommunication2
+                    + timeTotKernel1
+                    + timeTotKernel2
+                    + timeTotKernel3
+                    + timeTotKernel4
+                    + timeTotKernel5
+                    + timeTotKernel6
+                    + timeTotAllReduction1
+                    + timeTotAllReduction2;
+        return timeTotal;
+    }
+
+
+
+    void printAverageTime(const int numCycles)
+    {
+        std::cout << "timeTotPreconditioner1 " << timeTotPreconditioner1.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotPreconditioner2 " << timeTotPreconditioner2.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotCommunication1 " << timeTotCommunication1.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotCommunication2 " << timeTotCommunication2.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotAllReduction1 " << timeTotAllReduction1.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotAllReduction2 " << timeTotAllReduction2.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotPreconditionerTot " << (timeTotPreconditioner1.count() + timeTotPreconditioner2.count()) *1000 / numCycles << std::endl;
+        std::cout << "timeTotCommunicationTot " << (timeTotCommunication1.count() + timeTotCommunication2.count()) *1000 / numCycles << std::endl;
+        std::cout << "timeTotAllReductionTot " << (timeTotAllReduction1.count() + timeTotAllReduction2.count()) *1000 / numCycles << std::endl;
+        std::cout << "timeTotKernel1 " << timeTotKernel1.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotKernel2 " << timeTotKernel2.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotKernel3 " << timeTotKernel3.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotKernel4 " << timeTotKernel4.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotKernel5 " << timeTotKernel5.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotKernel6 " << timeTotKernel6.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotal " << this->getTimeTotal().count() *1000 / numCycles << std::endl;
+    }
+
+    //private:
+    std::chrono::duration<double> timeTotPreconditioner1;
+    std::chrono::duration<double> timeTotPreconditioner2;
+    std::chrono::duration<double> timeTotCommunication1;
+    std::chrono::duration<double> timeTotCommunication2;
+    std::chrono::duration<double> timeTotKernel1;
+    std::chrono::duration<double> timeTotKernel2;
+    std::chrono::duration<double> timeTotKernel3;
+    std::chrono::duration<double> timeTotKernel4;
+    std::chrono::duration<double> timeTotKernel5;
+    std::chrono::duration<double> timeTotKernel6;
+    std::chrono::duration<double> timeTotAllReduction1;
+    std::chrono::duration<double> timeTotAllReduction2;
+    std::chrono::duration<double> timeTotal;
+
+};
