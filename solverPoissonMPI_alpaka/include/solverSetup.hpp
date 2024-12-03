@@ -20,7 +20,7 @@ using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
 using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
 constexpr std::array<int,3> guards={1,1,1};
-constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {4,8,16};
+constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {2,2,32};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,8,8};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,32};
 constexpr alpaka::Vec<Dim, Idx> haloSizeFixed = {guards[2],guards[1],guards[0]};
@@ -177,21 +177,24 @@ class TimeCounter
 
     void printAverageTime(const int numCycles)
     {
+        std::cout << "Time in milliseconds " << std::endl;
         std::cout << "timeTotPreconditioner1 " << timeTotPreconditioner1.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotPreconditioner2 " << timeTotPreconditioner2.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotCommunication1 " << timeTotCommunication1.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotCommunication2 " << timeTotCommunication2.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotAllReduction1 " << timeTotAllReduction1.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotAllReduction2 " << timeTotAllReduction2.count() *1000 / numCycles << std::endl;
-        std::cout << "timeTotPreconditionerTot " << (timeTotPreconditioner1.count() + timeTotPreconditioner2.count()) *1000 / numCycles << std::endl;
-        std::cout << "timeTotCommunicationTot " << (timeTotCommunication1.count() + timeTotCommunication2.count()) *1000 / numCycles << std::endl;
-        std::cout << "timeTotAllReductionTot " << (timeTotAllReduction1.count() + timeTotAllReduction2.count()) *1000 / numCycles << std::endl;
         std::cout << "timeTotKernel1 " << timeTotKernel1.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotKernel2 " << timeTotKernel2.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotKernel3 " << timeTotKernel3.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotKernel4 " << timeTotKernel4.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotKernel5 " << timeTotKernel5.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotKernel6 " << timeTotKernel6.count() *1000 / numCycles << std::endl;
+        std::cout << "timeTotPreconditionerTot " << (timeTotPreconditioner1.count() + timeTotPreconditioner2.count()) *1000 / numCycles << std::endl;
+        std::cout << "timeTotCommunicationTot " << (timeTotCommunication1.count() + timeTotCommunication2.count()) *1000 / numCycles << std::endl;
+        std::cout << "timeTotAllReductionTot " << (timeTotAllReduction1.count() + timeTotAllReduction2.count()) *1000 / numCycles << std::endl;
+        std::cout << "timeTotKernelsBBiCGstabTot " << (timeTotKernel1.count() + timeTotKernel2.count() + timeTotKernel3.count() + 
+                                                        timeTotKernel4.count() + timeTotKernel5.count() + timeTotKernel6.count() ) *1000 / numCycles << std::endl;
         std::cout << "timeTotal " << this->getTimeTotal().count() *1000 / numCycles << std::endl;
     }
 

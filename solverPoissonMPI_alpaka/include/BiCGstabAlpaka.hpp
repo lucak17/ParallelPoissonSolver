@@ -64,6 +64,27 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         int i,j,k,indx;
         int iter=0;
 
+
+        const int imin=this->indexLimitsSolver_[0];
+        const int imax=this->indexLimitsSolver_[1];
+        const int jmin=this->indexLimitsSolver_[2];
+        const int jmax=this->indexLimitsSolver_[3];
+        const int kmin=this->indexLimitsSolver_[4];
+        const int kmax=this->indexLimitsSolver_[5];
+            
+        T_data alphak=1;
+        T_data betak=1;
+        T_data omegak=1;
+        T_data pSum1=0.0;
+        T_data pSum2=0.0;
+        T_data totSum1=0.0;
+        T_data totSum2=0.0;
+        T_data rho0=1;
+        T_data rho1=1;
+
+        T_data pSum[2];
+        T_data totSum[2];
+
         std::fill(pk, pk + this->ntotlocal_guards_, 0);
         std::fill(rk, rk + this->ntotlocal_guards_, 0);
         std::fill(r0, r0 + this->ntotlocal_guards_, 0);
@@ -109,11 +130,12 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         auto* const ptrDotPorductHost1= getPtrNative(dotPorductHost1);
         T_data* const ptrDotPorductDev1{std::data(dotPorductDev1)};
 
+        /*
         auto dotPorductHost2 = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
         auto dotPorductDev2 = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D);
         auto* const ptrDotPorductHost2= getPtrNative(dotPorductHost2);
         T_data* const ptrDotPorductDev2{std::data(dotPorductDev2)};
-        
+        */       
         
         
         const alpaka::Vec<Dim, Idx> extent1D2 = {1,1,2};
@@ -121,6 +143,10 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         auto dotPorductDev2D = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D2);
         auto* const ptrDotPorductHost2D= getPtrNative(dotPorductHost2D);
         T_data* const ptrDotPorductDev2D{std::data(dotPorductDev2D)};
+
+        auto totSumView = createView(this->alpakaHelper_.devHost_, totSum, extent1D2);
+        auto totSumDev2D = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D2);
+        T_data* const ptrTotSumDev2D{std::data(totSumDev2D)};
         
 
         /*
@@ -147,25 +173,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
         T_data* const ptrOmegakDev{std::data(omegakDev)};
         */
 
-        const int imin=this->indexLimitsSolver_[0];
-        const int imax=this->indexLimitsSolver_[1];
-        const int jmin=this->indexLimitsSolver_[2];
-        const int jmax=this->indexLimitsSolver_[3];
-        const int kmin=this->indexLimitsSolver_[4];
-        const int kmax=this->indexLimitsSolver_[5];
-            
-        T_data alphak=1;
-        T_data betak=1;
-        T_data omegak=1;
-        T_data pSum1=0.0;
-        T_data pSum2=0.0;
-        T_data totSum1=0.0;
-        T_data totSum2=0.0;
-        T_data rho0=1;
-        T_data rho1=1;
-
-        T_data pSum[2];
-        T_data totSum[2];
+        
         
 
 
@@ -254,7 +262,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
 
 
 
-        BiCGstab1KernelSharedMem<DIM, T_data> biCGstab1Kernel;
+        BiCGstab1Kernel<DIM, T_data> biCGstab1Kernel;
         auto workDivExtentKernel1 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
         auto workDivExtentKernel1NoHalo = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
@@ -268,18 +276,26 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
 
         BiCGstab3Kernel<DIM, T_data> biCGstab3Kernel;
         auto workDivExtentKernel3 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab3Kernel, rkMdSpan, AzkMdSpan, r0MdSpan, ptrDotPorductDev2D, omegak,
+                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_); 
+        auto workDivExtentKernel3NoHalo = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, biCGstab3Kernel, rkMdSpan, AzkMdSpan, r0MdSpan, ptrDotPorductDev2D, omegak,
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);                             
 
-        std::cout << "Rank " << this->blockGrid_.getMyrank() << "\n extent" << this->alpakaHelper_.extent_  << 
-                    "\n pitches" << " "<< pitchBuffAcc << " stride_j "<<stride_j_alpaka << " stride_k " << stride_k_alpaka << 
-                    "\n workDivExtentDotProduct:\n\t" << workDivExtentDotProduct << 
-                    "\n workDivExtentStencil:\n\t" << workDivExtentStencil << 
-                    "\n workDivExtentUpdateField1Solver:\n\t" << workDivExtentUpdateField1Solver << 
-                    "\n workDivExtentUpdateField2Solver:\n\t" << workDivExtentUpdateField2Solver <<
-                    "\n workDivExtentKernel1NoHalo:\n\t" << workDivExtentKernel1NoHalo << std::endl;
+        if(this->my_rank_==0)
+        {
+            std::cout << "Rank " << this->blockGrid_.getMyrank() << "\n extent" << this->alpakaHelper_.extent_  << 
+                        "\n pitches" << " "<< pitchBuffAcc << " stride_j "<<stride_j_alpaka << " stride_k " << stride_k_alpaka << 
+                        "\n workDivExtentDotProduct:\n\t" << workDivExtentDotProduct << 
+                        "\n workDivExtentStencil:\n\t" << workDivExtentStencil << 
+                        "\n workDivExtentUpdateField1Solver:\n\t" << workDivExtentUpdateField1Solver << 
+                        "\n workDivExtentUpdateField2Solver:\n\t" << workDivExtentUpdateField2Solver <<
+                        "\n workDivExtentKernel1NoHalo:\n\t" << workDivExtentKernel1NoHalo << std::endl;
+        }
 
         rho0=1;
         rho1=rho0;
+        preconditioner(MpkDev,pkDev);
+        alpaka::exec<Acc>(queue, workDivExtentKernel1Fixed, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
         auto startSolver = std::chrono::high_resolution_clock::now();
         auto startCounter = std::chrono::high_resolution_clock::now();
         
@@ -323,22 +339,24 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
             //alpaka::exec<Acc>(queue, workDivExtentDotProduct, dotProductKernel, r0MdSpan, AMpkMdSpan, ptrDotPorductDev, this->alpakaHelper_.indexLimitsSolverAlpaka_);
             // kernel1
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(queue, workDivExtentKernel1Fixed, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+            alpaka::exec<Acc>(queue, workDivExtentKernel1NoHalo, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             this->timeCounter.timeTotKernel1 += std::chrono::high_resolution_clock::now() - startCounter;
             //alpaka::exec<Acc>(queue, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
             //                        this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             
-            memcpy(queue, dotPorductHost1, dotPorductDev1, extent1D);
-            pSum[1] = ptrDotPorductHost1[0];
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr(communicationON)
             {
-                MPI_Allreduce(pSum+1, totSum+1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
-                alphak=rho0/totSum[1];
+                //MPI_Allreduce(pSum+1, totSum+1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
+                MPI_Allreduce(ptrDotPorductDev1, ptrTotSumDev2D, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
+                memcpy(queue, totSumView, totSumDev2D, extent1D2);
+                alphak=rho0/totSum[0];
             }
             else
             {
+                memcpy(queue, dotPorductHost1, dotPorductDev1, extent1D);
+                pSum[1] = ptrDotPorductHost1[0];
                 alphak=rho0/pSum[1];
             }
             this->timeCounter.timeTotAllReduction1 += std::chrono::high_resolution_clock::now() - startCounter;
@@ -430,18 +448,21 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
             //memcpy(queue, dotPorductHost2, dotPorductDev2, extent1D);
             //pSum1 = dotPorductHost1[0];
             //pSum2 = dotPorductHost1[0];
-            memcpy(queue, dotPorductHost2D, dotPorductDev2D, extent1D2);
-            pSum[0] = *ptrDotPorductHost2D;
-            pSum[1] = *(ptrDotPorductHost2D+1);
+            
             startCounter = std::chrono::high_resolution_clock::now();
             if  constexpr (communicationON)
             {   
-                MPI_Allreduce(pSum, totSum, 2, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
+                //MPI_Allreduce(pSum, totSum, 2, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
                 //MPI_Allreduce(pSum+1, totSum+1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
+                MPI_Allreduce(ptrDotPorductDev2D, ptrTotSumDev2D, 2, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
+                memcpy(queue, totSumView, totSumDev2D, extent1D2);
                 omegak=totSum[0]/totSum[1];  
             }
             else
             {
+                memcpy(queue, dotPorductHost2D, dotPorductDev2D, extent1D2);
+                pSum[0] = *ptrDotPorductHost2D;
+                pSum[1] = *(ptrDotPorductHost2D+1);
                 omegak=pSum[0]/pSum[1];
             }
             this->timeCounter.timeTotAllReduction2 += std::chrono::high_resolution_clock::now() - startCounter;
@@ -479,13 +500,11 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
             */
             // kernel 5
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(queue, workDivExtentKernel3, biCGstab3Kernel, rkMdSpan, AzkMdSpan, r0MdSpan, ptrDotPorductDev2D, omegak,
+            alpaka::exec<Acc>(queue, workDivExtentKernel3NoHalo, biCGstab3Kernel, rkMdSpan, AzkMdSpan, r0MdSpan, ptrDotPorductDev2D, omegak,
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             this->timeCounter.timeTotKernel5 += std::chrono::high_resolution_clock::now() - startCounter;
 
-            memcpy(queue, dotPorductHost2D, dotPorductDev2D, extent1D2);
-            pSum[0] = *ptrDotPorductHost2D;
-            pSum[1] = *(ptrDotPorductHost2D+1);
+            
             
             /*
             alpaka::exec<Acc>(queue, workDivExtentUpdateField1, updateFieldWith1FieldKernel, rkMdSpan, AzkMdSpan, 1, -omegak, this->alpakaHelper_.indexLimitsSolverAlpaka_);
@@ -499,14 +518,18 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr (communicationON)
             {
-                MPI_Allreduce(pSum,totSum, 2, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
+                MPI_Allreduce(ptrDotPorductDev2D,ptrTotSumDev2D, 2, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
                 //MPI_Allreduce(pSum, &rho1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
                 //MPI_Allreduce(pSum+1, totSum+1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
+                memcpy(queue, totSumView, totSumDev2D, extent1D2);
                 rho1=totSum[0];
                 this->errorFromIteration_ = std::sqrt(totSum[1]);
             }
             else
             {
+                memcpy(queue, dotPorductHost2D, dotPorductDev2D, extent1D2);
+                pSum[0] = *ptrDotPorductHost2D;
+                pSum[1] = *(ptrDotPorductHost2D+1);
                 this->errorFromIteration_ = std::sqrt(pSum[1]);
                 rho1=pSum[0];
             }

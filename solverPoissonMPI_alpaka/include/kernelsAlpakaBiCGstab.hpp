@@ -342,26 +342,27 @@ struct BiCGstab1Kernel
     {
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
-        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
-        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        auto const gridThreadIdxShifted = gridThreadIdx + haloSize;
+        auto const i = gridThreadIdxShifted[2];
+        auto const j = gridThreadIdxShifted[1];
+        auto const k = gridThreadIdxShifted[0];
         
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
-        auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
-        auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
-        auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
+        auto const iBlock = blockThreadIdx[2];
+        auto const jBlock = blockThreadIdx[1];
+        auto const kBlock = blockThreadIdx[0];
 
-        T_data r0 = ds[0]*ds[0];
-        T_data r1 = ds[1]*ds[1];
-        T_data r2 = ds[2]*ds[2];
-        T_data fc0 =  - 2 * ( 1/r0 + 1/r1 + 1/r2 );
+        const T_data r0 = ds[0]*ds[0];
+        const T_data r1 = ds[1]*ds[1];
+        const T_data r2 = ds[2]*ds[2];
+        
 
 
         T_data local = 0;
         T_data& blockSum = alpaka::declareSharedVar<T_data, __COUNTER__>(acc);
 
 
-        if(i==0 && j==0 && k==0)
+        if(gridThreadIdx[0]==0 && gridThreadIdx[1]==0 && gridThreadIdx[2]==0)
         {
             *globalSum = 0;
         }
@@ -371,10 +372,12 @@ struct BiCGstab1Kernel
         }
         
         if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        //if( i<indexLimitsSolver[1] && j<indexLimitsSolver[3]  && k<indexLimitsSolver[5] )
         {  
                       
             if constexpr (DIM==3)
             {
+                const T_data fc0 =  - 2 * ( 1/r0 + 1/r1 + 1/r2 );
                 // Z Y X
                 AMpkMdSpan(k,j,i) = MpkMdSpan(k,j,i) * fc0 +
                                 ( MpkMdSpan(k,j,i-1) + MpkMdSpan(k,j,i+1) )/r0 + 
@@ -383,7 +386,7 @@ struct BiCGstab1Kernel
             }
             else if constexpr (DIM==2)
             {
-                fc0 = - 2 * ( 1/r0 + 1/r1 );
+                const T_data fc0 = - 2 * ( 1/r0 + 1/r1 );
                 // Z Y X
                 AMpkMdSpan(k,j,i) = MpkMdSpan(k,j,i) * fc0 +
                                 ( MpkMdSpan(k,j,i-1) + MpkMdSpan(k,j,i+1) )/r0 + 
@@ -391,7 +394,7 @@ struct BiCGstab1Kernel
             }
             else
             {
-                fc0 = - 2 * ( 1/r0 );
+                const T_data fc0 = - 2 * ( 1/r0 );
                 // Z Y X
                 AMpkMdSpan(k,j,i) = MpkMdSpan(k,j,i) * fc0 +
                                 ( MpkMdSpan(k,j,i-1) + MpkMdSpan(k,j,i+1) )/r0;
@@ -817,9 +820,10 @@ struct BiCGstab3Kernel
     {
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
-        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
-        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        auto const gridThreadIdxShifted = gridThreadIdx + haloSize;
+        auto const i = gridThreadIdxShifted[2];
+        auto const j = gridThreadIdxShifted[1];
+        auto const k = gridThreadIdxShifted[0];
         
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
@@ -834,7 +838,7 @@ struct BiCGstab3Kernel
         //T_data& blockSum2 = alpaka::declareSharedVar<T_data, __COUNTER__>(acc);
 
 
-        if(i==0 && j==0 && k==0)
+        if(gridThreadIdx[0]==0 && gridThreadIdx[1]==0 && gridThreadIdx[2]==0)
         {
             *globalSum = 0;
             *(globalSum+1) = 0;
