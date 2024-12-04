@@ -1,4 +1,4 @@
-Current local time and date: 2024-12-03 19:10:31
+Current local time and date: 2024-12-04 03:58:32
 Domain DIM = 3 - Number of MPI tasks 2 2 4 - Tot MPI ranks 16 - Max threads per MPI rank 1 - Tot threads 16
 Global grid size from block 128 128 128 - Global number of points 2097152
 Domain local Np xyz no guards 64 64 32 - Domain local Np xyz guards = 66 66 34 - Guards size 1 1 1
@@ -28,49 +28,46 @@ Rank 0
 	{gridBlockExtent: (32, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  Debug in BiCGSTAB Alpaka iter 10 alpha 1.98775 omega 1.17847 rho0 3.31992e-06 error 0.0144081
  Debug in BiCGSTAB Alpaka iter 20 alpha 1.96706 omega 1.12741 rho0 1.14824e-10 error 0.00560886
- Debug in BiCGSTAB Alpaka iter 30 alpha 1.86215 omega 1.59125 rho0 7.14793e-14 error 0.0027814
- Debug in BiCGSTAB Alpaka iter 40 alpha 3.46274 omega 18.9958 rho0 -1.09689e-15 error 0.00138748
- Debug in BiCGSTAB Alpaka iter 50 alpha 5.47883 omega 0.528244 rho0 1.82755e-16 error 0.000806526
- Debug in BiCGSTAB Alpaka iter 60 alpha -2.75308 omega 0.496273 rho0 9.83698e-16 error 0.000342634
- Debug in BiCGSTAB Alpaka iter 70 alpha 0.56398 omega 0.721621 rho0 2.81698e-15 error 0.000172964
- Debug in BiCGSTAB Alpaka iter 80 alpha 2.21106 omega 0.48887 rho0 3.63593e-15 error 8.51991e-05
- Debug in BiCGSTAB Alpaka iter 90 alpha 2.87708 omega 0.497258 rho0 1.06012e-12 error 3.70531e-05
- Debug in BiCGSTAB Alpaka iter 100 alpha 2.201 omega 0.55162 rho0 -5.20456e-13 error 1.00323e-05
- Debug in BiCGSTAB Alpaka iter 110 alpha 5.60451 omega 1.30224 rho0 9.07635e-14 error 2.92452e-06
- Debug in BiCGSTAB Alpaka iter 120 alpha 2.78011 omega 1.41647 rho0 4.67914e-14 error 7.71858e-07
- Debug in BiCGSTAB Alpaka iter 130 alpha -0.481743 omega 0.696521 rho0 2.3164e-15 error 1.99303e-07
- Debug in BiCGSTAB Alpaka iter 140 alpha 0.631846 omega 72.9128 rho0 3.19872e-16 error 4.9599e-08
- Debug in BiCGSTAB Alpaka iter 150 alpha 0.693422 omega 104.608 rho0 7.28446e-16 error 7.57358e-09
- Debug in BiCGSTAB Alpaka iter 160 alpha 40.35 omega 0.492375 rho0 9.027e-17 error 2.43878e-09
- Debug in BiCGSTAB Alpaka iter 170 alpha 0.860531 omega 9.93199 rho0 4.89599e-17 error 5.59792e-10
- Debug in BiCGSTAB Alpaka iter 180 alpha 1.23515 omega 6.23122 rho0 7.61961e-19 error 3.57438e-10
- Debug in BiCGSTAB Alpaka iter 190 alpha 0.794587 omega 8.43909 rho0 4.48444e-19 error 2.40791e-10
- Debug in BiCGSTAB Alpaka iter 200 alpha 9.34119 omega 0.535396 rho0 -1.17883e-20 error 1.08538e-10
- Debug in BiCGSTAB Alpaka iter 210 alpha 1.72491 omega 3.97189 rho0 4.48832e-21 error 3.00016e-11
- Debug in BiCGSTAB Alpaka iter 220 alpha 6.65376 omega 2.20126 rho0 3.71639e-21 error 1.09069e-11
- Debug in BiCGSTAB Alpaka iter 230 alpha 7.03366 omega 1.17329 rho0 2.86999e-22 error 2.40655e-12
-Iterative solver finished with iter: 233 error from algo 7.98318e-13 error r=b-Ax 7.98587e-13 errorAvgtot 3.80796e-19
-Max error local block avg 0.00147139 in rank 5
-Max error local point 0.00436857 in rank 6
-Solver time: 4e-08 seconds
-SolverInFunction time: 0.808007 seconds - average time cycle 0.00346784 seconds
+ Debug in BiCGSTAB Alpaka iter 30 alpha 1.86193 omega 1.59174 rho0 7.15077e-14 error 0.0027814
+ Debug in BiCGSTAB Alpaka iter 40 alpha -3.0827 omega 0.778618 rho0 2.38972e-16 error 0.00204098
+ Debug in BiCGSTAB Alpaka iter 50 alpha 2.4808 omega 0.534702 rho0 4.64519e-15 error 0.000674432
+ Debug in BiCGSTAB Alpaka iter 60 alpha 0.427886 omega 0.879574 rho0 2.06804e-14 error 0.000403214
+ Debug in BiCGSTAB Alpaka iter 70 alpha 1.32204 omega 48.3271 rho0 9.37752e-13 error 0.00016417
+ Debug in BiCGSTAB Alpaka iter 80 alpha -6.50952 omega 0.608257 rho0 3.15352e-12 error 4.86645e-05
+ Debug in BiCGSTAB Alpaka iter 90 alpha -0.406829 omega 0.715421 rho0 4.33337e-13 error 1.7923e-05
+ Debug in BiCGSTAB Alpaka iter 100 alpha 1.99939 omega 0.953933 rho0 3.72279e-13 error 5.67938e-06
+ Debug in BiCGSTAB Alpaka iter 110 alpha -8.42921 omega 0.513131 rho0 2.77604e-14 error 1.42401e-06
+ Debug in BiCGSTAB Alpaka iter 120 alpha 0.862309 omega 2.08361 rho0 9.16203e-16 error 2.918e-07
+ Debug in BiCGSTAB Alpaka iter 130 alpha 1.90477 omega 1.23546 rho0 1.86357e-15 error 4.36301e-08
+ Debug in BiCGSTAB Alpaka iter 140 alpha 2.33015 omega 0.557908 rho0 4.5523e-17 error 7.76456e-09
+ Debug in BiCGSTAB Alpaka iter 150 alpha 16.5989 omega 0.664916 rho0 1.02204e-16 error 1.60454e-09
+ Debug in BiCGSTAB Alpaka iter 160 alpha -0.146826 omega 93.4371 rho0 -2.62351e-17 error 2.32464e-10
+ Debug in BiCGSTAB Alpaka iter 170 alpha 1.09843 omega 0.839359 rho0 2.80671e-19 error 8.09756e-11
+ Debug in BiCGSTAB Alpaka iter 180 alpha 1.08333 omega 3.19533 rho0 3.54196e-19 error 2.31249e-11
+ Debug in BiCGSTAB Alpaka iter 190 alpha -0.251395 omega 0.540145 rho0 1.08232e-18 error 1.00373e-11
+ Debug in BiCGSTAB Alpaka iter 200 alpha -8.06275 omega 0.485495 rho0 9.45973e-20 error 6.90727e-12
+Iterative solver finished with iter: 206 error from algo 8.63919e-13 error r=b-Ax 8.64142e-13 errorAvgtot 4.12055e-19
+Max error local block avg 0.00147145 in rank 5
+Max error local point 0.00436869 in rank 6
+Solver time: 8e-08 seconds
+SolverInFunction time: 0.695589 seconds - average time cycle 0.00337665 seconds
 Time in milliseconds 
-timeTotPreconditioner1 1.02105
-timeTotPreconditioner2 1.019
-timeTotCommunication1 0.408111
-timeTotCommunication2 0.317545
-timeTotAllReduction1 0.212446
-timeTotAllReduction2 0.195622
-timeTotKernel1 0.0686266
-timeTotKernel2 0.0190917
-timeTotKernel3 0.0818981
-timeTotKernel4 0.0392017
-timeTotKernel5 0.0623091
-timeTotKernel6 0.0193994
-timeTotPreconditionerTot 2.04005
-timeTotCommunicationTot 0.725657
-timeTotAllReductionTot 0.408068
-timeTotKernelsBBiCGstabTot 0.290527
-timeTotal 3.4643
-Elapsed time: 13.9553 seconds
+timeTotPreconditioner1 1.07384
+timeTotPreconditioner2 1.07189
+timeTotCommunication1 0.376081
+timeTotCommunication2 0.300259
+timeTotAllReduction1 0.140128
+timeTotAllReduction2 0.118589
+timeTotKernel1 0.0697137
+timeTotKernel2 0.0188528
+timeTotKernel3 0.0827106
+timeTotKernel4 0.0389364
+timeTotKernel5 0.0624543
+timeTotKernel6 0.0195035
+timeTotPreconditionerTot 2.14573
+timeTotCommunicationTot 0.67634
+timeTotAllReductionTot 0.258717
+timeTotKernelsBBiCGstabTot 0.292171
+timeTotal 3.37295
+Elapsed time: 11.6447 seconds
 End program. 
