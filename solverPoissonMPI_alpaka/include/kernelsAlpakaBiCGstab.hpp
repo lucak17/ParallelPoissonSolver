@@ -45,9 +45,9 @@ struct StencilKernel
         auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
         auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
 
-        T_data r0 = ds[0]*ds[0];
+        T_data r0 = ds[2]*ds[2];
         T_data r1 = ds[1]*ds[1];
-        T_data r2 = ds[2]*ds[2];
+        T_data r2 = ds[0]*ds[0];
         
 
         if constexpr (DIM==3)
@@ -55,7 +55,7 @@ struct StencilKernel
             T_data f0 = -2 * ( 1/r0 + 1/r1 + 1/r2);
             //printf()
             // Z Y X
-            if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+            if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
             {
                 AbufData(k,j,i) = bufData(k,j,i) * f0 +
                                 ( bufData(k,j,i-1) + bufData(k,j,i+1) )/r0 + 
@@ -67,7 +67,7 @@ struct StencilKernel
         {
             T_data f0 = -2 * ( 1/r0 + 1/r1);
             // Y X
-            if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+            if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
             {
                 AbufData(k,j,i) = bufData(k,j,i) * f0 +
                                 ( bufData(k,j,i-1) + bufData(k,j,i+1) )/r0 + 
@@ -77,7 +77,7 @@ struct StencilKernel
         else
         {
             T_data f0 = -2 * ( 1/r0 );
-            if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+            if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
             {
                 AbufData(k,j,i) = bufData(k,j,i) * f0 +
                                 ( bufData(k,j,i-1) + bufData(k,j,i+1) )/r0;
@@ -114,7 +114,7 @@ struct DotProductKernel
             blockSum = 0;
         }
         // Z Y X
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
         {
             local = bufDataA(k,j,i) * bufDataB(k,j,i);
         }
@@ -146,7 +146,7 @@ struct UpdateFieldWith1FieldKernelV0
         auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
 
         // Z Y X
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
         {
             bufDataA(k,j,i) = constA * bufDataA(k,j,i) + constB * bufDataB(k,j,i);
         }
@@ -168,7 +168,7 @@ struct UpdateFieldWith1FieldKernelV1
         //auto const kGrid = gridThreadIdxShifted[0];
         
         // Z Y X
-        if( gridThreadIdxShifted[2]>=indexLimitsSolver[0] && gridThreadIdxShifted[2]<indexLimitsSolver[1] && gridThreadIdxShifted[1]>=indexLimitsSolver[2] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]>=indexLimitsSolver[4] && gridThreadIdxShifted[0]<indexLimitsSolver[5] )
+        if( gridThreadIdxShifted[2]>=indexLimitsSolver[4] && gridThreadIdxShifted[2]<indexLimitsSolver[5] && gridThreadIdxShifted[1]>=indexLimitsSolver[2] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]>=indexLimitsSolver[0] && gridThreadIdxShifted[0]<indexLimitsSolver[1] )
         {
             bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = constA * bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) + 
                                                                                                 constB * bufDataB(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]);
@@ -192,7 +192,7 @@ struct UpdateFieldWith1FieldKernelV2
         //auto const kGrid = gridThreadIdxShifted[0];
         
         // Z Y X
-        if( gridThreadIdxShifted[2]<indexLimitsSolver[1] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]<indexLimitsSolver[5] )
+        if( gridThreadIdxShifted[2]<indexLimitsSolver[5] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]<indexLimitsSolver[1] )
         {
             bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = constA * bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) + 
                                                                                                 constB * bufDataB(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]);
@@ -235,7 +235,7 @@ struct UpdateFieldWith2FieldsKernel
         auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
 
         // Z Y X
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
         {
             bufDataA(k,j,i) = constA * bufDataA(k,j,i) + constB * bufDataB(k,j,i) + constC * bufDataC(k,j,i) ;
         }
@@ -259,7 +259,7 @@ struct UpdateFieldWith2FieldsKernelV1
         //auto const kGrid = gridThreadIdxShifted[0];
         
         // Z Y X
-        if( gridThreadIdxShifted[2]>=indexLimitsSolver[0] && gridThreadIdxShifted[2]<indexLimitsSolver[1] && gridThreadIdxShifted[1]>=indexLimitsSolver[2] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]>=indexLimitsSolver[4] && gridThreadIdxShifted[0]<indexLimitsSolver[5] )
+        if( gridThreadIdxShifted[2]>=indexLimitsSolver[4] && gridThreadIdxShifted[2]<indexLimitsSolver[5] && gridThreadIdxShifted[1]>=indexLimitsSolver[2] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]>=indexLimitsSolver[0] && gridThreadIdxShifted[0]<indexLimitsSolver[1] )
         {
             bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = constA * bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) + 
                                                                                                 constB * bufDataB(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) +
@@ -284,7 +284,7 @@ struct UpdateFieldWith2FieldsKernelV2
         //auto const kGrid = gridThreadIdxShifted[0];
         
         // Z Y X
-        if(gridThreadIdxShifted[2]<indexLimitsSolver[1] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]<indexLimitsSolver[5] )
+        if(gridThreadIdxShifted[2]<indexLimitsSolver[5] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]<indexLimitsSolver[1] )
         {
             bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = constA * bufDataA(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) + 
                                                                                                 constB * bufDataB(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) +
@@ -352,9 +352,9 @@ struct BiCGstab1Kernel
         auto const jBlock = blockThreadIdx[1];
         auto const kBlock = blockThreadIdx[0];
 
-        const T_data r0 = ds[0]*ds[0];
+        const T_data r0 = ds[2]*ds[2];
         const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[2]*ds[2];
+        const T_data r2 = ds[0]*ds[0];
         
 
 
@@ -371,8 +371,8 @@ struct BiCGstab1Kernel
             blockSum = 0;
         }
         
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
-        //if( i<indexLimitsSolver[1] && j<indexLimitsSolver[3]  && k<indexLimitsSolver[5] )
+        if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
+        //if( i<indexLimitsSolver[5] && j<indexLimitsSolver[3]  && k<indexLimitsSolver[1] )
         {  
                       
             if constexpr (DIM==3)
@@ -451,9 +451,9 @@ struct BiCGstab1KernelSharedMem
         auto const jBlock = blockThreadIdx[1];
         auto const kBlock = blockThreadIdx[0];
 
-        const T_data r0 = ds[0]*ds[0];
+        const T_data r0 = ds[2]*ds[2];
         const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[2]*ds[2];
+        const T_data r2 = ds[0]*ds[0];
         
         T_data local = 0;
         T_data& blockSum = alpaka::declareSharedVar<T_data, __COUNTER__>(acc);
@@ -492,7 +492,7 @@ struct BiCGstab1KernelSharedMem
         }   
         alpaka::syncBlockThreads(acc);
         
-        if( iGrid>=indexLimitsSolver[0] && iGrid<indexLimitsSolver[1] && jGrid>=indexLimitsSolver[2] && jGrid<indexLimitsSolver[3] && kGrid>=indexLimitsSolver[4] && kGrid<indexLimitsSolver[5] )
+        if( iGrid>=indexLimitsSolver[4] && iGrid<indexLimitsSolver[5] && jGrid>=indexLimitsSolver[2] && jGrid<indexLimitsSolver[3] && kGrid>=indexLimitsSolver[0] && kGrid<indexLimitsSolver[1] )
         {  
             auto const localIdx = blockThreadIdx + haloSize;
             if constexpr (DIM==3)
@@ -571,9 +571,9 @@ struct BiCGstab2Kernel
         //auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
         //auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
 
-        const T_data r0 = ds[0]*ds[0];
+        const T_data r0 = ds[2]*ds[2];
         const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[2]*ds[2];
+        const T_data r2 = ds[0]*ds[0];
 
 
         T_data local1 = 0;
@@ -594,7 +594,7 @@ struct BiCGstab2Kernel
             blockSum[1] = 0;
         }
 
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
         {  
                       
             if constexpr (DIM==3)
@@ -690,9 +690,9 @@ struct BiCGstab2KernelSharedMem
         auto const jBlock = blockThreadIdx[1];
         auto const kBlock = blockThreadIdx[0];
 
-        const T_data r0 = ds[0]*ds[0];
+        const T_data r0 = ds[2]*ds[2];
         const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[2]*ds[2];
+        const T_data r2 = ds[0]*ds[0];
         
         T_data local1 = 0;
         T_data local2 = 0;
@@ -738,7 +738,7 @@ struct BiCGstab2KernelSharedMem
         alpaka::syncBlockThreads(acc);
         
 
-        if( iGrid>=indexLimitsSolver[0] && iGrid<indexLimitsSolver[1] && jGrid>=indexLimitsSolver[2] && jGrid<indexLimitsSolver[3] && kGrid>=indexLimitsSolver[4] && kGrid<indexLimitsSolver[5] )
+        if( iGrid>=indexLimitsSolver[4] && iGrid<indexLimitsSolver[5] && jGrid>=indexLimitsSolver[2] && jGrid<indexLimitsSolver[3] && kGrid>=indexLimitsSolver[0] && kGrid<indexLimitsSolver[1] )
         {    
             auto const localIdx = blockThreadIdx + haloSize;
             if constexpr (DIM==3)
@@ -850,7 +850,7 @@ struct BiCGstab3Kernel
             blockSum[1] = 0;
         }
 
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
         {  
             
             rkMdSpan(k,j,i) = rkMdSpan(k,j,i) - omegak * AzkMdSpan(k,j,i); 
@@ -924,9 +924,9 @@ struct BiCGstab1KernelSharedMemV0
         auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
         auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
 
-        T_data r0 = ds[0]*ds[0];
+        T_data r0 = ds[2]*ds[2];
         T_data r1 = ds[1]*ds[1];
-        T_data r2 = ds[2]*ds[2];
+        T_data r2 = ds[0]*ds[0];
         T_data fc0 =  - 2 * ( 1/r0 + 1/r1 + 1/r2 );
 
 
@@ -951,7 +951,7 @@ struct BiCGstab1KernelSharedMemV0
         auto localIdx = blockThreadIdx + haloSize;
         auto globalIdx = gridThreadIdx;
 
-        if( i>=indexLimitsSolver[0] && i<indexLimitsSolver[1] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[4] && k<indexLimitsSolver[5] )
+        if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
         {            
             sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) = MpkMdSpan(k,j,i);
 

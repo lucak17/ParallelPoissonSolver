@@ -11,11 +11,11 @@
 
 #include "inputParam.hpp"
 #include "communicationMPI.hpp"
-#include "solvers.hpp"
+//#include "solvers.hpp"
 #include "blockGrid.hpp"
 #include "matrixFreeOperatorA.hpp"
-#include "testAcc.hpp"
-#include "operationGrid.hpp"
+//#include "testAcc.hpp"
+//#include "operationGrid.hpp"
 #include "alpakaHelper.hpp"
 //#include "solverSetup.hpp"
 
@@ -87,8 +87,8 @@ int main(int argc, char** argv) {
     CommunicatorMPI<DIM,T_data>  communicator(blockGrid);
     ExactSolutionAndBCs<DIM,T_data> exactSolutionAndBCs;
     MatrixFreeOperatorA<DIM,T_data> operatorA(blockGrid);
-    AlpakaHelper<DIM,T_data> alpakaHelper(blockGrid); 
-    TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
+    AlpakaHelper<DIM,T_data> alpakaHelper(blockGrid);
+    //TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
 
     
     

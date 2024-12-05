@@ -5,7 +5,7 @@
 
 #pragma once
 #include <alpaka/alpaka.hpp>
-#include "iterativeSolverBase.hpp"
+#include "iterativeSolverBaseAlpaka.hpp"
 #include "blockGrid.hpp"
 #include "solverSetup.hpp"
 #include "communicationMPI.hpp"
@@ -14,13 +14,13 @@
 //#include "operationGrid.hpp"
 
 template <int DIM, typename T_data, int tolerance, int maxIteration, bool isMainLoop, bool communicationON, typename T_Preconditioner>
-class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
+class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>{
     public:
 
     ChebyshevIterationAlpaka(const BlockGrid<DIM,T_data>& blockGrid, const ExactSolutionAndBCs<DIM,T_data>& exactSolutionAndBCs, 
                         CommunicatorMPI<DIM,T_data>& communicatorMPI, const AlpakaHelper<DIM,T_data>& alpakaHelper):
-        IterativeSolverBase<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI),
-        alpakaHelper_(alpakaHelper),
+        IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper),
+        //alpakaHelper_(alpakaHelper),
         theta_( (this->eigenValuesGlobal_[0]*rescaleEigMin + this->eigenValuesGlobal_[1]*rescaleEigMax) * 0.5 * (1.0 + epsilon) ),
         delta_( (this->eigenValuesGlobal_[0]*rescaleEigMin - this->eigenValuesGlobal_[1]*rescaleEigMax) * 0.5 ),
         //theta_( (this->eigenValuesLocal_[0]*rescaleEigMin + this->eigenValuesLocal_[1]*rescaleEigMax) * 0.5 * (1.0 + epsilon) ),
@@ -70,6 +70,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
                         "\n workDivExtentKernel2SharedMemeLoop1D:\t" << workDivExtentKernel2SharedMemeLoop1D <<
                         "\n workDivExtentKernel2Shared:\t" << workDivExtentKernel2Shared <<
                         "\n workDivExtentKernel2Fixed:\t" << workDivExtentKernel2Fixed  << std::endl;
+            std::cout<< "Min eigenvalue "<< this->eigenValuesGlobal_[0]*rescaleEigMin << "\nMax eigenvalue "<< this->eigenValuesGlobal_[1]*rescaleEigMax << std::endl;
         }
     }
 
@@ -231,16 +232,26 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
             }
             
             
-            //alpaka::exec<Acc>(queue, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
-            //                            bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
-            //alpaka::exec<Acc>(queue, workDivExtentKernel2Shared, chebyshev2KernelShared, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
-            //                            bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
-            //                           this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
-
-            alpaka::exec<Acc>(queue, workDivExtentKernel2SharedMemeLoop1D, chebyshev2KernelSharedMemLoop1D, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
+            if constexpr (jumpCheb == 1)
+            {
+                alpaka::exec<Acc>(queue, workDivExtentKernel2SharedMemeLoop1D, chebyshev2KernelSharedMemLoop1D, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
+                                            bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
+                                            this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
+            }
+            else if constexpr (jumpCheb == 2)
+            {
+                alpaka::exec<Acc>(queue, workDivExtentKernel2Shared, chebyshev2KernelShared, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
                                         bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
-                                        this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
-
+                                        this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+            }
+            else
+            {
+                alpaka::exec<Acc>(queue, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
+                                bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
+            }
+            
+            
+            
             //alpaka::exec<Acc>(queue, workDivExtentKernel2Solver, chebyshev2KernelSharedMemSolver, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
             //                            bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
             //                            this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
@@ -309,7 +320,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBase<DIM,T_data,maxIterat
         memcpy(queue, Abuf, tmpView, this->alpakaHelper_.extent_);
     }
 
-    const AlpakaHelper<DIM,T_data>& alpakaHelper_;
+    //const AlpakaHelper<DIM,T_data>& alpakaHelper_;
     //T_Preconditioner preconditioner;
     
     const T_data theta_;

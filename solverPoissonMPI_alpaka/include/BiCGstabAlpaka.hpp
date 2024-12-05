@@ -8,7 +8,7 @@
 
 #pragma once
 #include <alpaka/alpaka.hpp>
-#include "iterativeSolverBase.hpp"
+#include "iterativeSolverBaseAlpaka.hpp"
 #include "blockGrid.hpp"
 #include "solverSetup.hpp"
 #include "communicationMPI.hpp"
@@ -17,13 +17,12 @@
 
 
 template <int DIM, typename T_data, int tolerance, int maxIteration, bool isMainLoop, bool communicationON, typename T_Preconditioner>
-class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
+class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>{
     public:
 
     BiCGstabAlpaka(const BlockGrid<DIM,T_data>& blockGrid, const ExactSolutionAndBCs<DIM,T_data>& exactSolutionAndBCs, 
                     CommunicatorMPI<DIM,T_data>& communicatorMPI, const AlpakaHelper<DIM,T_data>& alpakaHelper):
-        IterativeSolverBase<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI),
-        alpakaHelper_(alpakaHelper),
+        IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper),
         preconditioner(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper)
     {
         toll_ = static_cast<T_data>(tolerance) * tollScalingFactor;
@@ -613,7 +612,7 @@ class BiCGstabAlpaka : public IterativeSolverBase<DIM,T_data,maxIteration>{
     }
 
     private:
-    const AlpakaHelper<DIM,T_data>& alpakaHelper_;
+    //const AlpakaHelper<DIM,T_data>& alpakaHelper_;
     T_Preconditioner preconditioner;
     T_data toll_;
 
