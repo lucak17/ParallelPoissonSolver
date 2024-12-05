@@ -108,19 +108,19 @@ int main(int argc, char** argv) {
     solver.setProblem(fieldX,fieldB);
     //printFieldWithGuards(blockGrid,fieldX);
     MPI_Barrier(MPI_COMM_WORLD);
-    solver(fieldX,fieldB,operatorA);
+    
 
     //testAcc(blockGrid,fieldX,fieldB);
-    MPI_Barrier(MPI_COMM_WORLD);
+    //MPI_Barrier(MPI_COMM_WORLD);
     //printFieldWithGuards(blockGrid,fieldX);
-    MPI_Barrier(MPI_COMM_WORLD);
+    //MPI_Barrier(MPI_COMM_WORLD);
     // set problem
     //solver.setProblem(fieldX,fieldB);
     
     auto startSolver = std::chrono::high_resolution_clock::now();
     
     // iterative solver
-    //solver(fieldX,fieldB,operatorA);
+    solver(fieldX,fieldB,operatorA);
     
     auto endSolver = std::chrono::high_resolution_clock::now();
 

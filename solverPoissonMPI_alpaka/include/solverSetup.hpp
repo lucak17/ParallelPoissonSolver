@@ -20,7 +20,7 @@ using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
 using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
 constexpr std::array<int,3> guards={1,1,1};
-constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {2,2,32};
+constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,2,2};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,8,8};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,32};
 constexpr alpaka::Vec<Dim, Idx> haloSizeFixed = {guards[2],guards[1],guards[0]};
@@ -48,7 +48,7 @@ constexpr T_data tollScalingFactor = 1e-12;
 constexpr int orderNeumanBcs=2;
 
 constexpr int tollMainSolver=1;  //effective toll = tollMainSolver*tollScalingFactor
-constexpr int iterMaxMainSolver=1000;
+constexpr int iterMaxMainSolver=100;
 constexpr bool trackErrorFromIterationHistory=1;
 
 // preconditioner
@@ -58,9 +58,9 @@ constexpr int iterMaxPreconditioner=150;
 
 // chebyshev preconditioner
 constexpr T_data epsilon=1e-4;
-constexpr T_data rescaleEigMin= 500;
+constexpr T_data rescaleEigMin= 10;
 constexpr T_data rescaleEigMax= 1 - 5e-4;
-constexpr int chebyshevMax=24;
+constexpr int chebyshevMax=1;
 
 
 
