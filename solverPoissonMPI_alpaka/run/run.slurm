@@ -1,8 +1,8 @@
 #!/bin/bash -l
 #SBATCH -J test
 #SBATCH -t 00:01:00
-###SBATCH -A naiss2024-22-531
-#SBATCH -A naiss2024-5-582
+#SBATCH -A naiss2024-22-531
+###SBATCH -A naiss2024-5-582
 #SBATCH -p gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=8

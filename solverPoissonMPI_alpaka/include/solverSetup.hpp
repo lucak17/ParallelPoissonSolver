@@ -58,7 +58,7 @@ constexpr int iterMaxPreconditioner=150;
 
 // chebyshev preconditioner
 constexpr T_data epsilon=1e-4;
-constexpr T_data rescaleEigMin= 1;
+constexpr T_data rescaleEigMin= 10;
 constexpr T_data rescaleEigMax= 1 - 5e-4;
 constexpr int chebyshevMax=24;
 constexpr int jumpCheb = 1;
@@ -156,6 +156,7 @@ class TimeCounter
     timeTotKernel4(std::chrono::duration<double>(0)),
     timeTotKernel5(std::chrono::duration<double>(0)),
     timeTotKernel6(std::chrono::duration<double>(0)),
+    timeTotResetNeumanBCs(std::chrono::duration<double>(0)),
     timeTotAllReduction1(std::chrono::duration<double>(0)),
     timeTotAllReduction2(std::chrono::duration<double>(0))
     {}
@@ -172,6 +173,7 @@ class TimeCounter
                     + timeTotKernel4
                     + timeTotKernel5
                     + timeTotKernel6
+                    + timeTotResetNeumanBCs
                     + timeTotAllReduction1
                     + timeTotAllReduction2;
         return timeTotal;
@@ -199,6 +201,7 @@ class TimeCounter
         std::cout << "timeTotAllReductionTot " << (timeTotAllReduction1.count() + timeTotAllReduction2.count()) *1000 / numCycles << std::endl;
         std::cout << "timeTotKernelsBBiCGstabTot " << (timeTotKernel1.count() + timeTotKernel2.count() + timeTotKernel3.count() + 
                                                         timeTotKernel4.count() + timeTotKernel5.count() + timeTotKernel6.count() ) *1000 / numCycles << std::endl;
+        std::cout << "timeTotResetNeumanBCs " << timeTotResetNeumanBCs.count() *1000 / numCycles << std::endl;
         std::cout << "timeTotal " << this->getTimeTotal().count() *1000 / numCycles << std::endl;
     }
 
@@ -213,6 +216,7 @@ class TimeCounter
     std::chrono::duration<double> timeTotKernel4;
     std::chrono::duration<double> timeTotKernel5;
     std::chrono::duration<double> timeTotKernel6;
+    std::chrono::duration<double> timeTotResetNeumanBCs;
     std::chrono::duration<double> timeTotAllReduction1;
     std::chrono::duration<double> timeTotAllReduction2;
     std::chrono::duration<double> timeTotal;

@@ -22,6 +22,7 @@ class IterativeSolverBaseAlpaka{
         exactSolutionAndBCs_(exactSolutionAndBCs),
         communicatorMPI_(communicatorMPI),
         alpakaHelper_(alpakaHelper),
+        queueSolver_({alpakaHelper.devAcc_}),
         my_rank_(blockGrid.getMyrank()),
         ntot_ranks_(blockGrid.getNranks()[0]*blockGrid.getNranks()[1]*blockGrid.getNranks()[2]),
         globalLocation_(blockGrid.getGlobalLocation()),
@@ -42,7 +43,13 @@ class IterativeSolverBaseAlpaka{
         normFieldB_(1.0),
         errorFromIteration_(-1.0),
         errorComputeOperator_(-1.0),
-        numIterationFinal_(0)
+        numIterationFinal_(0),
+        //cfgExtentNoHaloSolverBase_({this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_}),
+        bufTmp(alpaka::allocBuf<T_data, Idx>(alpakaHelper.devAcc_, alpakaHelper.extent_)),
+        workDivExtentResetNeumanBCsKernel_(alpaka::getValidWorkDiv(alpakaHelper.cfgExtentNoHaloHelper_, alpakaHelper.devAcc_, ResetNeumanBCsKernel<DIM, T_data, false, true>{}, 
+                                                    alpaka::experimental::getMdSpan(this->bufTmp), this->exactSolutionAndBCs_, 1, 1.0, 
+                                                    alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.haloSize_, alpakaHelper.ds_, alpakaHelper.origin_, 
+                                                    alpakaHelper.globalLocation_, alpakaHelper.nlocal_noguards_, alpakaHelper.haloSize_ ) )
     {
         errorFromIterationHistory_ = new T_data[maxIteration];
     }
@@ -175,95 +182,50 @@ class IterativeSolverBaseAlpaka{
 
 
     template<bool isMainLoop, bool fieldData>
-    void resetNeumanBCsAlpaka(alpaka::Buf<T_Dev, T_data, Dim, Idx> bufData)
+    void resetNeumanBCsAlpaka(alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufData)
     {
-
-        std::array<int,6> indexLimitsBCs=indexLimitsData_;
         alpaka::Vec<alpaka::DimInt<3>, Idx> adjustIdx{0,0,0};
         alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsEdge{0,0,0,0,0,0};
-        int indxGuard,indxData,indxBord;
+        //int indxGuard,indxData,indxBord;
         int dirAlpaka;
-        T_data x,y,z;
+        //T_data x,y,z;
 
         auto bufDataMdSpan = alpaka::experimental::getMdSpan(bufData);
-        alpaka::Queue<Acc, alpaka::Blocking> queue{this->alpakaHelper_.devAcc_};
-        alpaka::KernelCfg<Acc> const cfgExtentNoHalo{this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_};
-
-        ResetNeumanBCsKernel<DIM,T_data, isMainLoop*fieldData> resetNeumanBCsKernel;
-        auto workDivExtent = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, resetNeumanBCsKernel, 
+        //alpaka::Queue<Acc, alpaka::Blocking> queue{this->alpakaHelper_.devAcc_};
+        //alpaka::KernelCfg<Acc> const cfgExtentNoHalo{this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_};
+        
+        ResetNeumanBCsKernel<DIM, T_data, isMainLoop*fieldData, true> resetNeumanBCsKernelNegative;
+        ResetNeumanBCsKernel<DIM, T_data, isMainLoop*fieldData, false> resetNeumanBCsKernelPositive;
+        /*
+        auto workDivExtentResetNeumanBCsKernel = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, resetNeumanBCsKernelNegative, 
                                                     bufDataMdSpan, this->exactSolutionAndBCs_, 1, this->normFieldB_, 
                                                     indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
                                                     this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
-        
+        */
         for(int dir=0; dir<DIM; dir++)
         {
-            dirAlpaka = DIM - 1 - dir;
+            dirAlpaka = 2 - dir;
             if(hasBoundary_[2*dir] && bcsType_[2*dir]==1)
             {
                 //std::cout<< "Debug in resetNeumanBCs " <<std::endl;
-                indexLimitsBCs=indexLimitsData_;
                 indexLimitsEdge = this->alpakaHelper_.indexLimitsDataAlpaka_;
                 adjustIdx={0,0,0};
                 indexLimitsEdge[2*dirAlpaka+1]=indexLimitsEdge[2*dirAlpaka] + guards_[dir];
                 adjustIdx[dirAlpaka]=1;
-                for(int k=indexLimitsBCs[4]; k<indexLimitsBCs[5];k++)
-                {
-                    for(int j=indexLimitsBCs[2];j<indexLimitsBCs[3];j++)
-                    {
-                        for(int i=indexLimitsBCs[0];i<indexLimitsBCs[1];i++)
-                        {   
-                            indxGuard = i - adjustIndex[0] + stride_j_*(j - adjustIndex[1]) + stride_k_*(k - adjustIndex[2]);
-                            if constexpr(fieldData && isMainLoop) // apply Neuman BCs to field data --> take into account BCs value
-                            {
-                                x=origin_[0] + (i-indexLimitsData_[0])*ds_[0] + globalLocation_[0]*(nlocal_noguards_[0])*ds_[0];
-                                y=origin_[1] + (j-indexLimitsData_[2])*ds_[1] + globalLocation_[1]*(nlocal_noguards_[1])*ds_[1];
-                                z=origin_[2] + (k-indexLimitsData_[4])*ds_[2] + globalLocation_[2]*(nlocal_noguards_[2])*ds_[2];
-
-                                indxData = i + adjustIndex[0] + stride_j_*(j + adjustIndex[1]) + stride_k_*(k + adjustIndex[2]);
-                                //field[indxGuard] = field[indxData] - 2 * ds_[dir] * exactSolutionAndBCs_.trueSolutionDdir(x,y,z,dir) / this->normFieldB_;  
-                            }
-                            else // apply Neuman BCs to helper fields in iterative solver --> no BCs
-                            {
-                                indxData = i + adjustIndex[0] + stride_j_*(j + adjustIndex[1]) + stride_k_*(k + adjustIndex[2]);
-                                //field[indxGuard] = field[indxData];
-                        
-                            }
-                        }
-                    }
-                }
+                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelNegative, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                                    indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                    this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
             }
             if(hasBoundary_[2*dir+1] && bcsType_[2*dir+1]==1)
             {
                 //std::cout<< "Debug in resetNeumanBCs " <<std::endl;
-                indexLimitsBCs=indexLimitsData_;
-                adjustIndex={0,0,0};
-                indexLimitsBCs[2*dir]=indexLimitsBCs[2*dir+1] - 1;
-                adjustIndex[dir] = -1;
-                for(int k=indexLimitsBCs[4]; k<indexLimitsBCs[5];k++)
-                {
-                    for(int j=indexLimitsBCs[2];j<indexLimitsBCs[3];j++)
-                    {
-                        for(int i=indexLimitsBCs[0];i<indexLimitsBCs[1];i++)
-                        {
-                            indxGuard = i - adjustIndex[0] + stride_j_*(j - adjustIndex[1]) + stride_k_*(k - adjustIndex[2]);
-                            if constexpr(fieldData && isMainLoop) // apply Neuman BCs to field data --> take into account BCs value
-                            {
-                                x=origin_[0] + (i-indexLimitsData_[0])*ds_[0] + globalLocation_[0]*(nlocal_noguards_[0])*ds_[0];
-                                y=origin_[1] + (j-indexLimitsData_[2])*ds_[1] + globalLocation_[1]*(nlocal_noguards_[1])*ds_[1];
-                                z=origin_[2] + (k-indexLimitsData_[4])*ds_[2] + globalLocation_[2]*(nlocal_noguards_[2])*ds_[2];
-                                
-                                indxData = i + adjustIndex[0] + stride_j_*(j + adjustIndex[1]) + stride_k_*(k + adjustIndex[2]);
-                                //field[indxGuard] = field[indxData] + 2 * ds_[dir]*exactSolutionAndBCs_.trueSolutionDdir(x,y,z,dir) / this->normFieldB_;
-                            
-                            }
-                            else // apply Neuman BCs to helper fields in iterative solver --> no BCs
-                            {
-                                indxData = i + adjustIndex[0] + stride_j_*(j + adjustIndex[1]) + stride_k_*(k + adjustIndex[2]);
-                                //field[indxGuard] = field[indxData];
-                            }   
-                        }
-                    }
-                }
+                indexLimitsEdge = this->alpakaHelper_.indexLimitsDataAlpaka_;
+                adjustIdx={0,0,0};
+                indexLimitsEdge[2*dirAlpaka]=indexLimitsEdge[2*dirAlpaka+1] - guards_[dir];
+                adjustIdx[dirAlpaka]=-1;
+                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelPositive, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                                    indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                    this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
             }
         }
     }
@@ -748,6 +710,7 @@ class IterativeSolverBaseAlpaka{
     const ExactSolutionAndBCs<DIM,T_data>& exactSolutionAndBCs_;
     CommunicatorMPI<DIM,T_data>& communicatorMPI_;
     const AlpakaHelper<DIM,T_data>& alpakaHelper_;
+    alpaka::Queue<Acc, alpaka::Blocking> queueSolver_;
     const int my_rank_;
     const int ntot_ranks_;
     const std::array<int,3> globalLocation_;
@@ -776,6 +739,10 @@ class IterativeSolverBaseAlpaka{
     std::chrono::duration<double> durationSolver_;
 
     T_data* errorFromIterationHistory_;
+    //alpaka::KernelCfg<Acc> const cfgExtentNoHaloSolverBase_;
+    alpaka::Buf<T_Dev, T_data, Dim, Idx> bufTmp;
+    //ResetNeumanBCsKernel<DIM, T_data, false, true> resetNeumanBCsKernel0;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentResetNeumanBCsKernel_;
 
     private:
 };
