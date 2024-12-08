@@ -58,7 +58,7 @@ constexpr int iterMaxPreconditioner=150;
 
 // chebyshev preconditioner
 constexpr T_data epsilon=1e-4;
-constexpr T_data rescaleEigMin= 10;
+constexpr T_data rescaleEigMin= 100;
 constexpr T_data rescaleEigMax= 1 - 5e-4;
 constexpr int chebyshevMax=24;
 constexpr int jumpCheb = 1;
@@ -72,7 +72,7 @@ template<int DIM,typename T_data>
 class ExactSolutionAndBCs
 {   
     public:
-        inline T_data setFieldB(const T_data x, const T_data y, const T_data z) const
+        ALPAKA_FN_HOST_ACC inline T_data setFieldB(const T_data x, const T_data y, const T_data z) const
         {
             return -sin(x) - cos(y) - 3*sin(z) + 2*y*z + 2; 
             //return -sin(x) - cos(y) - 3*sin(z) + 2 ;
@@ -80,7 +80,7 @@ class ExactSolutionAndBCs
             //return -sin(x) - cos(y) + 2;
             //return -sin(x) - cos(y); 
         }
-        inline T_data trueSolutionFxyz(const T_data x, const T_data y, const T_data z) const
+        ALPAKA_FN_HOST_ACC inline T_data trueSolutionFxyz(const T_data x, const T_data y, const T_data z) const
         {
             //return sin(x) + x*x +y*y + z*z;
             return sin(x) + cos(y) + 3*sin(z) + x*x*y*z + x*x + 10;
@@ -91,7 +91,7 @@ class ExactSolutionAndBCs
             //return x*x*x - 2*x*x + 10;
             //return sin(x) + cos(y) +  10;
         }
-        inline T_data trueSolutionDdir(const T_data x, const T_data y, const T_data z, const int dir) const
+        ALPAKA_FN_HOST_ACC inline T_data trueSolutionDdir(const T_data x, const T_data y, const T_data z, const int dir) const
         {
             if constexpr (DIM == 1)
             {
@@ -119,18 +119,18 @@ class ExactSolutionAndBCs
         }
         
     private:
-        inline T_data trueSolutionDdirX(const T_data x, const T_data y, const T_data z) const 
+        ALPAKA_FN_HOST_ACC inline T_data trueSolutionDdirX(const T_data x, const T_data y, const T_data z) const 
         {
             return cos(x) + 2*x*y*z + 2*x;
             //return cos(x) + 2*x;
             //return cos(x) + 1;
         }
-        inline T_data trueSolutionDdirY(const T_data x, const T_data y, const T_data z) const
+        ALPAKA_FN_HOST_ACC inline T_data trueSolutionDdirY(const T_data x, const T_data y, const T_data z) const
         {
             return -sin(y) + x*x*z;
             //return -sin(y) + 1;
         }
-        inline T_data trueSolutionDdirZ(const T_data x, const T_data y, const T_data z) const
+        ALPAKA_FN_HOST_ACC inline T_data trueSolutionDdirZ(const T_data x, const T_data y, const T_data z) const
         {
             return 3*cos(z) + x*x*y;
             //return 3*cos(z) + 1;

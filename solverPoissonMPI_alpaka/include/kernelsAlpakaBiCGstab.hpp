@@ -86,51 +86,6 @@ struct StencilKernel
     }
 };
 
-template<int DIM, typename T_data> 
-struct DotProductKernel
-{
-    template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB,  T_data* const globalSum, const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver) const -> void
-    {
-        // Get indexes
-        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
-        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
-        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
-
-        auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
-        auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
-        auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
-
-        T_data local = 0;
-        T_data& blockSum = alpaka::declareSharedVar<T_data, __COUNTER__>(acc);
-
-
-        if(i==0 && j==0 && k==0)
-        {
-            *globalSum = 0;
-        }
-        if(iBlock==0 && jBlock==0 && kBlock==0)
-        {
-            blockSum = 0;
-        }
-        // Z Y X
-        if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
-        {
-            local = bufDataA(k,j,i) * bufDataB(k,j,i);
-        }
-        
-        alpaka::atomicAdd(acc, &blockSum, local, alpaka::hierarchy::Threads{});
-        alpaka::syncBlockThreads(acc);
-
-        if(iBlock==0 && jBlock==0 && kBlock==0)
-        {
-            alpaka::atomicAdd(acc, globalSum, blockSum, alpaka::hierarchy::Blocks{});
-        }
-    }
-};
-
-
-
 
 
 template<int DIM, typename T_data> 

@@ -120,11 +120,9 @@ int main(int argc, char** argv) {
     auto startSolver = std::chrono::high_resolution_clock::now();
     
     // iterative solver
-    solver(fieldX,fieldB,operatorA);
-    
+    solver(fieldX,fieldB);
+    MPI_Barrier(MPI_COMM_WORLD);
     auto endSolver = std::chrono::high_resolution_clock::now();
-
-    MPI_Barrier(MPI_COMM_WORLD);    
 
     if(my_rank==0)
     {

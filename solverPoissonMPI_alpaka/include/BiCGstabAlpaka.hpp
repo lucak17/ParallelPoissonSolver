@@ -23,54 +23,36 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
     BiCGstabAlpaka(const BlockGrid<DIM,T_data>& blockGrid, const ExactSolutionAndBCs<DIM,T_data>& exactSolutionAndBCs, 
                     CommunicatorMPI<DIM,T_data>& communicatorMPI, const AlpakaHelper<DIM,T_data>& alpakaHelper):
         IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper),
-        preconditioner(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper)
+        preconditioner(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper),
+        toll_(static_cast<T_data>(tolerance) * tollScalingFactor),
+        pkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
+        rkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
+        r0Dev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
+        MpkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
+        AMpkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
+        zkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
+        AzkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
+        pitchBuffAcc({alpaka::getPitchesInBytes(pkDev)})     
     {
-        toll_ = static_cast<T_data>(tolerance) * tollScalingFactor;
-        pk = new T_data[this->ntotlocal_guards_];
-        rk = new T_data[this->ntotlocal_guards_];
-        r0 = new T_data[this->ntotlocal_guards_];
-        Mpk = new T_data[this->ntotlocal_guards_];
-        AMpk = new T_data[this->ntotlocal_guards_];
-        zk = new T_data[this->ntotlocal_guards_];
-        Azk = new T_data[this->ntotlocal_guards_];
-
-        std::fill(pk, pk + this->ntotlocal_guards_, 0);
-        std::fill(rk, rk + this->ntotlocal_guards_, 0);
-        std::fill(r0, r0 + this->ntotlocal_guards_, 0);
-        std::fill(Mpk, Mpk + this->ntotlocal_guards_, 0);
-        std::fill(AMpk, AMpk + this->ntotlocal_guards_, 0);
-        std::fill(zk, zk + this->ntotlocal_guards_, 0);
-        std::fill(Azk, Azk + this->ntotlocal_guards_, 0);
-        
+        //auto pitchBuffAcc{alpaka::getPitchesInBytes(pkDev)};
+        for(int i=0; i<3; i++)
+        {
+            pitchBuffAcc[i] /= sizeof(T_data);
+        }
+        stride_j_alpaka = pitchBuffAcc[1];
+        stride_k_alpaka = pitchBuffAcc[0];
+        //int ntotBuffAcc = stride_k_alpaka * this->alpakaHelper_.extent_[0];
+        this-> communicatorMPI_.setStridesAlpaka(stride_j_alpaka,stride_k_alpaka);        
     }
 
     ~BiCGstabAlpaka()
-    {
-        delete[] pk;
-        delete[] rk;
-        delete[] r0;
-        delete[] Mpk;
-        delete[] AMpk;
-        delete[] zk;
-        delete[] Azk;
-        
+    {      
     }
 
-
     
-    void operator()(T_data fieldX[], T_data fieldB[], MatrixFreeOperatorA<DIM,T_data>& operatorA)
+    void operator()(T_data fieldX[], T_data fieldB[])
     {
-        int i,j,k,indx;
         int iter=0;
-
-
-        const int imin=this->indexLimitsSolver_[0];
-        const int imax=this->indexLimitsSolver_[1];
-        const int jmin=this->indexLimitsSolver_[2];
-        const int jmax=this->indexLimitsSolver_[3];
-        const int kmin=this->indexLimitsSolver_[4];
-        const int kmax=this->indexLimitsSolver_[5];
-            
         T_data alphak=1;
         T_data betak=1;
         T_data omegak=1;
@@ -84,44 +66,33 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         T_data pSum[2];
         T_data totSum[2];
 
-        std::fill(pk, pk + this->ntotlocal_guards_, 0);
-        std::fill(rk, rk + this->ntotlocal_guards_, 0);
-        std::fill(r0, r0 + this->ntotlocal_guards_, 0);
-        std::fill(Mpk, Mpk + this->ntotlocal_guards_, 0);
-        std::fill(AMpk, AMpk + this->ntotlocal_guards_, 0);
-        std::fill(zk, zk + this->ntotlocal_guards_, 0);
-        std::fill(Azk, Azk + this->ntotlocal_guards_, 0);
+        constexpr std::uint8_t value0{0}; 
+        
+        auto rkMdSpan = alpaka::experimental::getMdSpan(rkDev);
+        auto r0MdSpan = alpaka::experimental::getMdSpan(r0Dev);
+        auto MpkMdSpan = alpaka::experimental::getMdSpan(MpkDev);
+        auto AMpkMdSpan = alpaka::experimental::getMdSpan(AMpkDev);
+        auto zkMdSpan = alpaka::experimental::getMdSpan(zkDev);
+        auto AzkMdSpan = alpaka::experimental::getMdSpan(AzkDev);
+        auto pkMdSpan = alpaka::experimental::getMdSpan(pkDev);
 
+        alpaka::memset(this->queueSolver_, rkDev, value0);
+        alpaka::memset(this->queueSolver_, r0Dev, value0);
+        alpaka::memset(this->queueSolver_, pkDev, value0);
+        alpaka::memset(this->queueSolver_, MpkDev, value0);
+        alpaka::memset(this->queueSolver_, AMpkDev, value0);
+        alpaka::memset(this->queueSolver_, zkDev, value0);
+        alpaka::memset(this->queueSolver_, AzkDev, value0);
 
-        //alpaka::Queue<Acc, alpaka::Blocking> queue{this->alpakaHelper_.devAcc_};
+        auto fieldXHostView = createView(this->alpakaHelper_.devHost_, fieldX, this->alpakaHelper_.extent_);
+        auto fieldBHostView = createView(this->alpakaHelper_.devHost_, fieldB, this->alpakaHelper_.extent_);
 
         auto fieldXDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
         auto fieldXMdSpan = alpaka::experimental::getMdSpan(fieldXDev);
-        auto pkDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-        auto pkMdSpan = alpaka::experimental::getMdSpan(pkDev);
-        auto rkDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-        auto rkMdSpan = alpaka::experimental::getMdSpan(rkDev);
-        auto r0Dev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-        auto r0MdSpan = alpaka::experimental::getMdSpan(r0Dev);
-        auto MpkDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-        auto MpkMdSpan = alpaka::experimental::getMdSpan(MpkDev);
-        auto AMpkDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-        auto AMpkMdSpan = alpaka::experimental::getMdSpan(AMpkDev);
-        auto zkDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-        auto zkMdSpan = alpaka::experimental::getMdSpan(zkDev);
-        auto AzkDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-        auto AzkMdSpan = alpaka::experimental::getMdSpan(AzkDev);
-
-        auto pitchBuffAcc{alpaka::getPitchesInBytes(pkDev)};
-        for(int i=0; i<3; i++)
-        {
-            pitchBuffAcc[i] /= sizeof(T_data);
-        }
-        const Idx stride_j_alpaka = pitchBuffAcc[1];
-        const Idx stride_k_alpaka = pitchBuffAcc[0];
-        int ntotBuffAcc = stride_k_alpaka * this->alpakaHelper_.extent_[0];
-
-        this-> communicatorMPI_.setStridesAlpaka(stride_j_alpaka,stride_k_alpaka);
+        auto fieldBDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
+        auto fieldBMdSpan = alpaka::experimental::getMdSpan(fieldBDev);
+        
+        
 
         const alpaka::Vec<Dim, Idx> extent1D = {1,1,1};
         auto dotPorductHost1 = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
@@ -129,14 +100,6 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         auto* const ptrDotPorductHost1= getPtrNative(dotPorductHost1);
         T_data* const ptrDotPorductDev1{std::data(dotPorductDev1)};
 
-        /*
-        auto dotPorductHost2 = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
-        auto dotPorductDev2 = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D);
-        auto* const ptrDotPorductHost2= getPtrNative(dotPorductHost2);
-        T_data* const ptrDotPorductDev2{std::data(dotPorductDev2)};
-        */       
-        
-        
         const alpaka::Vec<Dim, Idx> extent1D2 = {1,1,2};
         auto dotPorductHost2D = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D2);
         auto dotPorductDev2D = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D2);
@@ -146,52 +109,27 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         auto totSumView = createView(this->alpakaHelper_.devHost_, totSum, extent1D2);
         auto totSumDev2D = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D2);
         T_data* const ptrTotSumDev2D{std::data(totSumDev2D)};
-        
+              
 
-        /*
-        const alpaka::Vec<Dim, Idx> extent1D = {1,1,1};
-        auto dotPorductHost = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
-        auto dotPorductDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D);
-        auto* const ptrDotPorductHost= getPtrNative(dotPorductHost);
-        T_data* const ptrDotPorductDev{std::data(dotPorductDev)};
-
-        
-        auto alphakHost = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
-        auto alphakDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D);
-        auto* const ptrAlphakHost= getPtrNative(alphakHost);
-        T_data* const ptrAlphakDev{std::data(alphakDev)};
-
-        auto betakHost = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
-        auto betakDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D);
-        auto* const ptrBetakHost= getPtrNative(betakHost);
-        T_data* const ptrBetakDev{std::data(betakDev)};
-
-        auto omegakHost = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
-        auto omegakDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D);
-        auto* const ptrOmegakHost= getPtrNative(omegakHost);
-        T_data* const ptrOmegakDev{std::data(omegakDev)};
-        */
-
-        
-        
-
-
+        memcpy(this->queueSolver_, fieldXDev, fieldXHostView, this->alpakaHelper_.extent_);
+        memcpy(this->queueSolver_, fieldBDev, fieldBHostView, this->alpakaHelper_.extent_);
 
         if (isMainLoop && communicationON)
         {
-            this->communicatorMPI_(fieldX);
+            this->communicatorMPI_.template operator()<true>(getPtrNative(fieldXDev));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
 
         if constexpr(isMainLoop)
         {
-            this-> template resetNeumanBCs<isMainLoop,true>(fieldX);
+            this-> template resetNeumanBCsAlpaka<isMainLoop,true>(fieldXDev);
         }
         else 
         {
-            std::fill(fieldX, fieldX + this->ntotlocal_guards_, 0);
+            alpaka::memset(this->queueSolver_, fieldXDev, value0);
         }
-        this-> template normalizeProblemToFieldBNorm<isMainLoop,communicationON>(fieldX,fieldB);
+
+        this-> template normalizeProblemToFieldBNormAlpaka<isMainLoop,communicationON>(fieldXDev,fieldBDev);
 
         if constexpr(isMainLoop)
         {
@@ -203,8 +141,9 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             }
         }
 
+    
         // r0= b - A(x0)
-        this->errorComputeOperator_ = this-> template computeErrorOperatorA<isMainLoop, communicationON>(fieldX,fieldB,rk,operatorA);
+        this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(fieldXDev,fieldBDev,rkDev);
         if constexpr (isMainLoop && trackErrorFromIterationHistory)
         {
             this->errorFromIterationHistory_[0]=this->errorComputeOperator_;
@@ -216,23 +155,8 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         }
 
         //p0=r0
-        std::memcpy(pk, rk, this->ntotlocal_guards_* sizeof(T_data));
-        std::memcpy(r0, rk, this->ntotlocal_guards_* sizeof(T_data));
-
-        auto fieldXHostView = createView(this->alpakaHelper_.devHost_, fieldX, this->alpakaHelper_.extent_);
-        auto pkHostView = createView(this->alpakaHelper_.devHost_, pk, this->alpakaHelper_.extent_);
-        auto rkHostView = createView(this->alpakaHelper_.devHost_, rk, this->alpakaHelper_.extent_);
-        auto r0HostView = createView(this->alpakaHelper_.devHost_, r0, this->alpakaHelper_.extent_);
-        auto MpkHostView = createView(this->alpakaHelper_.devHost_, Mpk, this->alpakaHelper_.extent_);
-
-        memcpy(this->queueSolver_, fieldXDev, fieldXHostView, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, pkDev, pkHostView, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, rkDev, rkHostView, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, r0Dev, r0HostView, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, MpkDev, MpkHostView, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, AMpkDev, MpkHostView, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, zkDev, MpkHostView, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, AzkDev, MpkHostView, this->alpakaHelper_.extent_);
+        memcpy(this->queueSolver_, r0Dev, rkDev, this->alpakaHelper_.extent_);
+        memcpy(this->queueSolver_, pkDev, rkDev, this->alpakaHelper_.extent_);
 
         InitializeBufferKernel<3> initBufferKernel;
         alpaka::KernelCfg<Acc> const cfgExtent = {this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_};
@@ -241,12 +165,6 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
         auto workDivExtentFixed = alpaka::WorkDivMembers<Dim,Idx>(this->alpakaHelper_.numBlocksGrid_,blockExtentFixed,this->alpakaHelper_.elemPerThread_);
 
-        auto workDivExtent0 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, initBufferKernel, pkMdSpan, this->blockGrid_.getMyrank(), stride_j_alpaka,stride_k_alpaka);
-        DotProductKernel<DIM,T_data>  dotProductKernel;
-        auto workDivExtentDotProduct = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, dotProductKernel, r0MdSpan, r0MdSpan, ptrDotPorductDev1, this->alpakaHelper_.indexLimitsSolverAlpaka_);
-        StencilKernel<DIM, T_data> stencilKernel;
-        auto workDivExtentStencil = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, stencilKernel, AzkMdSpan, zkMdSpan, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_);
-        
         UpdateFieldWith1FieldKernelV2<DIM, T_data> updateFieldWith1FieldKernel;
         auto workDivExtentUpdateField1 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, updateFieldWith1FieldKernel, rkMdSpan, AMpkMdSpan, alphak, betak,
                                                                  this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_);
@@ -283,8 +201,8 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         {
             std::cout << "Rank " << this->blockGrid_.getMyrank() << "\n extent" << this->alpakaHelper_.extent_  << 
                         "\n pitches" << " "<< pitchBuffAcc << " stride_j "<<stride_j_alpaka << " stride_k " << stride_k_alpaka << 
-                        "\n workDivExtentDotProduct:\n\t" << workDivExtentDotProduct << 
-                        "\n workDivExtentStencil:\n\t" << workDivExtentStencil << 
+                        //"\n workDivExtentDotProduct:\n\t" << workDivExtentDotProduct << 
+                        //"\n workDivExtentStencil:\n\t" << workDivExtentStencil << 
                         "\n workDivExtentUpdateField1Solver:\n\t" << workDivExtentUpdateField1Solver << 
                         "\n workDivExtentUpdateField2Solver:\n\t" << workDivExtentUpdateField2Solver <<
                         "\n workDivExtentKernel1NoHalo:\n\t" << workDivExtentKernel1NoHalo << std::endl;
@@ -582,49 +500,46 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             }
         }
 
-        memcpy(this->queueSolver_, fieldXHostView, fieldXDev, this->alpakaHelper_.extent_);
-        alpaka::wait(this->queueSolver_);
-
         this->numIterationFinal_ = iter;
+        
         if constexpr(communicationON)
-        {   
-            this->communicatorMPI_(fieldX);
+        {
+            this->communicatorMPI_.template operator()<true>(getPtrNative(fieldXDev));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
 
-        this-> template resetNeumanBCs<isMainLoop,true>(fieldX);
+        this-> template resetNeumanBCsAlpaka<isMainLoop,true>(fieldXDev);
         auto endSolver = std::chrono::high_resolution_clock::now();
         this->durationSolver_ = endSolver - startSolver;
 
         if constexpr (isMainLoop)
         {
-            this->errorComputeOperator_ = this-> template computeErrorOperatorA<isMainLoop, communicationON>(fieldX,fieldB,rk,operatorA);
+            this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(fieldXDev,fieldBDev,rkDev);
         }
 
-        for(i=0; i < this->ntotlocal_guards_; i++)
-        {
-            fieldX[i] *= this->normFieldB_;
-            fieldB[i] *= this->normFieldB_;
-        }
-        this->normFieldB_=1;
 
-        if constexpr(communicationON)
-        {   
-            this->communicatorMPI_(fieldX);
-            this->communicatorMPI_.waitAllandCheckRcv();
-        }
+        this-> template resetNormFieldsAlpaka<communicationON>(fieldXDev,fieldBDev,this->normFieldB_);
+        this->normFieldB_ = 1;
+
+        memcpy(this->queueSolver_, fieldXHostView, fieldXDev, this->alpakaHelper_.extent_);
+        alpaka::wait(this->queueSolver_);
     }
 
     private:
     //const AlpakaHelper<DIM,T_data>& alpakaHelper_;
     T_Preconditioner preconditioner;
-    T_data toll_;
+    const T_data toll_;
 
-    T_data* pk;
-    T_data* rk;
-    T_data* r0;
-    T_data* Mpk;
-    T_data* AMpk;
-    T_data* zk;
-    T_data* Azk;
+    alpaka::Buf<T_Dev, T_data, Dim, Idx> pkDev;
+    alpaka::Buf<T_Dev, T_data, Dim, Idx> rkDev;
+    alpaka::Buf<T_Dev, T_data, Dim, Idx> r0Dev;
+    alpaka::Buf<T_Dev, T_data, Dim, Idx> MpkDev;
+    alpaka::Buf<T_Dev, T_data, Dim, Idx> AMpkDev;
+    alpaka::Buf<T_Dev, T_data, Dim, Idx> zkDev;
+    alpaka::Buf<T_Dev, T_data, Dim, Idx> AzkDev;
+
+    alpaka::Vec<alpaka::DimInt<3>, Idx> pitchBuffAcc;
+
+    Idx stride_j_alpaka;
+    Idx stride_k_alpaka;
 };

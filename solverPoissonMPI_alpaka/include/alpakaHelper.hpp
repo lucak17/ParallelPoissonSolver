@@ -28,8 +28,11 @@ class AlpakaHelper {
         extentNoHalo_(setNumCells(blockGrid)),
         extentSolver_({blockGrid.getIndexLimitsSolver()[5] - blockGrid.getIndexLimitsSolver()[4], blockGrid.getIndexLimitsSolver()[3] - blockGrid.getIndexLimitsSolver()[2], blockGrid.getIndexLimitsSolver()[1] - blockGrid.getIndexLimitsSolver()[0]}),
         offsetSolver_({blockGrid.getIndexLimitsSolver()[4],blockGrid.getIndexLimitsSolver()[2],blockGrid.getIndexLimitsSolver()[0]}),
+        extent1D1_({1,1,1}),
+        extent1D2_({1,1,2}),
         numBlocksGrid_(setNumBlocks()),
         cfgExtentNoHaloHelper_({this->extentNoHalo_,this->elemPerThread_}),
+        cfgExtentSolverHelper_({this->extentSolver_,this->elemPerThread_}),
         indexLimitsSolverAlpaka_({blockGrid.getIndexLimitsSolver()[4],blockGrid.getIndexLimitsSolver()[5],blockGrid.getIndexLimitsSolver()[2],blockGrid.getIndexLimitsSolver()[3],blockGrid.getIndexLimitsSolver()[0],blockGrid.getIndexLimitsSolver()[1]}),
         indexLimitsDataAlpaka_({blockGrid.getIndexLimitsData()[4],blockGrid.getIndexLimitsData()[5],blockGrid.getIndexLimitsData()[2],blockGrid.getIndexLimitsData()[3],blockGrid.getIndexLimitsData()[0],blockGrid.getIndexLimitsData()[1]}),
         ds_({blockGrid.getDs()[2],blockGrid.getDs()[1],blockGrid.getDs()[0]}),
@@ -51,9 +54,12 @@ class AlpakaHelper {
     const alpaka::Vec<Dim, Idx> extent_;
     const alpaka::Vec<Dim, Idx> extentNoHalo_;
     const alpaka::Vec<Dim, Idx> extentSolver_;
+    const alpaka::Vec<Dim, Idx> extent1D1_;
+    const alpaka::Vec<Dim, Idx> extent1D2_;
     const alpaka::Vec<Dim, Idx> offsetSolver_;
     const alpaka::Vec<Dim, Idx> numBlocksGrid_;
     const alpaka::KernelCfg<Acc> cfgExtentNoHaloHelper_;
+    const alpaka::KernelCfg<Acc> cfgExtentSolverHelper_;
     const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolverAlpaka_;
     const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsDataAlpaka_;
     const alpaka::Vec<alpaka::DimInt<3>, T_data> ds_;
