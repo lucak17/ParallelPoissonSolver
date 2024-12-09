@@ -3,7 +3,7 @@
 #include <cstring>
 #include <cmath> 
 #include <chrono>
-#include <iomanip>  // For std::put_time
+#include <iomanip>
 #include <ctime>
 
 #pragma once
@@ -32,9 +32,24 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         AMpkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         zkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         AzkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
-        pitchBuffAcc({alpaka::getPitchesInBytes(pkDev)})     
+        pitchBuffAcc({alpaka::getPitchesInBytes(pkDev)}),
+        workDivExtentFixed(alpaka::WorkDivMembers<Dim,Idx>(this->alpakaHelper_.numBlocksGrid_,blockExtentFixed,this->alpakaHelper_.elemPerThread_)),
+        workDivExtentKernel1(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, BiCGstab1Kernel<DIM, T_data> {}, 
+                                                    alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev), 
+                                                    this->ptrTmp, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_)),
+        workDivExtentKernel2(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, BiCGstab2KernelSharedMem<DIM, T_data>{}, 
+                                                    alpaka::experimental::getMdSpan(this->pkDev),alpaka::experimental::getMdSpan(this->pkDev),alpaka::experimental::getMdSpan(this->pkDev),
+                                                    this->ptrTmp,this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_)),
+        workDivExtentKernel3(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, BiCGstab3Kernel<DIM, T_data>{}, 
+                                                    alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev), this->ptrTmp, 1.0,
+                                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_)),
+        workDivExtentUpdateField1(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, UpdateFieldWith1FieldKernelV2<DIM, T_data>{}, 
+                                                    alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev), 1.0, 1.0,
+                                                    this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_)),
+        workDivExtentUpdateField2(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, UpdateFieldWith2FieldsKernelV2<DIM, T_data>{},
+                                                    alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev),
+                                                    1.0, 1.0, 1.0,this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_))     
     {
-        //auto pitchBuffAcc{alpaka::getPitchesInBytes(pkDev)};
         for(int i=0; i<3; i++)
         {
             pitchBuffAcc[i] /= sizeof(T_data);
@@ -76,13 +91,13 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         auto AzkMdSpan = alpaka::experimental::getMdSpan(AzkDev);
         auto pkMdSpan = alpaka::experimental::getMdSpan(pkDev);
 
-        alpaka::memset(this->queueSolver_, rkDev, value0);
-        alpaka::memset(this->queueSolver_, r0Dev, value0);
-        alpaka::memset(this->queueSolver_, pkDev, value0);
-        alpaka::memset(this->queueSolver_, MpkDev, value0);
-        alpaka::memset(this->queueSolver_, AMpkDev, value0);
-        alpaka::memset(this->queueSolver_, zkDev, value0);
-        alpaka::memset(this->queueSolver_, AzkDev, value0);
+        alpaka::memset(this->queueSolverNonBlocking1_, rkDev, value0);
+        alpaka::memset(this->queueSolverNonBlocking1_, r0Dev, value0);
+        alpaka::memset(this->queueSolverNonBlocking1_, pkDev, value0);
+        alpaka::memset(this->queueSolverNonBlocking1_, MpkDev, value0);
+        alpaka::memset(this->queueSolverNonBlocking1_, AMpkDev, value0);
+        alpaka::memset(this->queueSolverNonBlocking1_, zkDev, value0);
+        alpaka::memset(this->queueSolverNonBlocking1_, AzkDev, value0);
 
         auto fieldXHostView = createView(this->alpakaHelper_.devHost_, fieldX, this->alpakaHelper_.extent_);
         auto fieldBHostView = createView(this->alpakaHelper_.devHost_, fieldB, this->alpakaHelper_.extent_);
@@ -91,8 +106,11 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         auto fieldXMdSpan = alpaka::experimental::getMdSpan(fieldXDev);
         auto fieldBDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
         auto fieldBMdSpan = alpaka::experimental::getMdSpan(fieldBDev);
-        
-        
+
+        memcpy(this->queueSolverNonBlocking1_, fieldXDev, fieldXHostView, this->alpakaHelper_.extent_);
+        memcpy(this->queueSolverNonBlocking1_, fieldBDev, fieldBHostView, this->alpakaHelper_.extent_);
+        alpaka::wait(this->queueSolverNonBlocking1_);
+             
 
         const alpaka::Vec<Dim, Idx> extent1D = {1,1,1};
         auto dotPorductHost1 = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
@@ -109,11 +127,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         auto totSumView = createView(this->alpakaHelper_.devHost_, totSum, extent1D2);
         auto totSumDev2D = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D2);
         T_data* const ptrTotSumDev2D{std::data(totSumDev2D)};
-              
-
-        memcpy(this->queueSolver_, fieldXDev, fieldXHostView, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, fieldBDev, fieldBHostView, this->alpakaHelper_.extent_);
-
+            
         
         if constexpr (isMainLoop)
         {
@@ -138,19 +152,19 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
         this-> template normalizeProblemToFieldBNormAlpaka<isMainLoop,communicationON>(fieldXDev,fieldBDev);
 
+        // r0= b - A(x0)
+        this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(fieldXDev,fieldBDev,rkDev);
+
         if constexpr(isMainLoop)
         {
             if(this->my_rank_==0)
             {    std::cout<<"Debug in BiCGSTAB Alpaka START " << " main loop "<< isMainLoop << " globalLocation " << this->globalLocation_[0] << " "<< this->globalLocation_[1] <<" "<< this->globalLocation_[2] <<
                 " indexLimitsData "<< this->indexLimitsData_[0]<< " "<<this->indexLimitsData_[1] <<" "<< this->indexLimitsData_[2] << " " <<this->indexLimitsData_[3] << " "<< this->indexLimitsData_[4] << " "<< this->indexLimitsData_[5] <<
-                " indexLimitsSolver "<< this->indexLimitsSolver_[0]<< " "<<this->indexLimitsSolver_[1] <<" "<< this->indexLimitsSolver_[2] << " " <<this->indexLimitsSolver_[3] << " "<< this->indexLimitsSolver_[4] << " "<< this->indexLimitsSolver_[5] << 
-                " norm fieldB " <<this->normFieldB_ <<std::endl;
+                " indexLimitsSolver "<< this->indexLimitsSolver_[0]<< " "<<this->indexLimitsSolver_[1] <<" "<< this->indexLimitsSolver_[2] << " " <<this->indexLimitsSolver_[3] << " "<< this->indexLimitsSolver_[4] << " "<< this->indexLimitsSolver_[5] <<std::endl; 
+                std::cout<<"Initial error: " <<  this->errorComputeOperator_ <<" - Norm fieldB " <<this->normFieldB_ <<std::endl;
             }
         }
 
-    
-        // r0= b - A(x0)
-        this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(fieldXDev,fieldBDev,rkDev);
         if constexpr (isMainLoop && trackErrorFromIterationHistory)
         {
             this->errorFromIterationHistory_[0]=this->errorComputeOperator_;
@@ -162,63 +176,33 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         }
 
         //p0=r0
-        memcpy(this->queueSolver_, r0Dev, rkDev, this->alpakaHelper_.extent_);
-        memcpy(this->queueSolver_, pkDev, rkDev, this->alpakaHelper_.extent_);
+        memcpy(this->queueSolverNonBlocking1_, r0Dev, rkDev, this->alpakaHelper_.extent_);
+        memcpy(this->queueSolverNonBlocking1_, pkDev, rkDev, this->alpakaHelper_.extent_);
+        alpaka::wait(this->queueSolverNonBlocking1_);
 
-        InitializeBufferKernel<3> initBufferKernel;
-        alpaka::KernelCfg<Acc> const cfgExtent = {this->alpakaHelper_.extent_, this->alpakaHelper_.elemPerThread_};
-        alpaka::KernelCfg<Acc> const cfgExtentNoHalo = {this->alpakaHelper_.extentNoHalo_, this->alpakaHelper_.elemPerThread_};
-        alpaka::KernelCfg<Acc> const cfgExtentSolver = {this->alpakaHelper_.extentSolver_, this->alpakaHelper_.elemPerThread_};
-
-        auto workDivExtentFixed = alpaka::WorkDivMembers<Dim,Idx>(this->alpakaHelper_.numBlocksGrid_,blockExtentFixed,this->alpakaHelper_.elemPerThread_);
-
-        UpdateFieldWith1FieldKernelV2<DIM, T_data> updateFieldWith1FieldKernel;
-        auto workDivExtentUpdateField1 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, updateFieldWith1FieldKernel, rkMdSpan, AMpkMdSpan, alphak, betak,
-                                                                 this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_);
-        UpdateFieldWith2FieldsKernelV2<DIM, T_data> updateFieldWith2FieldsKernel;
-        auto workDivExtentUpdateField2 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, updateFieldWith2FieldsKernel, pkMdSpan, rkMdSpan, AMpkMdSpan, alphak, betak, omegak, 
-                                        this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_);
-        
-        UpdateFieldWith1FieldKernelSolver<DIM, T_data> updateFieldWith1FieldKernelSolver;
-        auto workDivExtentUpdateField1Solver = alpaka::getValidWorkDiv(cfgExtentSolver, this->alpakaHelper_.devAcc_, updateFieldWith1FieldKernelSolver, rkMdSpan, AMpkMdSpan, alphak, betak,this->alpakaHelper_.offsetSolver_);
-        UpdateFieldWith2FieldsKernelSolver<DIM, T_data> updateFieldWith2FieldsKernelSolver;
-        auto workDivExtentUpdateField2Solver = alpaka::getValidWorkDiv(cfgExtentSolver, this->alpakaHelper_.devAcc_, updateFieldWith2FieldsKernelSolver, pkMdSpan, rkMdSpan, AMpkMdSpan, alphak, betak, omegak, this->alpakaHelper_.offsetSolver_);
-
-
-
+             
         BiCGstab1Kernel<DIM, T_data> biCGstab1Kernel;
-        auto workDivExtentKernel1 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
-                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
-        auto workDivExtentKernel1NoHalo = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
-                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
-        auto workDivExtentKernel1Fixed = alpaka::WorkDivMembers<Dim,Idx>(this->alpakaHelper_.numBlocksGrid_,blockExtentFixed,this->alpakaHelper_.elemPerThread_);
         BiCGstab2KernelSharedMem<DIM, T_data> biCGstab2Kernel;
-        //auto workDivExtentKernel2 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab2Kernel, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D,
-        //                            this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
-        auto workDivExtentKernel2NoHalo = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, biCGstab2Kernel, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D,
-                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_); 
-
         BiCGstab3Kernel<DIM, T_data> biCGstab3Kernel;
-        auto workDivExtentKernel3 = alpaka::getValidWorkDiv(cfgExtent, this->alpakaHelper_.devAcc_, biCGstab3Kernel, rkMdSpan, AzkMdSpan, r0MdSpan, ptrDotPorductDev2D, omegak,
-                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_); 
-        auto workDivExtentKernel3NoHalo = alpaka::getValidWorkDiv(cfgExtentNoHalo, this->alpakaHelper_.devAcc_, biCGstab3Kernel, rkMdSpan, AzkMdSpan, r0MdSpan, ptrDotPorductDev2D, omegak,
-                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);                             
+        
+        UpdateFieldWith1FieldKernelV2<DIM, T_data> updateFieldWith1FieldKernel;
+        UpdateFieldWith2FieldsKernelV2<DIM, T_data> updateFieldWith2FieldsKernel;
+
 
         if(this->my_rank_==0)
         {
             std::cout << "Rank " << this->blockGrid_.getMyrank() << "\n extent" << this->alpakaHelper_.extent_  << 
                         "\n pitches" << " "<< pitchBuffAcc << " stride_j "<<stride_j_alpaka << " stride_k " << stride_k_alpaka << 
-                        //"\n workDivExtentDotProduct:\n\t" << workDivExtentDotProduct << 
-                        //"\n workDivExtentStencil:\n\t" << workDivExtentStencil << 
-                        "\n workDivExtentUpdateField1Solver:\n\t" << workDivExtentUpdateField1Solver << 
-                        "\n workDivExtentUpdateField2Solver:\n\t" << workDivExtentUpdateField2Solver <<
-                        "\n workDivExtentKernel1NoHalo:\n\t" << workDivExtentKernel1NoHalo << std::endl;
+                        "\n workDivExtentFixed:\n\t" << workDivExtentFixed << 
+                        "\n workDivExtentKernel1:\n\t" << workDivExtentKernel1 << 
+                        "\n workDivExtentUpdateField1:\n\t" << workDivExtentUpdateField1 << 
+                        "\n workDivExtentUpdateField2:\n\t" << workDivExtentUpdateField2 << std::endl;
         }
 
         rho0=1;
         rho1=rho0;
         preconditioner(MpkDev,pkDev);
-        alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1Fixed, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+        alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
         auto startSolver = std::chrono::high_resolution_clock::now();
         auto startCounter = std::chrono::high_resolution_clock::now();
@@ -228,7 +212,6 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             startCounter = std::chrono::high_resolution_clock::now();
             preconditioner(MpkDev,pkDev);
             this->timeCounter.timeTotPreconditioner1 += std::chrono::high_resolution_clock::now() - startCounter;
-            //memcpy(this->queueSolver_, MpkDev, pkDev, this->alpakaHelper_.extent_);
 
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr(communicationON)
@@ -238,7 +221,6 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             }
             this->timeCounter.timeTotCommunication1 += std::chrono::high_resolution_clock::now() - startCounter;
 
-            // to do Add Neuman BCs kernels
             startCounter = std::chrono::high_resolution_clock::now();
             this-> template resetNeumanBCsAlpaka<isMainLoop,false>(MpkDev);
             this->timeCounter.timeTotResetNeumanBCs += std::chrono::high_resolution_clock::now() - startCounter;
@@ -259,22 +241,15 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             }
             */
             
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentStencil, stencilKernel, AMpkMdSpan, MpkMdSpan, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_);
-            //ptrDotPorductHost[0]=0;
-            //memcpy(this->queueSolver_, dotPorductDev, dotPorductHost, extent1D);
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentDotProduct, dotProductKernel, r0MdSpan, AMpkMdSpan, ptrDotPorductDev, this->alpakaHelper_.indexLimitsSolverAlpaka_);
             // kernel1
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1NoHalo, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             this->timeCounter.timeTotKernel1 += std::chrono::high_resolution_clock::now() - startCounter;
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
-            //                        this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr(communicationON)
             {
-                //MPI_Allreduce(pSum+1, totSum+1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
                 MPI_Allreduce(ptrDotPorductDev1, ptrTotSumDev2D, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
                 memcpy(this->queueSolver_, totSumView, totSumDev2D, extent1D2);
                 alphak=rho0/totSum[0];
@@ -302,19 +277,16 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
                 }
             }
             */
-\
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField1Solver, updateFieldWith1FieldKernelSolver, rkMdSpan, AMpkMdSpan, 1, -alphak, this->alpakaHelper_.offsetSolver_);
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField1, updateFieldWith1FieldKernel, rkMdSpan, AMpkMdSpan,1, -alphak,this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_);
+
             // kernel2
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentFixed, updateFieldWith1FieldKernel, rkMdSpan, AMpkMdSpan,1, -alphak,this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentFixed, updateFieldWith1FieldKernel, rkMdSpan, AMpkMdSpan,1, -alphak,
+                                this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
             this->timeCounter.timeTotKernel2 += std::chrono::high_resolution_clock::now() - startCounter;
         
-            //std::fill(zk, zk + this->ntotlocal_guards_, 0);
             startCounter = std::chrono::high_resolution_clock::now();
             preconditioner(zkDev,rkDev);
             this->timeCounter.timeTotPreconditioner2 += std::chrono::high_resolution_clock::now() - startCounter;
-            //memcpy(this->queueSolver_, zkDev, rkDev, this->alpakaHelper_.extent_);
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr (communicationON)
             {
@@ -339,7 +311,6 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
                 }
             }
             */
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentStencil, stencilKernel, AzkMdSpan, zkMdSpan, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_);
             /*
             pSum1=0.0;
             pSum2=0.0;
@@ -357,31 +328,16 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
                 }
             }
             */
-            /*
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentDotProduct, dotProductKernel, rkMdSpan,AzkMdSpan,ptrDotPorductDev, this->alpakaHelper_.indexLimitsSolverAlpaka_);
-            memcpy(this->queueSolver_, dotPorductHost, dotPorductDev, extent1D2);
-            pSum1 = ptrDotPorductHost[0];
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentDotProduct, dotProductKernel, AzkMdSpan,AzkMdSpan,ptrDotPorductDev, this->alpakaHelper_.indexLimitsSolverAlpaka_);
-            memcpy(this->queueSolver_, dotPorductHost, dotPorductDev, extent1D2);
-            pSum2 = ptrDotPorductHost[0];
-            */
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2, biCGstab2Kernel, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D, 
-            //                        this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+
             // kernel3
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2NoHalo, biCGstab2Kernel, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D, 
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2, biCGstab2Kernel, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);    
             this->timeCounter.timeTotKernel3 += std::chrono::high_resolution_clock::now() - startCounter;                    
-            //memcpy(this->queueSolver_, dotPorductHost1, dotPorductDev1, extent1D);
-            //memcpy(this->queueSolver_, dotPorductHost2, dotPorductDev2, extent1D);
-            //pSum1 = dotPorductHost1[0];
-            //pSum2 = dotPorductHost1[0];
             
             startCounter = std::chrono::high_resolution_clock::now();
             if  constexpr (communicationON)
-            {   
-                //MPI_Allreduce(pSum, totSum, 2, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
-                //MPI_Allreduce(pSum+1, totSum+1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
+            {
                 MPI_Allreduce(ptrDotPorductDev2D, ptrTotSumDev2D, 2, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
                 memcpy(this->queueSolver_, totSumView, totSumDev2D, extent1D2);
                 omegak=totSum[0]/totSum[1];  
@@ -401,13 +357,11 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
                 fieldX[i] = fieldX[i] + alphak*Mpk[i] + omegak*zk[i];
             }
             */
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField2Solver, updateFieldWith2FieldsKernelSolver, fieldXMdSpan, MpkMdSpan, zkMdSpan, 1, alphak, omegak, this->alpakaHelper_.offsetSolver_);
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField2, updateFieldWith2FieldsKernel, fieldXMdSpan, MpkMdSpan, zkMdSpan, 1, alphak, omegak,
-            //                 this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.haloSize_);
+
             // kernel4
             startCounter = std::chrono::high_resolution_clock::now();
             alpaka::exec<Acc>(this->queueSolver_, workDivExtentFixed, updateFieldWith2FieldsKernel, fieldXMdSpan, MpkMdSpan, zkMdSpan, 1, alphak, omegak,
-                             this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.offsetSolver_);
+                                this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.offsetSolver_);
             this->timeCounter.timeTotKernel4 += std::chrono::high_resolution_clock::now() - startCounter;
             /*
             pSum1=0.0;
@@ -428,27 +382,15 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             */
             // kernel 5
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel3NoHalo, biCGstab3Kernel, rkMdSpan, AzkMdSpan, r0MdSpan, ptrDotPorductDev2D, omegak,
-                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel3, biCGstab3Kernel, rkMdSpan, AzkMdSpan, r0MdSpan, ptrDotPorductDev2D, omegak,
+                                this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             this->timeCounter.timeTotKernel5 += std::chrono::high_resolution_clock::now() - startCounter;
 
             
-            
-            /*
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField1, updateFieldWith1FieldKernel, rkMdSpan, AzkMdSpan, 1, -omegak, this->alpakaHelper_.indexLimitsSolverAlpaka_);
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentDotProduct, dotProductKernel, r0MdSpan, rkMdSpan,ptrDotPorductDev1, this->alpakaHelper_.indexLimitsSolverAlpaka_);
-            memcpy(this->queueSolver_, dotPorductHost1, dotPorductDev1, extent1D);
-            pSum1 = ptrDotPorductHost1[0];
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentDotProduct, dotProductKernel, rkMdSpan, rkMdSpan,ptrDotPorductDev1, this->alpakaHelper_.indexLimitsSolverAlpaka_);
-            memcpy(this->queueSolver_, dotPorductHost1, dotPorductDev1, extent1D);
-            pSum2 = ptrDotPorductHost1[0];
-            */
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr (communicationON)
             {
                 MPI_Allreduce(ptrDotPorductDev2D,ptrTotSumDev2D, 2, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
-                //MPI_Allreduce(pSum, &rho1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
-                //MPI_Allreduce(pSum+1, totSum+1, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
                 memcpy(this->queueSolver_, totSumView, totSumDev2D, extent1D2);
                 rho1=totSum[0];
                 this->errorFromIteration_ = std::sqrt(totSum[1]);
@@ -479,13 +421,11 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
                 }
             }
             */
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField2Solver, updateFieldWith2FieldsKernelSolver, pkMdSpan, rkMdSpan, AMpkMdSpan, betak, 1, -betak*omegak, this->alpakaHelper_.offsetSolver_);
-            //alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField2, updateFieldWith2FieldsKernel, pkMdSpan, rkMdSpan, AMpkMdSpan, betak, 1, -betak*omegak, 
-            //                 this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.haloSize_);
+
             // kernel 6
             startCounter = std::chrono::high_resolution_clock::now();
             alpaka::exec<Acc>(this->queueSolver_, workDivExtentFixed, updateFieldWith2FieldsKernel, pkMdSpan, rkMdSpan, AMpkMdSpan, betak, 1, -betak*omegak, 
-                             this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
+                                this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
              this->timeCounter.timeTotKernel6 += std::chrono::high_resolution_clock::now() - startCounter;    
 
             iter++;
@@ -533,7 +473,6 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
     }
 
     private:
-    //const AlpakaHelper<DIM,T_data>& alpakaHelper_;
     T_Preconditioner preconditioner;
     const T_data toll_;
 
@@ -549,4 +488,10 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
     Idx stride_j_alpaka;
     Idx stride_k_alpaka;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentFixed;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentKernel1;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentKernel2;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentKernel3;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentUpdateField1;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentUpdateField2;
 };

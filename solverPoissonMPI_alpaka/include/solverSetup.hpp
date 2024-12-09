@@ -4,7 +4,7 @@
 #pragma once
 #include <alpaka/alpaka.hpp>
 #include <chrono>
-#include <iomanip>  // For std::put_time
+#include <iomanip> 
 #include <ctime>
 
 constexpr int DIM=3;
@@ -20,7 +20,7 @@ using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
 using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
 constexpr std::array<int,3> guards={1,1,1};
-constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,2,2};
+constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,4,32};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,8,8};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,32};
 constexpr alpaka::Vec<Dim, Idx> haloSizeFixed = {guards[2],guards[1],guards[0]};
@@ -44,7 +44,7 @@ constexpr T_data PI = 3.141592653589793;
 
 constexpr T_data tollScalingFactor = 1e-12;
 
-// Order Neuman BCs scheme
+// Order Neuman BCs scheme (only 2nd available)
 constexpr int orderNeumanBcs=2;
 
 constexpr int tollMainSolver=1;  //effective toll = tollMainSolver*tollScalingFactor
