@@ -26,8 +26,7 @@ class NoneSolverAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteratio
 
     inline void operator()(alpaka::Buf<T_Dev, T_data, Dim, Idx> bufX, alpaka::Buf<T_Dev, T_data, Dim, Idx> bufB)
     {
-        alpaka::Queue<Acc, alpaka::Blocking> queue{this->alpakaHelper_.devAcc_};
-        memcpy(queue, bufX, bufB, this->alpakaHelper_.extent_);
+        memcpy(this->queueSolver_, bufX, bufB, this->alpakaHelper_.extent_);
     }
 
     private:

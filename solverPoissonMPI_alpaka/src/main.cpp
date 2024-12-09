@@ -1,7 +1,7 @@
 #include <mpi.h>
 #include <iostream>
 #include <chrono>
-#include <iomanip>  // For std::put_time
+#include <iomanip>
 #include <ctime>
 #include <array>
 #include <cstring>
@@ -11,13 +11,10 @@
 
 #include "inputParam.hpp"
 #include "communicationMPI.hpp"
-//#include "solvers.hpp"
 #include "blockGrid.hpp"
-#include "matrixFreeOperatorA.hpp"
-//#include "testAcc.hpp"
-//#include "operationGrid.hpp"
 #include "alpakaHelper.hpp"
-//#include "solverSetup.hpp"
+//#include "matrixFreeOperatorA.hpp"
+//#include "operationGrid.hpp"
 
 
 // Nranks, ds, guards always size 3, then exceeding dimensions are not used 
@@ -58,7 +55,7 @@ int main(int argc, char** argv) {
     if(nranks[0]*nranks[1]*nranks[2]!=world_size)
     {
         std::cerr << "Error: configuration of MPI ranks not coherent! DIM = "<< DIM << " worldSize "<<world_size <<" ranks "<< nranks[0] <<" "<<nranks[1]<<" "<<nranks[2]<< " "<< std::endl;
-        exit(-1); // Exit with failure status
+        exit(-1);
     }
 
     
@@ -83,20 +80,14 @@ int main(int argc, char** argv) {
     }
 
 
-    // objects that hold communication, exact solution and BCs and the operator of the linear system
+    // objects that hold communication, exact solution and BCs
     CommunicatorMPI<DIM,T_data>  communicator(blockGrid);
     ExactSolutionAndBCs<DIM,T_data> exactSolutionAndBCs;
-    MatrixFreeOperatorA<DIM,T_data> operatorA(blockGrid);
     AlpakaHelper<DIM,T_data> alpakaHelper(blockGrid);
-    //TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
-
     
     
     // iterative solver object
-    //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
-    
     T_Solver solver(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
-    //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
 
     // define fieldData
     T_data* fieldX = new T_data[blockGrid.getNtotLocalGuards()];
@@ -104,24 +95,15 @@ int main(int argc, char** argv) {
     std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), 0);
     std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), 0);
 
-    //printFieldWithGuards(blockGrid,fieldX);
-    solver.setProblem(fieldX,fieldB);
-    //printFieldWithGuards(blockGrid,fieldX);
-    MPI_Barrier(MPI_COMM_WORLD);
-    
-
-    //testAcc(blockGrid,fieldX,fieldB);
-    //MPI_Barrier(MPI_COMM_WORLD);
-    //printFieldWithGuards(blockGrid,fieldX);
-    //MPI_Barrier(MPI_COMM_WORLD);
-    // set problem
     //solver.setProblem(fieldX,fieldB);
+    MPI_Barrier(MPI_COMM_WORLD);
     
     auto startSolver = std::chrono::high_resolution_clock::now();
     
     // iterative solver
     solver(fieldX,fieldB);
     MPI_Barrier(MPI_COMM_WORLD);
+
     auto endSolver = std::chrono::high_resolution_clock::now();
 
     if(my_rank==0)

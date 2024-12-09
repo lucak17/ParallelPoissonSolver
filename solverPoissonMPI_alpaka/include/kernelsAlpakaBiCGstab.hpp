@@ -3,36 +3,6 @@
 #include <alpaka/alpaka.hpp>
 #include <cstdio>
 
-template<int DIM> 
-struct InitializeBufferKernel
-{
-    template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufData, int myrank, int stride_j, int stride_k) const -> void
-    {
-        // Get indexes
-        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-
-        if constexpr (DIM==3)
-        {
-            //printf()
-            // Z Y X
-            //bufData(gridThreadIdx[0], gridThreadIdx[1], gridThreadIdx[2]) = gridThreadIdx[2] + gridThreadIdx[1]* stride_j + gridThreadIdx[0]*stride_k;
-            bufData(gridThreadIdx[0], gridThreadIdx[1], gridThreadIdx[2]) = myrank;
-        }
-        else if constexpr (DIM==2)
-        {
-            // Y X
-            bufData(gridThreadIdx[0], gridThreadIdx[1]) = gridThreadIdx[1] + gridThreadIdx[0] * stride_j;
-        }
-        else
-        {
-            bufData(gridThreadIdx[0]) = myrank;
-        }
-    }
-};
-
-
-
 template<int DIM, typename T_data> 
 struct StencilKernel
 {
@@ -142,9 +112,7 @@ struct UpdateFieldWith1FieldKernelV2
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridThreadIdxShifted = gridThreadIdx + offset;
-        //auto const iGrid = gridThreadIdxShifted[2];
-        //auto const jGrid = gridThreadIdxShifted[1];
-        //auto const kGrid = gridThreadIdxShifted[0];
+        
         
         // Z Y X
         if( gridThreadIdxShifted[2]<indexLimitsSolver[5] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]<indexLimitsSolver[1] )
@@ -209,9 +177,6 @@ struct UpdateFieldWith2FieldsKernelV1
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridThreadIdxShifted = gridThreadIdx + haloSize;
-        //auto const iGrid = gridThreadIdxShifted[2];
-        //auto const jGrid = gridThreadIdxShifted[1];
-        //auto const kGrid = gridThreadIdxShifted[0];
         
         // Z Y X
         if( gridThreadIdxShifted[2]>=indexLimitsSolver[4] && gridThreadIdxShifted[2]<indexLimitsSolver[5] && gridThreadIdxShifted[1]>=indexLimitsSolver[2] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]>=indexLimitsSolver[0] && gridThreadIdxShifted[0]<indexLimitsSolver[1] )
@@ -234,9 +199,6 @@ struct UpdateFieldWith2FieldsKernelV2
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridThreadIdxShifted = gridThreadIdx + offset;
-        //auto const iGrid = gridThreadIdxShifted[2];
-        //auto const jGrid = gridThreadIdxShifted[1];
-        //auto const kGrid = gridThreadIdxShifted[0];
         
         // Z Y X
         if(gridThreadIdxShifted[2]<indexLimitsSolver[5] && gridThreadIdxShifted[1]<indexLimitsSolver[3] && gridThreadIdxShifted[0]<indexLimitsSolver[1] )
@@ -522,9 +484,6 @@ struct BiCGstab2Kernel
         
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
-        //auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
-        //auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
-        //auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
 
         const T_data r0 = ds[2]*ds[2];
         const T_data r1 = ds[1]*ds[1];
@@ -534,8 +493,6 @@ struct BiCGstab2Kernel
         T_data local1 = 0;
         T_data local2 = 0;
         auto& blockSum = alpaka::declareSharedVar<T_data[2], __COUNTER__>(acc);
-        //T_data& blockSum2 = alpaka::declareSharedVar<T_data, __COUNTER__>(acc);
-
 
         if(i==0 && j==0 && k==0)
         {
@@ -595,14 +552,6 @@ struct BiCGstab2Kernel
                 }
             }
         }
-
-        /*
-        if(iBlock==0 && jBlock==0 && kBlock==0)
-        {
-            alpaka::atomicAdd(acc, globalSum, blockSum1, alpaka::hierarchy::Blocks{});
-            alpaka::atomicAdd(acc, globalSum+1, blockSum2, alpaka::hierarchy::Blocks{});
-        }
-        */
     }
 };
 
@@ -782,11 +731,7 @@ struct BiCGstab3Kernel
         
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
-        /*
-        auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
-        auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
-        auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
-        */
+
         T_data local1 = 0;
         T_data local2 = 0;
         auto& blockSum = alpaka::declareSharedVar<T_data[2], __COUNTER__>(acc);
@@ -828,13 +773,6 @@ struct BiCGstab3Kernel
                 }
             }
         }
-        /*
-        if(iBlock==0 && jBlock==0 && kBlock==0)
-        {
-            alpaka::atomicAdd(acc, globalSum, blockSum1, alpaka::hierarchy::Blocks{});
-            alpaka::atomicAdd(acc, globalSum+1, blockSum2, alpaka::hierarchy::Blocks{});
-        }
-        */
     }
 };
 
