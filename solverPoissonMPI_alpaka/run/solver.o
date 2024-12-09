@@ -1,10 +1,10 @@
-Current local time and date: 2024-12-09 18:03:54
+Current local time and date: 2024-12-09 18:18:21
 Domain DIM = 3 - Number of MPI tasks 2 2 4 - Tot MPI ranks 16 - Max threads per MPI rank 1 - Tot threads 16
 Global grid size from block 128 128 128 - Global number of points 2097152
 Domain local Np xyz no guards 64 64 32 - Domain local Np xyz guards = 66 66 34 - Guards size 1 1 1
 Total local number of points noguards 131072 - total local number of points guards 148104
 Total local number of points noguards per thread 131072 - total local number of points guards per thread 148104
-Domain global origin xyz 0 0 0 - domain global extension xyz 12.7 12.7 12.7 - Ds xyz  = 0.1 0.1 0.1
+Domain global origin xyz 3 2.5 10 - domain global extension xyz 15.7 15.2 22.7 - Ds xyz  = 0.1 0.1 0.1
 Boundary condition type 0 1 1 0 1 0
 Using alpaka accelerator: AccGpuHipRt<3,unsigned long>
 Chebyshev preconditioner
@@ -16,7 +16,7 @@ Chebyshev preconditioner
 Min eigenvalue 18.0709
 Max eigenvalue 1199.22
 Debug in BiCGSTAB Alpaka START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 65 1 65 1 33 indexLimitsSolver 2 65 1 65 1 33
-Initial error: 1 - Norm fieldB 1.23965e+08
+Initial error: 1 - Norm fieldB 5.30831e+08
 Rank 0
  extent(34, 66, 66)
  pitches (6336, 96, 1) stride_j 96 stride_k 6336
@@ -28,57 +28,57 @@ Rank 0
 	{gridBlockExtent: (32, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
 	{gridBlockExtent: (32, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- Debug in BiCGSTAB Alpaka iter 10 alpha 1.6279 omega 0.903311 rho0 2.90456e-06 error 0.0149393
- Debug in BiCGSTAB Alpaka iter 20 alpha 1.69641 omega 0.661977 rho0 1.04045e-10 error 0.00680307
- Debug in BiCGSTAB Alpaka iter 30 alpha 1.52163 omega 0.91086 rho0 5.21845e-14 error 0.00374632
- Debug in BiCGSTAB Alpaka iter 40 alpha 1.8215 omega 0.40578 rho0 5.42689e-16 error 0.00220489
- Debug in BiCGSTAB Alpaka iter 50 alpha -0.364113 omega 0.396758 rho0 1.90145e-12 error 0.000929388
- Debug in BiCGSTAB Alpaka iter 60 alpha 1.94845 omega 0.40141 rho0 3.42811e-12 error 0.000487386
- Debug in BiCGSTAB Alpaka iter 70 alpha 1.57234 omega 1.47087 rho0 1.01449e-12 error 0.000370776
- Debug in BiCGSTAB Alpaka iter 80 alpha -0.148782 omega 0.445462 rho0 3.22777e-13 error 0.000301652
- Debug in BiCGSTAB Alpaka iter 90 alpha -2.70772 omega 8.62443 rho0 5.89894e-12 error 0.000249661
- Debug in BiCGSTAB Alpaka iter 100 alpha 0.895863 omega 2.68535 rho0 2.45688e-12 error 0.000195051
- Debug in BiCGSTAB Alpaka iter 110 alpha 7.96431 omega 0.397652 rho0 -2.04355e-12 error 6.51118e-05
- Debug in BiCGSTAB Alpaka iter 120 alpha 4.4097 omega 0.492078 rho0 4.05088e-12 error 5.03225e-05
- Debug in BiCGSTAB Alpaka iter 130 alpha 5.40257 omega 0.622475 rho0 6.96881e-13 error 2.93683e-05
- Debug in BiCGSTAB Alpaka iter 140 alpha 0.787091 omega 3.20927 rho0 6.12854e-13 error 1.15448e-05
- Debug in BiCGSTAB Alpaka iter 150 alpha -0.735171 omega 0.420975 rho0 2.37259e-14 error 3.58427e-06
- Debug in BiCGSTAB Alpaka iter 160 alpha 0.0579967 omega 1.54556 rho0 3.78763e-14 error 9.54296e-07
- Debug in BiCGSTAB Alpaka iter 170 alpha 1.5283 omega 0.471943 rho0 1.40941e-16 error 2.45954e-07
- Debug in BiCGSTAB Alpaka iter 180 alpha 4.92874 omega 0.383513 rho0 6.8262e-16 error 2.96803e-08
- Debug in BiCGSTAB Alpaka iter 190 alpha 0.040795 omega 0.544476 rho0 -9.16572e-15 error 1.65205e-08
- Debug in BiCGSTAB Alpaka iter 200 alpha 2.26837 omega 0.394601 rho0 4.88741e-19 error 1.30168e-09
- Debug in BiCGSTAB Alpaka iter 210 alpha 0.00380001 omega 0.611915 rho0 2.68487e-20 error 9.29424e-10
- Debug in BiCGSTAB Alpaka iter 220 alpha -43.3517 omega 0.407387 rho0 -5.22264e-19 error 3.85544e-10
- Debug in BiCGSTAB Alpaka iter 230 alpha 0.0823551 omega 15.8502 rho0 5.34276e-20 error 2.82352e-10
- Debug in BiCGSTAB Alpaka iter 240 alpha 0.218527 omega 2.27422 rho0 4.16717e-20 error 2.09968e-10
- Debug in BiCGSTAB Alpaka iter 250 alpha -13.8753 omega 1.71578 rho0 1.91736e-20 error 8.88523e-11
- Debug in BiCGSTAB Alpaka iter 260 alpha -0.684688 omega 0.444643 rho0 2.52843e-20 error 6.48992e-11
- Debug in BiCGSTAB Alpaka iter 270 alpha 0.500281 omega 3.93121 rho0 1.12102e-21 error 2.94863e-11
- Debug in BiCGSTAB Alpaka iter 280 alpha 0.715304 omega 0.51729 rho0 4.36801e-20 error 2.35209e-12
-Iterative solver finished with iter: 284 error from algo 8.4277e-13 error r=b-Ax 8.43367e-13 errorAvgtot 4.02149e-19
-Max error local block avg 0.00838495 in rank 1
-Max error local point 0.0151389 in rank 1
-Solver time: 1.4608 seconds
-SolverInFunction time: 1.16324 seconds - average time cycle 0.0040959 seconds
+ Debug in BiCGSTAB Alpaka iter 10 alpha 1.53424 omega 1.02292 rho0 3.08414e-06 error 0.0150086
+ Debug in BiCGSTAB Alpaka iter 20 alpha 1.58941 omega 0.708612 rho0 1.0584e-10 error 0.00707338
+ Debug in BiCGSTAB Alpaka iter 30 alpha 1.60998 omega 0.787812 rho0 4.35323e-14 error 0.00417374
+ Debug in BiCGSTAB Alpaka iter 40 alpha 2.1604 omega 9.36747 rho0 4.14996e-16 error 0.00264675
+ Debug in BiCGSTAB Alpaka iter 50 alpha 6.12972 omega 0.395142 rho0 6.77204e-13 error 0.00124961
+ Debug in BiCGSTAB Alpaka iter 60 alpha -0.252593 omega 0.845361 rho0 7.43694e-13 error 0.000955038
+ Debug in BiCGSTAB Alpaka iter 70 alpha 1.32451 omega 0.639746 rho0 2.73864e-12 error 0.000578975
+ Debug in BiCGSTAB Alpaka iter 80 alpha 7.20944 omega 0.854085 rho0 -9.9287e-13 error 0.000461333
+ Debug in BiCGSTAB Alpaka iter 90 alpha 2.8524 omega 0.398288 rho0 4.74678e-12 error 0.000356927
+ Debug in BiCGSTAB Alpaka iter 100 alpha -0.918533 omega 0.459987 rho0 6.37356e-13 error 0.000276034
+ Debug in BiCGSTAB Alpaka iter 110 alpha 0.305652 omega 8.77054 rho0 3.60009e-14 error 0.000144365
+ Debug in BiCGSTAB Alpaka iter 120 alpha 1.76832 omega 0.765397 rho0 3.33691e-14 error 6.56554e-05
+ Debug in BiCGSTAB Alpaka iter 130 alpha 1.01097 omega 3.98596 rho0 2.63034e-14 error 2.11836e-05
+ Debug in BiCGSTAB Alpaka iter 140 alpha -1.07472 omega 0.463762 rho0 9.16813e-16 error 5.53069e-06
+ Debug in BiCGSTAB Alpaka iter 150 alpha 0.601661 omega 112.025 rho0 9.46085e-14 error 1.61565e-06
+ Debug in BiCGSTAB Alpaka iter 160 alpha -2.80199 omega 8.83567 rho0 4.30525e-15 error 3.84044e-07
+ Debug in BiCGSTAB Alpaka iter 170 alpha -0.184029 omega 0.721837 rho0 5.73937e-17 error 7.36169e-08
+ Debug in BiCGSTAB Alpaka iter 180 alpha 1.59793 omega 0.421947 rho0 4.69998e-17 error 1.03612e-08
+ Debug in BiCGSTAB Alpaka iter 190 alpha 2.13929 omega 9.20081 rho0 2.55458e-19 error 1.04921e-09
+ Debug in BiCGSTAB Alpaka iter 200 alpha 2.04649 omega 1.13581 rho0 7.43986e-19 error 3.71398e-10
+ Debug in BiCGSTAB Alpaka iter 210 alpha 1.8324 omega 3.29473 rho0 1.53718e-18 error 2.74363e-10
+ Debug in BiCGSTAB Alpaka iter 220 alpha -1.03615 omega 0.444226 rho0 4.88786e-19 error 2.18476e-10
+ Debug in BiCGSTAB Alpaka iter 230 alpha 1.28949 omega 0.675716 rho0 2.032e-19 error 1.62321e-10
+ Debug in BiCGSTAB Alpaka iter 240 alpha 0.187215 omega 232.585 rho0 1.41604e-19 error 1.02311e-10
+ Debug in BiCGSTAB Alpaka iter 250 alpha 0.0185202 omega 0.702831 rho0 6.45814e-19 error 3.81598e-11
+ Debug in BiCGSTAB Alpaka iter 260 alpha 3.32424 omega 0.390369 rho0 6.66408e-20 error 2.57639e-11
+ Debug in BiCGSTAB Alpaka iter 270 alpha 2.65826 omega 1.29363 rho0 1.39934e-20 error 6.80877e-12
+ Debug in BiCGSTAB Alpaka iter 280 alpha 1.96204 omega 0.725396 rho0 2.77217e-21 error 1.07927e-12
+Iterative solver finished with iter: 281 error from algo 8.40223e-13 error r=b-Ax 8.40996e-13 errorAvgtot 4.01018e-19
+Max error local block avg 0.00892456 in rank 1
+Max error local point 0.0135096 in rank 1
+Solver time: 1.15781 seconds
+SolverInFunction time: 1.14678 seconds - average time cycle 0.00408108 seconds
 Time in milliseconds 
-timeTotPreconditioner1 1.17052
-timeTotPreconditioner2 1.17074
-timeTotCommunication1 0.557421
-timeTotCommunication2 0.55233
-timeTotAllReduction1 0.136573
-timeTotAllReduction2 0.180207
-timeTotKernel1 0.0602703
-timeTotKernel2 0.0177771
-timeTotKernel3 0.0702599
-timeTotKernel4 0.0391638
-timeTotKernel5 0.0548173
-timeTotKernel6 0.0186965
-timeTotPreconditionerTot 2.34126
-timeTotCommunicationTot 1.10975
-timeTotAllReductionTot 0.31678
-timeTotKernelsBBiCGstabTot 0.260985
-timeTotResetNeumanBCs 0.0640082
-timeTotal 4.09279
-Elapsed time: 23.3124 seconds
+timeTotPreconditioner1 1.1718
+timeTotPreconditioner2 1.17308
+timeTotCommunication1 0.562118
+timeTotCommunication2 0.556879
+timeTotAllReduction1 0.121114
+timeTotAllReduction2 0.165776
+timeTotKernel1 0.0605359
+timeTotKernel2 0.0180123
+timeTotKernel3 0.0705216
+timeTotKernel4 0.0395275
+timeTotKernel5 0.054818
+timeTotKernel6 0.0190734
+timeTotPreconditionerTot 2.34488
+timeTotCommunicationTot 1.119
+timeTotAllReductionTot 0.28689
+timeTotKernelsBBiCGstabTot 0.262489
+timeTotResetNeumanBCs 0.0647219
+timeTotal 4.07798
+Elapsed time: 52.1516 seconds
 End program. 
