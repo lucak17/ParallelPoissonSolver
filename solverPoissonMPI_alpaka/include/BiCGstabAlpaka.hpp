@@ -114,6 +114,13 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         memcpy(this->queueSolver_, fieldXDev, fieldXHostView, this->alpakaHelper_.extent_);
         memcpy(this->queueSolver_, fieldBDev, fieldBHostView, this->alpakaHelper_.extent_);
 
+        
+        if constexpr (isMainLoop)
+        {
+            this->setProblemAlpaka(fieldXDev, fieldBDev);
+        }
+        
+
         if (isMainLoop && communicationON)
         {
             this->communicatorMPI_.template operator()<true>(getPtrNative(fieldXDev));

@@ -23,6 +23,8 @@ class IterativeSolverBaseAlpaka{
         communicatorMPI_(communicatorMPI),
         alpakaHelper_(alpakaHelper),
         queueSolver_({alpakaHelper.devAcc_}),
+        queueSolverNonBlocking1_({alpakaHelper.devAcc_}),
+        queueSolverNonBlocking2_({alpakaHelper.devAcc_}),
         my_rank_(blockGrid.getMyrank()),
         ntot_ranks_(blockGrid.getNranks()[0]*blockGrid.getNranks()[1]*blockGrid.getNranks()[2]),
         globalLocation_(blockGrid.getGlobalLocation()),
@@ -59,7 +61,14 @@ class IterativeSolverBaseAlpaka{
                                                     alpakaHelper.globalLocation_, alpakaHelper.nlocal_noguards_, alpakaHelper.haloSize_ )),
         workDivExtentApplyDirichletBCsFieldBKernel_(alpaka::getValidWorkDiv(alpakaHelper.cfgExtentNoHaloHelper_, alpakaHelper.devAcc_, ApplyDirichletBCsFieldBKernel<DIM, T_data>{}, 
                                                     alpaka::experimental::getMdSpan(this->bufTmp),alpaka::experimental::getMdSpan(this->bufTmp), 1, 
-                                                    alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.haloSize_, alpakaHelper.ds_, alpakaHelper.haloSize_ ))
+                                                    alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.haloSize_, alpakaHelper.ds_, alpakaHelper.haloSize_ )),
+        workDivExtentApplyDirichletBCsFromFunctionKernel_(alpaka::getValidWorkDiv(alpakaHelper.cfgExtentNoHaloHelper_, alpakaHelper.devAcc_, ApplyDirichletBCsFromFunctionKernel<DIM, T_data>{}, 
+                                                    alpaka::experimental::getMdSpan(this->bufTmp), this->exactSolutionAndBCs_, 
+                                                    alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.ds_, alpakaHelper.origin_, 
+                                                    alpakaHelper.globalLocation_, alpakaHelper.nlocal_noguards_, alpakaHelper.haloSize_ )),
+        workDivExtentSetFieldValuefromFunctionKernel_(alpaka::getValidWorkDiv(alpakaHelper.cfgExtentNoHaloHelper_, alpakaHelper.devAcc_, SetFieldValuefromFunctionKernel<DIM, T_data>{}, 
+                                                    alpaka::experimental::getMdSpan(this->bufTmp), this->exactSolutionAndBCs_,alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.ds_, alpakaHelper.origin_, 
+                                                    alpakaHelper.globalLocation_, alpakaHelper.nlocal_noguards_, alpakaHelper.haloSize_ ))
     {
         errorFromIterationHistory_ = new T_data[maxIteration];
     }
@@ -73,6 +82,14 @@ class IterativeSolverBaseAlpaka{
     {
         applyDirichletBCsFromFunction(fieldX);
         setFieldValuefromFunction(fieldB);
+    }
+
+    void setProblemAlpaka(alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufX, alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufB) 
+    {
+        applyDirichletBCsFromFunctionAlpaka(bufX);
+        setFieldValuefromFunctionAlpaka(bufB);
+        alpaka::wait(this->queueSolverNonBlocking1_);
+        alpaka::wait(this->queueSolverNonBlocking2_);
     }
 
     virtual void operator()(T_data fieldX[],T_data fieldB[])
@@ -876,53 +893,103 @@ class IterativeSolverBaseAlpaka{
         }
     }
 
+
+
+    
     void applyDirichletBCsFromFunction(T_data data[])
+    {
+        int indx;
+        T_data x,y,z;
+        for(int dir=0; dir<DIM; dir++)
         {
-            int indx;
-            T_data x,y,z;
-            for(int dir=0; dir<DIM; dir++)
+            if(hasBoundary_[2*dir] && bcsType_[2*dir] == 0)
             {
-                if(hasBoundary_[2*dir] && bcsType_[2*dir] == 0)
+                std::array<int,6> indexLimitsBCs=indexLimitsData_;
+                indexLimitsBCs[2*dir+1]=indexLimitsBCs[2*dir] + guards_[dir];
+                for(int k=indexLimitsBCs[4]; k<indexLimitsBCs[5]; k++)
                 {
-                    std::array<int,6> indexLimitsBCs=indexLimitsData_;
-                    indexLimitsBCs[2*dir+1]=indexLimitsBCs[2*dir] + guards_[dir];
-                    for(int k=indexLimitsBCs[4]; k<indexLimitsBCs[5]; k++)
+                    for(int j=indexLimitsBCs[2]; j<indexLimitsBCs[3]; j++)
                     {
-                        for(int j=indexLimitsBCs[2]; j<indexLimitsBCs[3]; j++)
+                        for(int i=indexLimitsBCs[0]; i<indexLimitsBCs[1]; i++)
                         {
-                            for(int i=indexLimitsBCs[0]; i<indexLimitsBCs[1]; i++)
-                            {
-                                x=origin_[0] + (i-indexLimitsData_[0])*ds_[0] + globalLocation_[0]*(nlocal_noguards_[0])*ds_[0];
-                                y=origin_[1] + (j-indexLimitsData_[2])*ds_[1] + globalLocation_[1]*(nlocal_noguards_[1])*ds_[1];
-                                z=origin_[2] + (k-indexLimitsData_[4])*ds_[2] + globalLocation_[2]*(nlocal_noguards_[2])*ds_[2];
-                                indx = i + this->stride_j_*j + this->stride_k_*k;
-                                data[indx]=exactSolutionAndBCs_.trueSolutionFxyz(x,y,z);   
-                            }
+                            x=origin_[0] + (i-indexLimitsData_[0])*ds_[0] + globalLocation_[0]*(nlocal_noguards_[0])*ds_[0];
+                            y=origin_[1] + (j-indexLimitsData_[2])*ds_[1] + globalLocation_[1]*(nlocal_noguards_[1])*ds_[1];
+                            z=origin_[2] + (k-indexLimitsData_[4])*ds_[2] + globalLocation_[2]*(nlocal_noguards_[2])*ds_[2];
+                            indx = i + this->stride_j_*j + this->stride_k_*k;
+                            data[indx]=exactSolutionAndBCs_.trueSolutionFxyz(x,y,z);   
                         }
                     }
-                }
-                if(hasBoundary_[2*dir+1] && bcsType_[2*dir+1] == 0)
-                {
-                    std::array<int,6> indexLimitsBCs=indexLimitsData_;
-                    indexLimitsBCs[2*dir]=indexLimitsBCs[2*dir+1] - guards_[dir];
-                    for(int k=indexLimitsBCs[4]; k<indexLimitsBCs[5];k++)
-                    {
-                        for(int j=indexLimitsBCs[2];j<indexLimitsBCs[3];j++)
-                        {
-                            for(int i=indexLimitsBCs[0];i<indexLimitsBCs[1];i++)
-                            {
-                                x=origin_[0] + (i-indexLimitsData_[0])*ds_[0] + globalLocation_[0]*(nlocal_noguards_[0])*ds_[0];
-                                y=origin_[1] + (j-indexLimitsData_[2])*ds_[1] + globalLocation_[1]*(nlocal_noguards_[1])*ds_[1];
-                                z=origin_[2] + (k-indexLimitsData_[4])*ds_[2] + globalLocation_[2]*(nlocal_noguards_[2])*ds_[2];
-                                indx = i + this->stride_j_*j + this->stride_k_*k;
-                                data[indx]=exactSolutionAndBCs_.trueSolutionFxyz(x,y,z);   
-                            }
-                        }
-                    }
-                
                 }
             }
+            if(hasBoundary_[2*dir+1] && bcsType_[2*dir+1] == 0)
+            {
+                std::array<int,6> indexLimitsBCs=indexLimitsData_;
+                indexLimitsBCs[2*dir]=indexLimitsBCs[2*dir+1] - guards_[dir];
+                for(int k=indexLimitsBCs[4]; k<indexLimitsBCs[5];k++)
+                {
+                    for(int j=indexLimitsBCs[2];j<indexLimitsBCs[3];j++)
+                    {
+                        for(int i=indexLimitsBCs[0];i<indexLimitsBCs[1];i++)
+                        {
+                            x=origin_[0] + (i-indexLimitsData_[0])*ds_[0] + globalLocation_[0]*(nlocal_noguards_[0])*ds_[0];
+                            y=origin_[1] + (j-indexLimitsData_[2])*ds_[1] + globalLocation_[1]*(nlocal_noguards_[1])*ds_[1];
+                            z=origin_[2] + (k-indexLimitsData_[4])*ds_[2] + globalLocation_[2]*(nlocal_noguards_[2])*ds_[2];
+                            indx = i + this->stride_j_*j + this->stride_k_*k;
+                            data[indx]=exactSolutionAndBCs_.trueSolutionFxyz(x,y,z);   
+                        }
+                    }
+                }
+            
+            }
         }
+    }
+
+
+
+    void setFieldValuefromFunctionAlpaka(alpaka::Buf<T_Dev, T_data, Dim, Idx>& buf)
+    {   
+        auto bufMdSpan = alpaka::experimental::getMdSpan(buf);
+
+        SetFieldValuefromFunctionKernel<DIM,T_data> setFieldValuefromFunctionKernel;
+
+        alpaka::exec<Acc>(this->queueSolverNonBlocking2_, workDivExtentSetFieldValuefromFunctionKernel_, setFieldValuefromFunctionKernel, bufMdSpan, this->exactSolutionAndBCs_, 
+                                        this->alpakaHelper_.indexLimitsDataAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                        this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
+    }
+
+
+    void applyDirichletBCsFromFunctionAlpaka(alpaka::Buf<T_Dev, T_data, Dim, Idx>& buf)
+    {
+        alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsEdge{0,0,0,0,0,0};
+        
+        int dirAlpaka;
+
+        auto bufMdSpan = alpaka::experimental::getMdSpan(buf);
+            
+        ApplyDirichletBCsFromFunctionKernel<DIM, T_data> applyDirichletBCsFromFunctionKernel;
+        
+        for(int dir=0; dir<DIM; dir++)
+        {
+            dirAlpaka = 2 - dir;
+            if(hasBoundary_[2*dir] && bcsType_[2*dir]==0)
+            {
+                indexLimitsEdge = this->alpakaHelper_.indexLimitsDataAlpaka_;
+                indexLimitsEdge[2*dirAlpaka+1]=indexLimitsEdge[2*dirAlpaka] + guards_[dir];
+                alpaka::exec<Acc>(this->queueSolverNonBlocking1_, workDivExtentApplyDirichletBCsFromFunctionKernel_, applyDirichletBCsFromFunctionKernel, bufMdSpan, this->exactSolutionAndBCs_, 
+                                        indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                        this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
+
+            }
+            if(hasBoundary_[2*dir+1] && bcsType_[2*dir+1]==0)
+            {
+                indexLimitsEdge = this->alpakaHelper_.indexLimitsDataAlpaka_;
+                indexLimitsEdge[2*dirAlpaka]=indexLimitsEdge[2*dirAlpaka+1] - guards_[dir];
+                alpaka::exec<Acc>(this->queueSolverNonBlocking1_, workDivExtentApplyDirichletBCsFromFunctionKernel_, applyDirichletBCsFromFunctionKernel, bufMdSpan, this->exactSolutionAndBCs_, 
+                                        indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                        this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
+            }
+        }
+    }
 
 
 
@@ -931,6 +998,8 @@ class IterativeSolverBaseAlpaka{
     CommunicatorMPI<DIM,T_data>& communicatorMPI_;
     const AlpakaHelper<DIM,T_data>& alpakaHelper_;
     alpaka::Queue<Acc, alpaka::Blocking> queueSolver_;
+    alpaka::Queue<Acc, alpaka::NonBlocking> queueSolverNonBlocking1_;
+    alpaka::Queue<Acc, alpaka::NonBlocking> queueSolverNonBlocking2_;
     const int my_rank_;
     const int ntot_ranks_;
     const std::array<int,3> globalLocation_;
@@ -966,6 +1035,8 @@ class IterativeSolverBaseAlpaka{
     alpaka::WorkDivMembers<Dim, Idx> const workDivExtentNormalizeProblem_;
     alpaka::WorkDivMembers<Dim, Idx> const workDivExtentApplyNeumanBCsFieldBKernel_;
     alpaka::WorkDivMembers<Dim, Idx> const workDivExtentApplyDirichletBCsFieldBKernel_;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentApplyDirichletBCsFromFunctionKernel_;
+    alpaka::WorkDivMembers<Dim, Idx> const workDivExtentSetFieldValuefromFunctionKernel_;
 
     private:
 };
