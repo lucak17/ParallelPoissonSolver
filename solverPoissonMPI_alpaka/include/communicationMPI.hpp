@@ -7,6 +7,10 @@
 #include "blockGrid.hpp"
 #include "solverSetup.hpp"
 
+/*
+If the domain is too large and there are too few processes, MPI buffers might
+be full causing crash
+*/
 
 template<int DIM, typename T_data>
 class CommunicatorMPI{
@@ -97,7 +101,7 @@ class CommunicatorMPI{
             stride_k = stride_k_;
         }
 
-        std::cout<< "Debug in communicator stride_j "<< stride_j << " stride_k "<< stride_k <<std::endl;
+        //std::cout<< "Debug in communicator stride_j "<< stride_j << " stride_k "<< stride_k <<std::endl;
 
         if(numCommunication_>0)
         {

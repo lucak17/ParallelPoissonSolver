@@ -14,8 +14,9 @@
 //#include "solvers.hpp"
 #include "blockGrid.hpp"
 #include "matrixFreeOperatorA.hpp"
-#include "testAcc.hpp"
-#include "operationGrid.hpp"
+//#include "testAcc.hpp"
+//#include "operationGrid.hpp"
+#include "alpakaHelper.hpp"
 //#include "solverSetup.hpp"
 
 
@@ -86,38 +87,42 @@ int main(int argc, char** argv) {
     CommunicatorMPI<DIM,T_data>  communicator(blockGrid);
     ExactSolutionAndBCs<DIM,T_data> exactSolutionAndBCs;
     MatrixFreeOperatorA<DIM,T_data> operatorA(blockGrid);
-    
-    TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator);
+    AlpakaHelper<DIM,T_data> alpakaHelper(blockGrid);
+    //TestAcc2<DIM,T_data,iterMaxMainSolver> testAcc(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
 
     
     
     // iterative solver object
-    T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
+    //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
+    
+    T_Solver solver(blockGrid,exactSolutionAndBCs,communicator,alpakaHelper);
+    //T_Solver solver(blockGrid,exactSolutionAndBCs,communicator);
 
     // define fieldData
     T_data* fieldX = new T_data[blockGrid.getNtotLocalGuards()];
     T_data* fieldB = new T_data[blockGrid.getNtotLocalGuards()];
-    std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), -1);
-    std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), -1);
+    std::fill(fieldX, fieldX + blockGrid.getNtotLocalGuards(), 0);
+    std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), 0);
 
-
-    printFieldWithGuards(blockGrid,fieldX);
-    MPI_Barrier(MPI_COMM_WORLD);
-    testAcc(blockGrid,fieldX,fieldB);
-    MPI_Barrier(MPI_COMM_WORLD);
-    printFieldWithGuards(blockGrid,fieldX);
-    MPI_Barrier(MPI_COMM_WORLD);
-    // set problem
+    //printFieldWithGuards(blockGrid,fieldX);
     solver.setProblem(fieldX,fieldB);
+    //printFieldWithGuards(blockGrid,fieldX);
+    MPI_Barrier(MPI_COMM_WORLD);
+    
+
+    //testAcc(blockGrid,fieldX,fieldB);
+    //MPI_Barrier(MPI_COMM_WORLD);
+    //printFieldWithGuards(blockGrid,fieldX);
+    //MPI_Barrier(MPI_COMM_WORLD);
+    // set problem
+    //solver.setProblem(fieldX,fieldB);
     
     auto startSolver = std::chrono::high_resolution_clock::now();
     
     // iterative solver
-    //solver(fieldX,fieldB,operatorA);
-    
+    solver(fieldX,fieldB);
+    MPI_Barrier(MPI_COMM_WORLD);
     auto endSolver = std::chrono::high_resolution_clock::now();
-
-    MPI_Barrier(MPI_COMM_WORLD);    
 
     if(my_rank==0)
     {
@@ -137,7 +142,8 @@ int main(int argc, char** argv) {
     if(my_rank==0)
     {
         std::cout << "Solver time: " << durationSolver.count() << " seconds" << std::endl;
-        std::cout << "SolverInFunction time: " << solver.getDurationSolver().count() << " seconds" << std::endl;
+        std::cout << "SolverInFunction time: " << solver.getDurationSolver().count() << " seconds" << " - average time cycle " << solver.getDurationSolver().count()/solver.getNumIterationFinal() << " seconds" << std::endl;
+        solver.timeCounter.printAverageTime(solver.getNumIterationFinal());
         std::cout << "Elapsed time: " << duration.count() << " seconds" << std::endl;
         std::cout<<  "End program. "<< std::endl;
     }

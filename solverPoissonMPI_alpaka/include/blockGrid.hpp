@@ -313,8 +313,8 @@ class BlockGrid{
                                     sin((indexLimitsSolver_[2*i+1]-indexLimitsSolver_[2*i])*PI/2/(indexLimitsSolver_[2*i+1]-indexLimitsSolver_[2*i]+1))/(ds_[i]*ds_[i]);
             eigMin+=eigenValues[2*i];
             eigMax+=eigenValues[2*i+1];
-            //std::cout<< " Eigen Min " << eigenValues[2*i] << " dir " << i << " " << eigMin <<std::endl;
-            //std::cout<< " Eigen Max " << eigenValues[2*i+1] << " dir " << i << " " << eigMax<<std::endl;
+            //std::cout<< " Eigen Min local " << eigenValues[2*i] << " dir " << i << " " << eigMin <<std::endl;
+            //std::cout<< " Eigen Max local " << eigenValues[2*i+1] << " dir " << i << " " << eigMax<<std::endl;
         }
         eigenValuesLocal_[0]=eigMin;
         eigenValuesLocal_[1]=eigMax;
@@ -334,6 +334,8 @@ class BlockGrid{
             eigenValues[2*i+1]=4*sin( ni*PI/2/(ni+1))*sin(ni*PI/2/(ni+1))/(ds_[i]*ds_[i]);
             eigMin+=eigenValues[2*i];
             eigMax+=eigenValues[2*i+1];
+            //std::cout<< " Eigen Min global " << eigenValues[2*i] << " dir " << i << " " << eigMin <<std::endl;
+            //std::cout<< " Eigen Max global " << eigenValues[2*i+1] << " dir " << i << " " << eigMax<<std::endl;
         }
         eigenValuesGlobal_[0]=eigMin;
         eigenValuesGlobal_[1]=eigMax;

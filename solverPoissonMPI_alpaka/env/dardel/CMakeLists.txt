@@ -31,6 +31,14 @@ set(alpaka_ACC_GPU_HIP_ENABLE ON CACHE BOOL "Enable HIP backend for Alpaka")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --offload-arch=gfx90a")
 
 
+# Set the alpaka_USE_MDSPAN flag
+# Options: OFF, SYSTEM, FETCH
+set(mdspan_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/alpaka/_deps/mdspan-build)
+list(APPEND CMAKE_PREFIX_PATH ${mdspan_DIR})
+set(alpaka_USE_MDSPAN SYSTEM)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/alpaka/_deps/mdspan-src/include/)
+#set(alpaka_USE_MDSPAN FETCH)
+
 
 # Add the executable
 #add_executable(solverPoisson src/main.cpp)

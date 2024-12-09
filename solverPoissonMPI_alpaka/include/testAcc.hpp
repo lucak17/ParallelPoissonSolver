@@ -11,7 +11,7 @@
 #include "blockGrid.hpp"
 #include "solverSetup.hpp"
 #include "communicationMPI.hpp"
-#include "kernelsAlpaka.hpp"
+#include "kernelsAlpakaBiCGstab.hpp"
 
 template <int DIM, typename T_data, int maxIteration>
 class TestAcc : public IterativeSolverBase<DIM,T_data,maxIteration>{
@@ -147,8 +147,9 @@ template <int DIM, typename T_data, int maxIteration>
 class TestAcc2 : public IterativeSolverBase<DIM,T_data,maxIteration>{
     public:
 
-    TestAcc2(const BlockGrid<DIM,T_data>& blockGrid, const ExactSolutionAndBCs<DIM,T_data>& exactSolutionAndBCs, CommunicatorMPI<DIM,T_data>& communicatorMPI):
-        IterativeSolverBase<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI)
+    TestAcc2(const BlockGrid<DIM,T_data>& blockGrid, const ExactSolutionAndBCs<DIM,T_data>& exactSolutionAndBCs, CommunicatorMPI<DIM,T_data>& communicatorMPI,const AlpakaHelper<DIM,T_data>& alpakaHelper):
+        IterativeSolverBase<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI),
+        alpakaHelper_(alpakaHelper)
     {
 
     }
@@ -163,7 +164,7 @@ class TestAcc2 : public IterativeSolverBase<DIM,T_data,maxIteration>{
         // get suitable device for this Acc
         auto const devAcc = alpaka::getDevByIdx(platformAcc, 0);
 
-        alpaka::Queue<Acc, alpaka::NonBlocking> queue{devAcc};
+        alpaka::Queue<Acc, alpaka::Blocking> queue{devAcc};
 
         alpaka::Vec<Dim, Idx> tmpNumNodes;
         alpaka::Vec<Dim, Idx> tmpHaloSize;
@@ -198,6 +199,7 @@ class TestAcc2 : public IterativeSolverBase<DIM,T_data,maxIteration>{
         const alpaka::Vec<Dim, Idx> numNodes = tmpNumNodes;
         const alpaka::Vec<Dim, Idx> haloSize = tmpHaloSize;
         const alpaka::Vec<Dim, Idx> extent = numNodes + haloSize + haloSize;
+        const alpaka::Vec<Dim, Idx> extent1D = {1,1,1};
         const alpaka::Vec<Dim, Idx> elemPerThread = tmpElemPerThread;       
         auto bufDevice = alpaka::allocBuf<T_data, Idx>(devAcc, extent);
         auto bufMdSpan = alpaka::experimental::getMdSpan(bufDevice);
@@ -232,7 +234,27 @@ class TestAcc2 : public IterativeSolverBase<DIM,T_data,maxIteration>{
         //std::experimental::mdspan<T_data,extent> 
 
         alpaka::exec<Acc>(queue, workDivExtent, initBufferKernel, bufMdSpan, blockGrid.getMyrank(),stride_j,stride_k);
+        //alpaka::wait(queue);
+
+        T_data globalSum=0;
+        T_data* const ptrGlobalSum=&globalSum;
+        //auto globalSumHostView = createView(devHost, ptrGlobalSum, extent1D);
+        
+        auto globalSumHost = alpaka::allocBuf<T_data, Idx>(devHost, extent1D);
+        auto globalSumDev = alpaka::allocBuf<T_data, Idx>(devAcc, extent1D);
+        auto* const ptrGlobalSumHost= getPtrNative(globalSumHost);
+        ptrGlobalSumHost[0]=1000;
+        T_data* const ptrGlobalSumDev{std::data(globalSumDev)};
+        memcpy(queue, globalSumDev, globalSumHost, extent1D);
+
+
+        DotProductKernel<DIM,T_data>  dotProductKernel;
+        auto workDivExtentDot = alpaka::getValidWorkDiv(cfgExtent, devAcc, dotProductKernel, bufMdSpan, bufMdSpan, ptrGlobalSumDev, this->alpakaHelper_.indexLimitsSolverAlpaka_);
+        alpaka::exec<Acc>(queue, workDivExtentDot, dotProductKernel, bufMdSpan,bufMdSpan,ptrGlobalSumDev, this->alpakaHelper_.indexLimitsSolverAlpaka_);
         alpaka::wait(queue);
+        memcpy(queue, globalSumHost, globalSumDev, extent1D);
+
+        std::cout<< "Rank "<< blockGrid.getMyrank() << " indexlimitsSolverAlpaka "<< this->alpakaHelper_.indexLimitsSolverAlpaka_ << " Dot product "<< ptrGlobalSumHost[0] <<std::endl;
         
         auto* ptr= getPtrNative(bufDevice);
         /*
@@ -251,10 +273,14 @@ class TestAcc2 : public IterativeSolverBase<DIM,T_data,maxIteration>{
         this->communicatorMPI_.template operator()<true>(getPtrNative(bufDevice));
         this->communicatorMPI_.waitAllandCheckRcv();
 
-        memcpy(queue, hostView,bufDevice, extent);
+        auto bufDevice2 = alpaka::allocBuf<T_data, Idx>(devAcc, extent);
+        memcpy(queue, bufDevice2,bufDevice, extent);
+        memcpy(queue, hostView,bufDevice2, extent);
 
     }
 
     private:
+
+    const AlpakaHelper<DIM,T_data>& alpakaHelper_;
 
 };
