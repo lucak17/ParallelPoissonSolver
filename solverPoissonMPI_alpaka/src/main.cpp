@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
     std::fill(fieldB, fieldB + blockGrid.getNtotLocalGuards(), 0);
 
     //printFieldWithGuards(blockGrid,fieldX);
-    solver.setProblem(fieldX,fieldB);
+    //solver.setProblem(fieldX,fieldB);
     //printFieldWithGuards(blockGrid,fieldX);
     MPI_Barrier(MPI_COMM_WORLD);
     
