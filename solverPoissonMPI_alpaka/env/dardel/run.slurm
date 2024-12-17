@@ -15,6 +15,7 @@
 #SBATCH -o solver.o
 
 export OMP_NUM_THREADS=1
+export MPICH_GPU_SUPPORT_ENABLED=1
 
 # CC main.cpp -Wall -O3 -o solver.out
 srun ../build/solverPoisson 4 1 1
