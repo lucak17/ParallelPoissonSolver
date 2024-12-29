@@ -319,6 +319,17 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
         this -> adjustFieldBForDirichletNeumanBCsAlpaka(bufX, bufB);
         
         //this-> template resetNormFieldsAlpaka<communicationON>(this->bufZ,bufB,1/this->normFieldB_);
+
+        if constexpr(communicationON)
+        {
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufB));
+            this->communicatorMPI_.waitAllandCheckRcv();
+
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufBTmp));
+            this->communicatorMPI_.waitAllandCheckRcv();
+        }
+
+        this-> template resetNeumanBCsAlpaka<isMainLoop,false>(bufB);
         
         // r0= b - A(x0)
         this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
@@ -423,7 +434,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
             rhoOld=rhoCurr;
             rhoCurr=1/(2*sigma_ - rhoOld);
             
-            /*
+            
             if constexpr(communicationON)
             {
                 this->communicatorMPI_.template operator()<T_data_chebyshev,true>(getPtrNative(bufY));
@@ -432,7 +443,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
 
             // to do fix neuman BCs mixed precision
             this-> template resetNeumanBCsAlpakaCast<T_data_chebyshev,isMainLoop,false>(bufY);
-            */
+            
             alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
                                 bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
             
