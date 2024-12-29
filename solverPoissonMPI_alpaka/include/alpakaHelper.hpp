@@ -31,6 +31,7 @@ class AlpakaHelper {
         extent1D1_({1,1,1}),
         extent1D2_({1,1,2}),
         numBlocksGrid_(setNumBlocks()),
+        cfgExtentHelper_({this->extent_,this->elemPerThread_}),
         cfgExtentNoHaloHelper_({this->extentNoHalo_,this->elemPerThread_}),
         cfgExtentSolverHelper_({this->extentSolver_,this->elemPerThread_}),
         indexLimitsSolverAlpaka_({blockGrid.getIndexLimitsSolver()[4],blockGrid.getIndexLimitsSolver()[5],blockGrid.getIndexLimitsSolver()[2],blockGrid.getIndexLimitsSolver()[3],blockGrid.getIndexLimitsSolver()[0],blockGrid.getIndexLimitsSolver()[1]}),
@@ -58,6 +59,7 @@ class AlpakaHelper {
     const alpaka::Vec<Dim, Idx> extent1D2_;
     const alpaka::Vec<Dim, Idx> offsetSolver_;
     const alpaka::Vec<Dim, Idx> numBlocksGrid_;
+    const alpaka::KernelCfg<Acc> cfgExtentHelper_;
     const alpaka::KernelCfg<Acc> cfgExtentNoHaloHelper_;
     const alpaka::KernelCfg<Acc> cfgExtentSolverHelper_;
     const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolverAlpaka_;

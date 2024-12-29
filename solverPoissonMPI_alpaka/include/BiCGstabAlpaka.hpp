@@ -16,7 +16,7 @@
 #include "kernelsAlpakaBiCGstab.hpp"
 
 
-template <int DIM, typename T_data, int tolerance, int maxIteration, bool isMainLoop, bool communicationON, typename T_Preconditioner>
+template <int DIM, typename T_data, typename T_data_BiCGStab, int tolerance, int maxIteration, bool isMainLoop, bool communicationON, typename T_Preconditioner>
 class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>{
     public:
 
@@ -137,7 +137,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
         if (isMainLoop && communicationON)
         {
-            this->communicatorMPI_.template operator()<true>(getPtrNative(fieldXDev));
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(fieldXDev));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
 
@@ -216,7 +216,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr(communicationON)
             {
-                this->communicatorMPI_.template operator()<true>(getPtrNative(MpkDev));
+                this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(MpkDev));
                 this->communicatorMPI_.waitAllandCheckRcv();
             }
             this->timeCounter.timeTotCommunication1 += std::chrono::high_resolution_clock::now() - startCounter;
@@ -290,7 +290,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr (communicationON)
             {
-                this->communicatorMPI_.template operator()<true>(getPtrNative(zkDev));
+                this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(zkDev));
                 this->communicatorMPI_.waitAllandCheckRcv();
             }
             this->timeCounter.timeTotCommunication2 += std::chrono::high_resolution_clock::now() - startCounter;
@@ -451,7 +451,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         
         if constexpr(communicationON)
         {
-            this->communicatorMPI_.template operator()<true>(getPtrNative(fieldXDev));
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(fieldXDev));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
 

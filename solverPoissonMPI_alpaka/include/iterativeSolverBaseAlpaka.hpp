@@ -132,6 +132,49 @@ class IterativeSolverBaseAlpaka{
         }
     }
 
+
+
+    template<typename T_data_here, bool isMainLoop, bool fieldData>
+    void resetNeumanBCsAlpakaCast(alpaka::Buf<T_Dev, T_data_here, Dim, Idx>& bufData)
+    {
+        alpaka::Vec<alpaka::DimInt<3>, Idx> adjustIdx{0,0,0};
+        alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsEdge{0,0,0,0,0,0};
+        
+        int dirAlpaka;
+
+        auto bufDataMdSpan = alpaka::experimental::getMdSpan(bufData);
+        
+        ResetNeumanBCsKernel<DIM, T_data, isMainLoop*fieldData, true> resetNeumanBCsKernelNegative;
+        ResetNeumanBCsKernel<DIM, T_data, isMainLoop*fieldData, false> resetNeumanBCsKernelPositive;
+        
+        for(int dir=0; dir<DIM; dir++)
+        {
+            dirAlpaka = 2 - dir;
+            if(hasBoundary_[2*dir] && bcsType_[2*dir]==1)
+            {
+                //std::cout<< "Debug in resetNeumanBCs " <<std::endl;
+                indexLimitsEdge = this->alpakaHelper_.indexLimitsDataAlpaka_;
+                adjustIdx={0,0,0};
+                indexLimitsEdge[2*dirAlpaka+1]=indexLimitsEdge[2*dirAlpaka] + guards_[dir];
+                adjustIdx[dirAlpaka]=1;
+                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelNegative, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                                    indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                    this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
+            }
+            if(hasBoundary_[2*dir+1] && bcsType_[2*dir+1]==1)
+            {
+                //std::cout<< "Debug in resetNeumanBCs " <<std::endl;
+                indexLimitsEdge = this->alpakaHelper_.indexLimitsDataAlpaka_;
+                adjustIdx={0,0,0};
+                indexLimitsEdge[2*dirAlpaka]=indexLimitsEdge[2*dirAlpaka+1] - guards_[dir];
+                adjustIdx[dirAlpaka]=-1;
+                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelPositive, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                                    indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                    this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
+            }
+        }
+    }
+
     
     template<bool isMainLoop, bool communicationON>
     T_data normalizeProblemToFieldBNormAlpaka(alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufX, alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufB)
@@ -212,7 +255,7 @@ class IterativeSolverBaseAlpaka{
 
         if constexpr(communicationON)
         {
-            this->communicatorMPI_.template operator()<true>(getPtrNative(bufX));
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufX));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
            
@@ -252,7 +295,7 @@ class IterativeSolverBaseAlpaka{
 
         if constexpr(communicationON)
         {
-            this->communicatorMPI_.template operator()<true>(getPtrNative(bufX));
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufX));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
     }

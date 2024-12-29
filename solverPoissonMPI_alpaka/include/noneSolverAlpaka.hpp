@@ -14,7 +14,7 @@
 #include "alpakaHelper.hpp"
 
 
-template <int DIM,typename T_data, int tolerance, int maxIteration>
+template <int DIM,typename T_data, typename T_data_noneSolver, int tolerance, int maxIteration>
 class NoneSolverAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>{
     public:
 

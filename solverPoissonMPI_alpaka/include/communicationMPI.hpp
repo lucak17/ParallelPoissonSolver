@@ -51,8 +51,8 @@ class CommunicatorMPI{
         delete[] statusesRcv_;
     }
 
-    template<bool isAlpakaBuffer = false>
-    void operator()(T_data data[])
+    template<typename T_data_comm, bool isAlpakaBuffer = false>
+    void operator()(T_data_comm data[])
     {
         std::array<int,3>  globalLocationOther;
         std::array<int,6> indexLimitsComm;
@@ -145,10 +145,10 @@ class CommunicatorMPI{
                             }
                         }
                         MPI_Datatype send_typeX;
-                        MPI_Type_indexed(numElementsComm_[dir], block_length, send_indx, getMPIType<T_data>(), &send_typeX);
+                        MPI_Type_indexed(numElementsComm_[dir], block_length, send_indx, getMPIType<T_data_comm>(), &send_typeX);
                         MPI_Type_commit(&send_typeX);
                         MPI_Datatype recv_typeX;
-                        MPI_Type_indexed(numElementsComm_[dir], block_length, rcv_indx, getMPIType<T_data>(), &recv_typeX);
+                        MPI_Type_indexed(numElementsComm_[dir], block_length, rcv_indx, getMPIType<T_data_comm>(), &recv_typeX);
                         MPI_Type_commit(&recv_typeX);
 
                         MPI_Isend(data, 1, send_typeX, rankOther, 0, MPI_COMM_WORLD, &requestsSend_[countRequestSend]);
@@ -184,10 +184,10 @@ class CommunicatorMPI{
                             }
                         }
                         MPI_Datatype send_typeX;
-                        MPI_Type_indexed(numElementsComm_[dir], block_length, send_indx, getMPIType<T_data>(), &send_typeX);
+                        MPI_Type_indexed(numElementsComm_[dir], block_length, send_indx, getMPIType<T_data_comm>(), &send_typeX);
                         MPI_Type_commit(&send_typeX);
                         MPI_Datatype recv_typeX;
-                        MPI_Type_indexed(numElementsComm_[dir], block_length, rcv_indx, getMPIType<T_data>(), &recv_typeX);
+                        MPI_Type_indexed(numElementsComm_[dir], block_length, rcv_indx, getMPIType<T_data_comm>(), &recv_typeX);
                         MPI_Type_commit(&recv_typeX);
 
                         MPI_Isend(data, 1, send_typeX, rankOther, 0, MPI_COMM_WORLD, &requestsSend_[countRequestSend]);
@@ -233,10 +233,10 @@ class CommunicatorMPI{
                             }
                         }
                         MPI_Datatype send_typeX;
-                        MPI_Type_indexed(nlocal_noguards_[dir+1], block_length, send_indx, getMPIType<T_data>(), &send_typeX);
+                        MPI_Type_indexed(nlocal_noguards_[dir+1], block_length, send_indx, getMPIType<T_data_comm>(), &send_typeX);
                         MPI_Type_commit(&send_typeX);
                         MPI_Datatype recv_typeX;
-                        MPI_Type_indexed(nlocal_noguards_[dir+1], block_length, rcv_indx, getMPIType<T_data>(), &recv_typeX);
+                        MPI_Type_indexed(nlocal_noguards_[dir+1], block_length, rcv_indx, getMPIType<T_data_comm>(), &recv_typeX);
                         MPI_Type_commit(&recv_typeX);
 
                         MPI_Isend(data, 1, send_typeX, rankOther, 0, MPI_COMM_WORLD, &requestsSend_[countRequestSend]);
@@ -270,10 +270,10 @@ class CommunicatorMPI{
                             }
                         }
                         MPI_Datatype send_typeX;
-                        MPI_Type_indexed(nlocal_noguards_[dir+1], block_length, send_indx, getMPIType<T_data>(), &send_typeX);
+                        MPI_Type_indexed(nlocal_noguards_[dir+1], block_length, send_indx, getMPIType<T_data_comm>(), &send_typeX);
                         MPI_Type_commit(&send_typeX);
                         MPI_Datatype recv_typeX;
-                        MPI_Type_indexed(nlocal_noguards_[dir+1], block_length, rcv_indx, getMPIType<T_data>(), &recv_typeX);
+                        MPI_Type_indexed(nlocal_noguards_[dir+1], block_length, rcv_indx, getMPIType<T_data_comm>(), &recv_typeX);
                         MPI_Type_commit(&recv_typeX);
 
                         MPI_Isend(data, 1, send_typeX, rankOther, 0, MPI_COMM_WORLD, &requestsSend_[countRequestSend]);
@@ -307,9 +307,9 @@ class CommunicatorMPI{
                         arrayIndexGuards[1]=j;
                         arrayIndexGuards[2]=k;
                         arrayIndexGuards[dir]-=guards_[dir];
-                        MPI_Isend(&data[i + stride_j*j + stride_k*k], numElementsCommZ, getMPIType<T_data>(), rankOther, 0, MPI_COMM_WORLD, &requestsSend_[countRequestSend]);
+                        MPI_Isend(&data[i + stride_j*j + stride_k*k], numElementsCommZ, getMPIType<T_data_comm>(), rankOther, 0, MPI_COMM_WORLD, &requestsSend_[countRequestSend]);
                         countRequestSend++;
-                        MPI_Irecv(&data[arrayIndexGuards[0] + stride_j*arrayIndexGuards[1] + stride_k*arrayIndexGuards[2]], numElementsCommZ, getMPIType<T_data>(), rankOther, 0, MPI_COMM_WORLD, &requestsRcv_[countRequestRcv]);
+                        MPI_Irecv(&data[arrayIndexGuards[0] + stride_j*arrayIndexGuards[1] + stride_k*arrayIndexGuards[2]], numElementsCommZ, getMPIType<T_data_comm>(), rankOther, 0, MPI_COMM_WORLD, &requestsRcv_[countRequestRcv]);
                         countRequestRcv++;
                     }
                     if(hasCommunication_[2*dir+1])
@@ -330,9 +330,9 @@ class CommunicatorMPI{
                         arrayIndexGuards[1]=j;
                         arrayIndexGuards[2]=k;
                         arrayIndexGuards[dir]+=guards_[dir];
-                        MPI_Isend(&data[i + stride_j*j + stride_k*k], numElementsCommZ, getMPIType<T_data>(), rankOther, 0, MPI_COMM_WORLD, &requestsSend_[countRequestSend]);
+                        MPI_Isend(&data[i + stride_j*j + stride_k*k], numElementsCommZ, getMPIType<T_data_comm>(), rankOther, 0, MPI_COMM_WORLD, &requestsSend_[countRequestSend]);
                         countRequestSend++;
-                        MPI_Irecv(&data[arrayIndexGuards[0] + stride_j*arrayIndexGuards[1] + stride_k*arrayIndexGuards[2]], numElementsCommZ, getMPIType<T_data>(), rankOther, 0, MPI_COMM_WORLD, &requestsRcv_[countRequestRcv]);
+                        MPI_Irecv(&data[arrayIndexGuards[0] + stride_j*arrayIndexGuards[1] + stride_k*arrayIndexGuards[2]], numElementsCommZ, getMPIType<T_data_comm>(), rankOther, 0, MPI_COMM_WORLD, &requestsRcv_[countRequestRcv]);
                         countRequestRcv++;
                     }
                 }
