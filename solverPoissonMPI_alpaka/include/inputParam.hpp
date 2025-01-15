@@ -28,7 +28,7 @@ using T_PreconditionerCheb = ChebyshevIterationAlpaka<DIM,T_data,T_data_chebyshe
 
 using T_PreconditionerBiCGStab = BiCGstabAlpaka<DIM, T_data, T_data, tollPreconditionerSolver, iterMaxPreconditioner, isbiCGMainLoop2, communicationOFF, T_NoneSolverAlpaka>;
 
-using T_Solver = BiCGstabAlpaka<DIM, T_data, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_PreconditionerCheb>;
+using T_Solver = BiCGstabAlpaka<DIM, T_data, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_PreconditionerBiCGStab>;
 
 //using T_Solver = ChebyshevIterationAlpaka<DIM,T_data,T_data_chebyshev,tollMainSolver,iterMaxMainSolver, true, communicationON, T_NoneSolverAlpaka>;
 

@@ -195,8 +195,7 @@ class IterativeSolverBaseAlpaka{
         auto totSumDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent1D1_);
         T_data* const ptrTotSumDev{std::data(totSumDev)};
 
-        //DotProductKernel<DIM,T_data> dotProductKernel;
-        DotProductNormKernel<DIM,T_data> dotProductKernel;
+        DotProductKernel<DIM,T_data> dotProductKernel;
         
         if constexpr (isMainLoop)
         {

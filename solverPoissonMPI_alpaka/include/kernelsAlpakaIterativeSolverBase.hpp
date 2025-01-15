@@ -27,7 +27,7 @@ struct DotProductKernel
         T_data& blockSum = alpaka::declareSharedVar<T_data, __COUNTER__>(acc);
 
 
-        if(iGrid==0 && jGrid==0 && kGrid==0)
+        if(gridThreadIdx[0]==0 && gridThreadIdx[1]==0 && gridThreadIdx[2]==0)
         {
             *globalSum = 0.0;
         }
@@ -72,7 +72,7 @@ struct DotProductNormKernel
         T_data& blockSum = alpaka::declareSharedVar<T_data, __COUNTER__>(acc);
 
 
-        if(iGrid==0 && jGrid==0 && kGrid==0)
+        if(gridThreadIdx[0]==0 && gridThreadIdx[1]==0 && gridThreadIdx[2]==0)
         {
             *globalSum = 0.0;
         }
@@ -91,10 +91,16 @@ struct DotProductNormKernel
         if(iBlock==0 && jBlock==0 && kBlock==0)
         {
             alpaka::atomicAdd(acc, globalSum, blockSum, alpaka::hierarchy::Blocks{});
-            if(*globalSum < 0)
+        }
+        alpaka::syncBlockThreads(acc);
+        
+        
+        if(*globalSum < 0)
+        {   
+            if(iBlock==0 && jBlock==0 && kBlock==0)
             {
-                printf("globalSum < 0, %f ", blockSum);
-                //printf("\n");
+                printf("globalSum < 0, globalSum = %.17g - blockSum = %.17g \n", *globalSum, blockSum);
+                printf("\n");
             }
         }
     }
