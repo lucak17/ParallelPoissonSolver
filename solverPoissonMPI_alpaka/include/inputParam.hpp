@@ -24,14 +24,16 @@ constexpr bool communicationOFF = false;
 
 using T_NoneSolverAlpaka = NoneSolverAlpaka<DIM,T_data,T_data,tollPreconditionerSolver,iterMaxPreconditioner>;
 
-using T_PreconditionerAlpaka = ChebyshevIterationAlpaka<DIM,T_data,T_data_chebyshev,tollPreconditionerSolver,chebyshevMax, ischebyshevMainLoop, communicationOFF, T_NoneSolverAlpaka>;
+using T_PreconditionerCheb = ChebyshevIterationAlpaka<DIM,T_data,T_data_chebyshev,tollPreconditionerSolver,chebyshevMax, ischebyshevMainLoop, communicationOFF, T_NoneSolverAlpaka>;
 
-using T_Solver = BiCGstabAlpaka<DIM, T_data, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_PreconditionerAlpaka>;
+using T_PreconditionerBiCGStab = BiCGstabAlpaka<DIM, T_data, T_data, tollPreconditionerSolver, iterMaxPreconditioner, isbiCGMainLoop2, communicationOFF, T_NoneSolverAlpaka>;
+
+using T_Solver = BiCGstabAlpaka<DIM, T_data, T_data, tollMainSolver, iterMaxMainSolver, isbiCGMainLoop1, communicationON, T_PreconditionerCheb>;
 
 //using T_Solver = ChebyshevIterationAlpaka<DIM,T_data,T_data_chebyshev,tollMainSolver,iterMaxMainSolver, true, communicationON, T_NoneSolverAlpaka>;
 
 // X Y Z
-constexpr std::array<int,3> npglobal={256,256,256};
+constexpr std::array<int,3> npglobal={128,128,128};
 constexpr std::array<T_data,3> ds={0.1,0.1,0.1};
 constexpr std::array<T_data,3> origin={3,2.5,10};
 constexpr std::array<int,6> bcsType={0,1,1,0,1,0}; //0 Dirichlet, 1 Neumann, -1 No dim; order x-x+ y-y+ z-z+

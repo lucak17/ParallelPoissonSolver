@@ -184,8 +184,8 @@ class IterativeSolverBaseAlpaka{
         auto bufXMdSpan = alpaka::experimental::getMdSpan(bufX);
         auto bufBMdSpan = alpaka::experimental::getMdSpan(bufB);
         
-        T_data pSum[1];
-        T_data totSum[1];
+        T_data pSum[1]={0};
+        T_data totSum[1]={0};
         
         auto dotPorductDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent1D1_);
         T_data* const ptrDotPorductDev{std::data(dotPorductDev)};
@@ -195,8 +195,9 @@ class IterativeSolverBaseAlpaka{
         auto totSumDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent1D1_);
         T_data* const ptrTotSumDev{std::data(totSumDev)};
 
-        DotProductKernel<DIM,T_data> dotProductKernel;
-
+        //DotProductKernel<DIM,T_data> dotProductKernel;
+        DotProductNormKernel<DIM,T_data> dotProductKernel;
+        
         if constexpr (isMainLoop)
         {
             memcpy(this->queueSolver_, bufTmp, bufB, this->alpakaHelper_.extent_);
@@ -215,12 +216,19 @@ class IterativeSolverBaseAlpaka{
         {
             MPI_Allreduce(ptrDotPorductDev, ptrTotSumDev, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
             memcpy(this->queueSolver_, totSumView, totSumDev, this->alpakaHelper_.extent1D1_);
-            this->normFieldB_ = std::sqrt(totSum[0]);
+            if(totSum[0]>0)
+                this->normFieldB_ = std::sqrt(totSum[0]);
+            else
+                this->normFieldB_ = 1;
         }
         else
         {
             memcpy(this->queueSolver_, pSumView, dotPorductDev, this->alpakaHelper_.extent1D1_);
-            this->normFieldB_ = std::sqrt(pSum[0]);
+            //std::cout<< "Norm fieldB1: " << pSum[0] <<std::endl;
+            if(pSum[0]>0)
+                this->normFieldB_ = std::sqrt(pSum[0]);
+            else
+                this->normFieldB_ = 1;
         }
         
         this-> template resetNormFieldsAlpaka<communicationON>(bufX,bufB,1/this->normFieldB_);

@@ -29,15 +29,14 @@ struct DotProductKernel
 
         if(iGrid==0 && jGrid==0 && kGrid==0)
         {
-            *globalSum = 0;
+            *globalSum = 0.0;
         }
         if(iBlock==0 && jBlock==0 && kBlock==0)
         {
-            blockSum = 0;
+            blockSum = 0.0;
         }
         // Z Y X
-        local = bufDataA(kGrid,jGrid,iGrid) * bufDataB(kGrid,jGrid,iGrid);
-                
+        local = bufDataA(kGrid,jGrid,iGrid) * bufDataB(kGrid,jGrid,iGrid);       
         alpaka::atomicAdd(acc, &blockSum, local, alpaka::hierarchy::Threads{});
         alpaka::syncBlockThreads(acc);
 
@@ -49,6 +48,57 @@ struct DotProductKernel
 };
 
 
+
+template<int DIM, typename T_data> 
+struct DotProductNormKernel
+{
+    template<typename TAcc, typename TMdSpan>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, const TMdSpan bufDataA, const TMdSpan bufDataB,  T_data* const globalSum, 
+                                    const alpaka::Vec<alpaka::DimInt<3>, Idx> offset) const -> void
+    {
+        // Get indexes
+        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const gridThreadIdxShifted = gridThreadIdx + offset;
+        auto const iGrid = gridThreadIdxShifted[2];
+        auto const jGrid = gridThreadIdxShifted[1];
+        auto const kGrid = gridThreadIdxShifted[0];
+        
+        auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
+        auto const iBlock = blockThreadIdx[2];
+        auto const jBlock = blockThreadIdx[1];
+        auto const kBlock = blockThreadIdx[0];
+
+        T_data local = 0;
+        T_data& blockSum = alpaka::declareSharedVar<T_data, __COUNTER__>(acc);
+
+
+        if(iGrid==0 && jGrid==0 && kGrid==0)
+        {
+            *globalSum = 0.0;
+        }
+        if(iBlock==0 && jBlock==0 && kBlock==0)
+        {
+            blockSum = 0.0;
+        }
+        // Z Y X
+        local = bufDataA(kGrid,jGrid,iGrid) * bufDataA(kGrid,jGrid,iGrid);
+        if(local < 0)
+            printf("Local < 0 ");       
+        alpaka::atomicAdd(acc, &blockSum, local, alpaka::hierarchy::Threads{});
+        alpaka::syncBlockThreads(acc);
+        if(blockSum < 0)
+            printf("blockSum < 0 ");
+        if(iBlock==0 && jBlock==0 && kBlock==0)
+        {
+            alpaka::atomicAdd(acc, globalSum, blockSum, alpaka::hierarchy::Blocks{});
+            if(*globalSum < 0)
+            {
+                printf("globalSum < 0, %f ", blockSum);
+                //printf("\n");
+            }
+        }
+    }
+};
 
 
 

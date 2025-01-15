@@ -23,9 +23,9 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
         IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper),
         preconditioner(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper),
         theta_( (this->eigenValuesGlobal_[0]*rescaleEigMin + this->eigenValuesGlobal_[1]*rescaleEigMax) * 0.5 * (1.0 + epsilon) ),
-        delta_( (this->eigenValuesGlobal_[0]*rescaleEigMin - this->eigenValuesGlobal_[1]*rescaleEigMax) * 0.5 ),
+        delta_( (this->eigenValuesGlobal_[1]*rescaleEigMax - this->eigenValuesGlobal_[0]*rescaleEigMin) * 0.5 ),
         //theta_( (this->eigenValuesLocal_[0]*rescaleEigMin + this->eigenValuesLocal_[1]*rescaleEigMax) * 0.5 * (1.0 + epsilon) ),
-        //delta_( (this->eigenValuesLocal_[0]*rescaleEigMin - this->eigenValuesLocal_[1]*rescaleEigMax) * 0.5 ),
+        //delta_( (this->eigenValuesLocal_[1]*rescaleEigMin - this->eigenValuesLocal_[0]*rescaleEigMax) * 0.5 ),
         sigma_( theta_/delta_ ),
         toll_(static_cast<T_data>(tolerance) * tollScalingFactor),
         bufTmp(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
@@ -33,7 +33,6 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
         bufY(alpaka::allocBuf<T_data_chebyshev, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         bufW(alpaka::allocBuf<T_data_chebyshev, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         bufZ(alpaka::allocBuf<T_data_chebyshev, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
-        Abuf(alpaka::allocBuf<T_data_chebyshev, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         rkDev(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         workDivExtentCast(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentHelper_, this->alpakaHelper_.devAcc_, castPrecisionFieldKernel, 
                                                             alpaka::experimental::getMdSpan(this->bufTmp), alpaka::experimental::getMdSpan(this->bufY))),
@@ -66,7 +65,6 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
         alpaka::memset(this->queueSolverNonBlocking1_, bufY, value0);
         alpaka::memset(this->queueSolverNonBlocking1_, bufW, value0);
         alpaka::memset(this->queueSolverNonBlocking1_, bufZ, value0);
-        alpaka::memset(this->queueSolverNonBlocking1_, Abuf, value0);
         alpaka::memset(this->queueSolverNonBlocking1_, rkDev, value0);
 
 
@@ -221,12 +219,14 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
                                 bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
             }
             
-            //std::swap(this->bufZ,this->bufY);
-            //std::swap(this->bufW,this->bufY);
-
-            memcpy(this->queueSolver_, bufZ, bufY, this->alpakaHelper_.extent_);
-            memcpy(this->queueSolver_, bufY, bufW, this->alpakaHelper_.extent_);
-            alpaka::wait(this->queueSolver_);
+            //memcpy(this->queueSolver_, bufZ, bufY, this->alpakaHelper_.extent_);
+            //memcpy(this->queueSolver_, bufY, bufW, this->alpakaHelper_.extent_);
+            //alpaka::wait(this->queueSolver_);
+            std::swap(this->bufZ,this->bufY);
+            std::swap(bufZMdSpan,bufYMdSpan);
+            std::swap(this->bufW,this->bufY);
+            std::swap(bufWMdSpan,bufYMdSpan);
+            
         }
 
         /*
@@ -325,7 +325,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
             this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufB));
             this->communicatorMPI_.waitAllandCheckRcv();
 
-            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufBTmp));
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(this->bufBTmp));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
 
@@ -447,13 +447,10 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
             alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
                                 bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
             
-            //std::swap(this->bufZ,this->bufY);
-            //std::swap(this->bufW,this->bufY);
-
-            memcpy(this->queueSolver_, bufZ, bufY, this->alpakaHelper_.extent_);
-            memcpy(this->queueSolver_, bufY, bufW, this->alpakaHelper_.extent_);
-            alpaka::wait(this->queueSolver_);
-
+            std::swap(this->bufZ,this->bufY);
+            std::swap(bufZMdSpan,bufYMdSpan);
+            std::swap(this->bufW,this->bufY);
+            std::swap(bufWMdSpan,bufYMdSpan);
             /*
             alpaka::exec<Acc>(this->queueSolver_, workDivExtentAssign1, assignFieldWith1FieldKernel, bufXMdSpan, bufWMdSpan, static_cast<T_data_chebyshev>(-1.0),
                          this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
@@ -546,7 +543,6 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
     alpaka::Buf<T_Dev, T_data_chebyshev, Dim, Idx> bufY;
     alpaka::Buf<T_Dev, T_data_chebyshev, Dim, Idx> bufW;
     alpaka::Buf<T_Dev, T_data_chebyshev, Dim, Idx> bufZ;
-    alpaka::Buf<T_Dev, T_data_chebyshev, Dim, Idx> Abuf;
     alpaka::Buf<T_Dev, T_data, Dim, Idx> rkDev;
 
     CastPrecisionFieldKernel<DIM, T_data, T_data_chebyshev> castPrecisionFieldKernel;
