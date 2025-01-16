@@ -13,7 +13,7 @@
 #include "kernelsAlpakaChebyshev.hpp"
 //#include "operationGrid.hpp"
 
-template <int DIM, typename T_data, typename T_data_chebyshev, int tolerance, int maxIteration, bool isMainLoop, bool communicationON, typename T_Preconditioner>
+template <int DIM, typename T_data, typename T_data_chebyshev, bool global, int tolerance, int maxIteration, bool isMainLoop, bool communicationON, typename T_Preconditioner>
 class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>{
     
     public:
@@ -22,11 +22,15 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
                         CommunicatorMPI<DIM,T_data>& communicatorMPI, const AlpakaHelper<DIM,T_data>& alpakaHelper):
         IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper),
         preconditioner(blockGrid,exactSolutionAndBCs,communicatorMPI,alpakaHelper),
-        theta_( (this->eigenValuesGlobal_[0]*rescaleEigMin + this->eigenValuesGlobal_[1]*rescaleEigMax) * 0.5 * (1.0 + epsilon) ),
-        delta_( (this->eigenValuesGlobal_[1]*rescaleEigMax - this->eigenValuesGlobal_[0]*rescaleEigMin) * 0.5 ),
-        //theta_( (this->eigenValuesLocal_[0]*rescaleEigMin + this->eigenValuesLocal_[1]*rescaleEigMax) * 0.5 * (1.0 + epsilon) ),
-        //delta_( (this->eigenValuesLocal_[1]*rescaleEigMin - this->eigenValuesLocal_[0]*rescaleEigMax) * 0.5 ),
-        sigma_( theta_/delta_ ),
+        theta_(0),
+        delta_(0),
+        sigma_(0),
+        thetaGlobal_( (this->eigenValuesGlobal_[0]*rescaleEigMin + this->eigenValuesGlobal_[1]*rescaleEigMax) * 0.5 * (1.0 + epsilon) ),
+        deltaGlobal_( (this->eigenValuesGlobal_[1]*rescaleEigMax - this->eigenValuesGlobal_[0]*rescaleEigMin) * 0.5 ),
+        thetaLocal_( (this->eigenValuesLocal_[0] + this->eigenValuesLocal_[1]) * 0.5),
+        deltaLocal_( (this->eigenValuesLocal_[1] - this->eigenValuesLocal_[0]) * 0.5 ),
+        sigmaGlobal_( thetaGlobal_/deltaGlobal_ ),
+        sigmaLocal_( thetaLocal_/deltaLocal_ ),
         toll_(static_cast<T_data>(tolerance) * tollScalingFactor),
         bufTmp(alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
         bufBTmp(alpaka::allocBuf<T_data_chebyshev, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_)),
@@ -58,7 +62,18 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
         workDivExtentAssign1(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentSolverHelper_, this->alpakaHelper_.devAcc_, assignFieldWith1FieldKernel, alpaka::experimental::getMdSpan(this->bufTmp), alpaka::experimental::getMdSpan(this->bufY), static_cast<T_data_chebyshev>(1.0)/theta_, 
                             this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_))
     {
-        
+        if constexpr(global)
+        {
+            theta_ = thetaGlobal_;
+            delta_ = deltaGlobal_;
+            sigma_ = sigmaGlobal_;
+        }
+        else
+        {
+            theta_ = thetaLocal_;
+            delta_ = deltaLocal_;
+            sigma_ = sigmaLocal_;
+        }
         constexpr std::uint8_t value0{0}; 
         alpaka::memset(this->queueSolverNonBlocking1_, bufTmp, value0);
         alpaka::memset(this->queueSolverNonBlocking1_, bufBTmp, value0);
@@ -533,10 +548,17 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
 
     T_Preconditioner preconditioner;
     
-    const T_data_chebyshev theta_;
-    const T_data_chebyshev delta_;
-    const T_data_chebyshev sigma_;
-    
+    T_data_chebyshev theta_;
+    T_data_chebyshev delta_;
+    T_data_chebyshev sigma_;
+
+    const T_data_chebyshev thetaGlobal_;
+    const T_data_chebyshev deltaGlobal_;
+    const T_data_chebyshev thetaLocal_;
+    const T_data_chebyshev deltaLocal_;
+    const T_data_chebyshev sigmaGlobal_;
+    const T_data_chebyshev sigmaLocal_;
+
     T_data toll_;
     alpaka::Buf<T_Dev, T_data, Dim, Idx> bufTmp;
     alpaka::Buf<T_Dev, T_data_chebyshev, Dim, Idx> bufBTmp;

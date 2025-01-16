@@ -1,5 +1,6 @@
 #include <array>
 #include <iostream>
+#include <fstream>
 #include <cstring>
 #include <cmath> 
 
@@ -69,7 +70,8 @@ class IterativeSolverBaseAlpaka{
                                                     alpaka::experimental::getMdSpan(this->bufTmp), this->exactSolutionAndBCs_,alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.ds_, alpakaHelper.origin_, 
                                                     alpakaHelper.globalLocation_, alpakaHelper.nlocal_noguards_, alpakaHelper.haloSize_ ))
     {
-        errorFromIterationHistory_ = new T_data[maxIteration];
+        errorFromIterationHistory_ = new T_data[maxIteration + 1];
+        std::fill(errorFromIterationHistory_, errorFromIterationHistory_ + maxIteration + 1, 0.0);
     }
     
     ~IterativeSolverBaseAlpaka()
@@ -601,6 +603,22 @@ class IterativeSolverBaseAlpaka{
     int getNumIterationFinal() const
     {
         return numIterationFinal_;
+    }
+
+    void writeResidualHistory() const
+    {
+        std::ofstream outFile("residualHistory.txt");
+        if (!outFile) {
+            std::cerr << "Error: Could not open the file!" << std::endl;
+        }
+
+        for (int i = 0 ; i< maxIteration && errorFromIterationHistory_[i]>0; i++  )
+        {
+            outFile << errorFromIterationHistory_[i] << "\n";
+        }
+
+        outFile.close();
+        std::cout << "residualHistory has been written to residualHistory.txt" << std::endl;
     }
 
     TimeCounter<DIM, T_data> timeCounter;

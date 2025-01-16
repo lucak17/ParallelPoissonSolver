@@ -7,7 +7,7 @@
 #include <iomanip> 
 #include <ctime>
 
-constexpr int DIM=3;
+constexpr int DIM=2;
 
 using T_data_base=double; // needed to be explicit here due to alpaka kernels instantiation
 using T_data=double;
@@ -22,7 +22,7 @@ using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
 using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
 constexpr std::array<int,3> guards={1,1,1};
-constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,4,32};
+constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,8};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,8,8};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,32};
 constexpr alpaka::Vec<Dim, Idx> haloSizeFixed = {guards[2],guards[1],guards[0]};
@@ -54,7 +54,7 @@ constexpr int iterMaxMainSolver=1500;
 constexpr bool trackErrorFromIterationHistory=1;
 
 // preconditioner
-constexpr int tollPreconditionerSolver=tollMainSolver*1e4;
+constexpr int tollPreconditionerSolver=tollMainSolver*1e8;
 constexpr int iterMaxPreconditioner=500;
 
 
@@ -62,7 +62,7 @@ constexpr int iterMaxPreconditioner=500;
 constexpr T_data epsilon=0;
 constexpr T_data rescaleEigMin= 10;
 constexpr T_data rescaleEigMax= 1 - 1e-4;
-constexpr int chebyshevMax=20;
+constexpr int chebyshevMax=24;
 constexpr int jumpCheb = 0;
 constexpr Idx jumpI=1u;
 constexpr Idx jumpJ=1u;
@@ -76,22 +76,33 @@ class ExactSolutionAndBCs
     public:
         ALPAKA_FN_HOST_ACC inline T_data setFieldB(const T_data x, const T_data y, const T_data z) const
         {
-            return -sin(x) - cos(y) - 3*sin(z) + 2*y*z + 2; 
-            //return -sin(x) - cos(y) - 3*sin(z) + 2 ;
-            //return -sin(x);
-            //return -sin(x) - cos(y) + 2;
-            //return -sin(x) - cos(y); 
+            if constexpr(DIM==3)
+            {
+                return -sin(x) - cos(y) - 3*sin(z) + 2*y*z + 2; 
+            }
+            else if constexpr (DIM==2)
+            {
+                return -sin(x) - cos(y)  + 2*y + 2;
+            } 
+            else
+            {
+                return -sin(x) + 4;
+            }
         }
         ALPAKA_FN_HOST_ACC inline T_data trueSolutionFxyz(const T_data x, const T_data y, const T_data z) const
         {
-            //return sin(x) + x*x +y*y + z*z;
-            return sin(x) + cos(y) + 3*sin(z) + x*x*y*z + x*x + 10;
-            //return sin(x) + cos(y) + 3*sin(z) + x*x + y + z + 10;
-            //return sin(x) + cos(y) + x*x + y;
-            //return sin(x)  + cos(y) + x + 2*y + 10;
-            //return sin(x) + 2*x;
-            //return x*x*x - 2*x*x + 10;
-            //return sin(x) + cos(y) +  10;
+            if constexpr(DIM==3)
+            {
+                return sin(x) + cos(y) + 3*sin(z) + x*x*y*z + x*x + 10; 
+            }
+            else if constexpr (DIM==2)
+            {
+                return sin(x) + cos(y) + x*x*y + x*x + 10;
+            } 
+            else
+            {
+                return sin(x) + 2*x*x + 10;
+            }
         }
         ALPAKA_FN_HOST_ACC inline T_data trueSolutionDdir(const T_data x, const T_data y, const T_data z, const int dir) const
         {
@@ -123,19 +134,48 @@ class ExactSolutionAndBCs
     private:
         ALPAKA_FN_HOST_ACC inline T_data trueSolutionDdirX(const T_data x, const T_data y, const T_data z) const 
         {
-            return cos(x) + 2*x*y*z + 2*x;
-            //return cos(x) + 2*x;
-            //return cos(x) + 1;
+            if constexpr(DIM==3)
+            {
+                return cos(x) + 2*x*y*z + 2*x; 
+            }
+            else if constexpr (DIM==2)
+            {
+                return cos(x) + 2*x*y + 2*x;
+            } 
+            else
+            {
+                return cos(x) + 4*x;
+            }
         }
         ALPAKA_FN_HOST_ACC inline T_data trueSolutionDdirY(const T_data x, const T_data y, const T_data z) const
         {
-            return -sin(y) + x*x*z;
-            //return -sin(y) + 1;
+            if constexpr(DIM==3)
+            {
+                return -sin(y) + x*x*z;
+            }
+            else if constexpr (DIM==2)
+            {
+                return -sin(y) + x*x;
+            } 
+            else
+            {
+                return 0;
+            }   
         }
         ALPAKA_FN_HOST_ACC inline T_data trueSolutionDdirZ(const T_data x, const T_data y, const T_data z) const
         {
-            return 3*cos(z) + x*x*y;
-            //return 3*cos(z) + 1;
+            if constexpr(DIM==3)
+            {
+                return 3*cos(z) + x*x*y;
+            }
+            else if constexpr (DIM==2)
+            {
+                return 0;
+            } 
+            else
+            {
+                return 0;
+            }
         }
 };
 

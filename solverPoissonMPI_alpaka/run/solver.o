@@ -1,56 +1,57 @@
-Current local time and date: 2025-01-15 19:47:24
-Domain DIM = 3 - Number of MPI tasks 2 2 4 - Tot MPI ranks 16 - Max threads per MPI rank 1 - Tot threads 16
-Global grid size from block 128 128 128 - Global number of points 2097152
-Domain local Np xyz no guards 64 64 32 - Domain local Np xyz guards = 66 66 34 - Guards size 1 1 1
-Total local number of points noguards 131072 - total local number of points guards 148104
-Total local number of points noguards per thread 131072 - total local number of points guards per thread 148104
-Domain global origin xyz 3 2.5 10 - domain global extension xyz 15.7 15.2 22.7 - Ds xyz  = 0.1 0.1 0.1
+Current local time and date: 2025-01-16 19:23:19
+Domain DIM = 2 - Number of MPI tasks 4 4 1 - Tot MPI ranks 16 - Max threads per MPI rank 1 - Tot threads 16
+Global grid size from block 256 512 1 - Global number of points 131072
+Domain local Np xyz no guards 64 128 1 - Domain local Np xyz guards = 66 130 1 - Guards size 1 1 1
+Total local number of points noguards 8192 - total local number of points guards 8580
+Total local number of points noguards per thread 8192 - total local number of points guards per thread 8580
+Domain global origin xyz 3 2.5 10 - domain global extension xyz 28.5 53.6 35.5 - Ds xyz  = 0.1 0.1 0.1
 Boundary condition type 0 1 1 0 1 0
 Using alpaka accelerator: AccGpuHipRt<3,unsigned long>
-Debug in BiCGSTAB Alpaka START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 65 1 65 1 33 indexLimitsSolver 2 65 1 65 1 33
-Initial error: 1 - Norm fieldB 5.30831e+08
+Chebyshev preconditioner
+ workDivExtentKernel1Solver:	{gridBlockExtent: (1, 8, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel2Solver:	{gridBlockExtent: (1, 8, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel2SharedMemeLoop1D:	{gridBlockExtent: (1, 8, 1), blockThreadExtent: (1, 16, 63), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel2Shared:	{gridBlockExtent: (1, 8, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+ workDivExtentKernel2Fixed:	{gridBlockExtent: (1, 128, 8), blockThreadExtent: (1, 1, 8), threadElemExtent: (1, 1, 1)}
+Min eigenvalue 0.188246
+Max eigenvalue 799.901
+Debug in BiCGSTAB Alpaka START  main loop 1 globalLocation 0 0 0 indexLimitsData 1 65 1 129 0 1 indexLimitsSolver 2 65 1 129 0 1
+Initial error: 1 - Norm fieldB 3.36652e+07
 Rank 0
- extent(34, 66, 66)
- pitches (6336, 96, 1) stride_j 96 stride_k 6336
+ extent(1, 130, 66)
+ pitches (12480, 96, 1) stride_j 96 stride_k 12480
  workDivExtentFixed:
-	{gridBlockExtent: (32, 16, 2), blockThreadExtent: (1, 4, 32), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (1, 128, 8), blockThreadExtent: (1, 1, 8), threadElemExtent: (1, 1, 1)}
  workDivExtentKernel1:
-	{gridBlockExtent: (32, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (1, 8, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField1:
-	{gridBlockExtent: (32, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+	{gridBlockExtent: (1, 8, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
  workDivExtentUpdateField2:
-	{gridBlockExtent: (32, 4, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
- Debug in BiCGSTAB Alpaka iter 10 alpha 2.25941 omega 0.663531 rho0 5.74981e-07 error 0.00530744
- Debug in BiCGSTAB Alpaka iter 20 alpha 0.228548 omega 4.95798 rho0 9.32351e-08 error 0.00176548
- Debug in BiCGSTAB Alpaka iter 30 alpha 1.53782 omega 13.4832 rho0 1.15278e-08 error 0.000333449
- Debug in BiCGSTAB Alpaka iter 40 alpha 6.70265 omega 0.508383 rho0 7.88998e-10 error 1.07801e-05
- Debug in BiCGSTAB Alpaka iter 50 alpha 1.0288 omega 11.8126 rho0 2.20316e-11 error 5.11373e-07
- Debug in BiCGSTAB Alpaka iter 60 alpha -3.23743 omega 0.509378 rho0 9.73742e-13 error 9.16852e-08
- Debug in BiCGSTAB Alpaka iter 70 alpha -11.9626 omega 0.505529 rho0 1.47826e-14 error 5.21634e-09
- Debug in BiCGSTAB Alpaka iter 80 alpha 47.9014 omega 0.508855 rho0 -2.75228e-17 error 2.18434e-11
-Iterative solver finished with iter: 80 error from algo 2.18434e-11 error r=b-Ax 2.18434e-11 errorAvgtot 1.04157e-17
-Max error local block avg 0.00898243 in rank 1
-Max error local point 0.0135657 in rank 1
-Solver time: 11.1484 seconds
-SolverInFunction time: 11.0637 seconds - average time cycle 0.138296 seconds
+	{gridBlockExtent: (1, 8, 1), blockThreadExtent: (1, 16, 64), threadElemExtent: (1, 1, 1)}
+Iterative solver finished with iter: 4 error from algo 2.82714e-12 error r=b-Ax 2.82716e-12 errorAvgtot 2.15696e-17
+Max error local block avg 0.0124735 in rank 7
+Max error local point 0.0160549 in rank 7
+residualHistory has been written to residualHistory.txt
+Solver time: 1.21684 seconds
+SolverInFunction time: 1.09264 seconds - average time cycle 0.27316 seconds
 Time in milliseconds 
-timeTotPreconditioner1 61.7175
-timeTotPreconditioner2 62.2379
-timeTotCommunication1 6.70897
-timeTotCommunication2 6.61994
-timeTotAllReduction1 0.314972
-timeTotAllReduction2 0.348952
-timeTotKernel1 0.059197
-timeTotKernel2 0.0191419
-timeTotKernel3 0.0665496
-timeTotKernel4 0.0400631
-timeTotKernel5 0.0542878
-timeTotKernel6 0.0190641
-timeTotPreconditionerTot 123.955
-timeTotCommunicationTot 13.3289
-timeTotAllReductionTot 0.663925
-timeTotKernelsBBiCGstabTot 0.258304
-timeTotResetNeumanBCs 0.0788799
-timeTotal 138.285
-Elapsed time: 23.3391 seconds
+timeTotPreconditioner1 120.076
+timeTotPreconditioner2 152.457
+timeTotCommunication1 0.129967
+timeTotCommunication2 0.105058
+timeTotAllReduction1 0.099811
+timeTotAllReduction2 0.122527
+timeTotKernel1 0.0199113
+timeTotKernel2 0.015172
+timeTotKernel3 0.0234705
+timeTotKernel4 0.0270372
+timeTotKernel5 0.0212038
+timeTotKernel6 0.014984
+timeTotPreconditionerTot 272.533
+timeTotCommunicationTot 0.235025
+timeTotAllReductionTot 0.222338
+timeTotKernelsBBiCGstabTot 0.121779
+timeTotResetNeumanBCs 0.0323647
+timeTotal 273.144
+Elapsed time: 13.0333 seconds
 End program. 

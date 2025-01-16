@@ -168,16 +168,14 @@ struct Chebyshev1Kernel
             {
                 const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
                 // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
-                bufDataY(k,j,i) = bufDataB(k,j,i) * fc0 + 
-                                    ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0 + 
-                                    ( bufDataB(k,j-1,i) + bufDataB(k,j+1,i)) * f1;
+                tmp = bufDataB(k,j,i) * fc0 + ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0;
+                tmp +=              ( bufDataB(k,j-1,i) + bufDataB(k,j+1,i)) * f1;
             }
             else
             {
                 const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
                 // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
-                bufDataY(k,j,i) = bufDataB(k,j,i) * fc0 + 
-                                    ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0;
+                tmp = bufDataB(k,j,i) * fc0 + ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0;
             }
             bufDataY(k,j,i) = tmp;
 
@@ -258,18 +256,14 @@ struct Chebyshev2Kernel
             {
                 const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
                 // Z Y X
-                bufDataW(k,j,i) = bufDataY(k,j,i) * fc0 + 
-                                    ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0 + 
-                                    ( bufDataY(k,j-1,i) + bufDataY(k,j+1,i)) * f1 +
-                                    bufDataB(k,j,i) * fB + bufDataZ(k,j,i) * fZ ; 
+                tmp = bufDataY(k,j,i) * fc0 + ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0;
+                tmp += ( bufDataY(k,j-1,i) + bufDataY(k,j+1,i)) * f1; 
             }
             else
             {
                 const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                 // Z Y X
-                bufDataW(k,j,i) = bufDataY(k,j,i) * fc0 + 
-                                    ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0 + 
-                                    bufDataB(k,j,i) * fB + bufDataZ(k,j,i) * fZ ;
+                tmp = bufDataY(k,j,i) * fc0 + ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0;
             }
             tmp += bufDataB(k,j,i) * fB;
             tmp += bufDataZ(k,j,i) * fZ;
@@ -651,16 +645,16 @@ struct Chebyshev2KernelSharedMem
                 // Z Y X
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
-                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
+                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1;
+                                    //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
             else
             {
                 const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                 // Z Y X
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 +
-                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
+                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0;
+                                    //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
             bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ;
         }  
@@ -799,7 +793,7 @@ struct Chebyshev2KernelSharedMemLoop1D
                     }
                     else if constexpr (DIM==2)
                     {
-                        //const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
+                        const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
                         // Z Y X
                         bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
@@ -807,7 +801,7 @@ struct Chebyshev2KernelSharedMemLoop1D
                     }
                     else
                     {
-                        //const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
+                        const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                         // Z Y X
                         bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0;
@@ -938,16 +932,16 @@ struct Chebyshev2KernelSharedMemSolver
                 // Z Y X
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
-                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
+                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1;
+                                    //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
             else
             {
                 const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                 // Z Y X
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 +
-                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
+                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 ;
+                                    //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
         }  
     }
