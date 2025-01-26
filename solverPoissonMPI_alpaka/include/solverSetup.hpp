@@ -7,7 +7,7 @@
 #include <iomanip> 
 #include <ctime>
 
-constexpr int DIM=2;
+constexpr int DIM=3;
 
 using T_data_base=double; // needed to be explicit here due to alpaka kernels instantiation
 using T_data=double;
@@ -54,7 +54,7 @@ constexpr int iterMaxMainSolver=1500;
 constexpr bool trackErrorFromIterationHistory=1;
 
 // preconditioner
-constexpr int tollPreconditionerSolver=tollMainSolver*1e8;
+constexpr int tollPreconditionerSolver=tollMainSolver*1e7;
 constexpr int iterMaxPreconditioner=500;
 
 

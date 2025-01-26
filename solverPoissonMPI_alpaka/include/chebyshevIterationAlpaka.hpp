@@ -96,13 +96,13 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
 
         alpaka::wait(this->queueSolverNonBlocking1_);
 
-
-        if constexpr (isMainLoop)
+        // To do --> fix the datatype in case of low precision preconditioner with communicationON=true
+        if constexpr (isMainLoop && communicationON)
         {   
             auto pitchBuffAcc = alpaka::getPitchesInBytes(bufY);
             for(int i=0; i<3; i++)
             {
-                pitchBuffAcc[i] /= sizeof(T_data_chebyshev);
+                pitchBuffAcc[i] /= sizeof(T_data);
             }
             Idx stride_j_alpaka = pitchBuffAcc[1];
             Idx stride_k_alpaka = pitchBuffAcc[0];
@@ -132,15 +132,6 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
 
         auto bufBMdSpan = alpaka::experimental::getMdSpan(bufB);
         auto bufBTmpMdSpan = alpaka::experimental::getMdSpan(this->bufBTmp);
-        
-        /*
-        constexpr bool cast = false;
-        if constexpr (!std::is_same_v<T_data, T_data_chebyshev> && cast )
-        {
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentCast, castPrecisionFieldKernel, bufBMdSpan, bufBTmpMdSpan);
-            //bufBMdSpan = alpaka::experimental::getMdSpan(this->bufBTmp);
-        }
-        */
 
         auto bufXMdSpan = alpaka::experimental::getMdSpan(bufX);
         auto bufYMdSpan = alpaka::experimental::getMdSpan(this->bufY);
@@ -149,43 +140,59 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
 
 
         auto startSolver = std::chrono::high_resolution_clock::now();
+
         
-        // apply s0 and s1
-        /*
-        for(k=kmin; k<kmax; k++)
+        
+        constexpr bool cast = true;
+        if constexpr (!std::is_same_v<T_data, T_data_chebyshev> && cast )
         {
-            for(j=jmin; j<jmax; j++)
-            {
-                for(i=imin; i<imax; i++)
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentCast, castPrecisionFieldKernel, bufBMdSpan, bufBTmpMdSpan);
+            
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, chebyshev1Kernel, bufBTmpMdSpan, bufYMdSpan, bufZMdSpan, 
+                    delta_, theta_, rhoCurr, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+            
+            for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
+            {   
+                rhoOld=rhoCurr;
+                rhoCurr=1/(2*sigma_ - rhoOld);
+                
+                // to do fix neuman BCs mixed precision
+                this-> template resetNeumanBCsAlpakaCast<T_data_chebyshev,isMainLoop,false>(bufY);
+                
+                if constexpr(communicationON)
                 {
-                    indx=i + this->stride_j_*j + this->stride_k_*k;
-                    fieldZ[indx] = fieldB[indx]/theta_;
-                    fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
+                    this->communicatorMPI_.template operator()<T_data_chebyshev,true>(getPtrNative(bufY));
+                    this->communicatorMPI_.waitAllandCheckRcv();
                 }
+                
+                if constexpr (jumpCheb == 1)
+                {
+                    alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2SharedMemeLoop1D, chebyshev2KernelSharedMemLoop1D, bufBTmpMdSpan, bufYMdSpan,bufWMdSpan, 
+                                                bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
+                                                this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
+                }
+                else if constexpr (jumpCheb == 2)
+                {
+                    alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Shared, chebyshev2KernelShared, bufBTmpMdSpan, bufYMdSpan,bufWMdSpan, 
+                                            bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
+                                            this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+                }
+                else
+                {
+                    alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2Kernel, bufBTmpMdSpan, bufYMdSpan,bufWMdSpan, 
+                                    bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
+                }
+                std::swap(this->bufZ,this->bufY);
+                std::swap(bufZMdSpan,bufYMdSpan);
+                std::swap(this->bufW,this->bufY);
+                std::swap(bufWMdSpan,bufYMdSpan);
+                
             }
         }
-        */
-        
-
-        
-        alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, chebyshev1Kernel, bufBMdSpan, bufYMdSpan, bufZMdSpan, 
-                       delta_, theta_, rhoCurr, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
-        
-
-
-
-        // apply si
-        /*
-        for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
-        {   
-            rhoOld=rhoCurr;
-            rhoCurr=1/(2*sigma_ - rhoOld);
-            if constexpr (communicationON)
-            {
-                this->communicatorMPI_(fieldY);
-                this->communicatorMPI_.waitAllandCheckRcv();
-            }
-            this-> template resetNeumanBCs<isMainLoop,false>(fieldY);
+        else
+        {
+            // apply s0 and s1
+            /*
             for(k=kmin; k<kmax; k++)
             {
                 for(j=jmin; j<jmax; j++)
@@ -193,56 +200,86 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
                     for(i=imin; i<imax; i++)
                     {
                         indx=i + this->stride_j_*j + this->stride_k_*k;
-                        fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
+                        fieldZ[indx] = fieldB[indx]/theta_;
+                        fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                     }
                 }
             }
-            std::swap(fieldZ,fieldY);
-            std::swap(fieldW,fieldY);
-        }
-        */
-        
-        for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
-        {   
-            rhoOld=rhoCurr;
-            rhoCurr=1/(2*sigma_ - rhoOld);
+            */
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, chebyshev1Kernel, bufBMdSpan, bufYMdSpan, bufZMdSpan, 
+                        delta_, theta_, rhoCurr, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             
-            // to do fix neuman BCs mixed precision
-            this-> template resetNeumanBCsAlpakaCast<T_data_chebyshev,isMainLoop,false>(bufY);
-            
-            if constexpr(communicationON)
-            {
-                this->communicatorMPI_.template operator()<T_data_chebyshev,true>(getPtrNative(bufY));
-                this->communicatorMPI_.waitAllandCheckRcv();
+            // apply si
+            /*
+            for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
+            {   
+                rhoOld=rhoCurr;
+                rhoCurr=1/(2*sigma_ - rhoOld);
+                if constexpr (communicationON)
+                {
+                    this->communicatorMPI_(fieldY);
+                    this->communicatorMPI_.waitAllandCheckRcv();
+                }
+                this-> template resetNeumanBCs<isMainLoop,false>(fieldY);
+                for(k=kmin; k<kmax; k++)
+                {
+                    for(j=jmin; j<jmax; j++)
+                    {
+                        for(i=imin; i<imax; i++)
+                        {
+                            indx=i + this->stride_j_*j + this->stride_k_*k;
+                            fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
+                        }
+                    }
+                }
+                std::swap(fieldZ,fieldY);
+                std::swap(fieldW,fieldY);
             }
+            */
             
-            if constexpr (jumpCheb == 1)
-            {
-                alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2SharedMemeLoop1D, chebyshev2KernelSharedMemLoop1D, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
+            for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
+            {   
+                rhoOld=rhoCurr;
+                rhoCurr=1/(2*sigma_ - rhoOld);
+                
+                // to do fix neuman BCs mixed precision
+                this-> template resetNeumanBCsAlpakaCast<T_data_chebyshev,isMainLoop,false>(bufY);
+                
+                if constexpr(communicationON)
+                {
+                    this->communicatorMPI_.template operator()<T_data_chebyshev,true>(getPtrNative(bufY));
+                    this->communicatorMPI_.waitAllandCheckRcv();
+                }
+                
+                if constexpr (jumpCheb == 1)
+                {
+                    alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2SharedMemeLoop1D, chebyshev2KernelSharedMemLoop1D, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
+                                                bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
+                                                this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
+                }
+                else if constexpr (jumpCheb == 2)
+                {
+                    alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Shared, chebyshev2KernelShared, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
                                             bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
-                                            this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
+                                            this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+                }
+                else
+                {
+                    alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
+                                    bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
+                }
+                
+                std::swap(this->bufZ,this->bufY);
+                std::swap(bufZMdSpan,bufYMdSpan);
+                std::swap(this->bufW,this->bufY);
+                std::swap(bufWMdSpan,bufYMdSpan);
+                
             }
-            else if constexpr (jumpCheb == 2)
-            {
-                alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Shared, chebyshev2KernelShared, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
-                                        bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
-                                        this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
-            }
-            else
-            {
-                alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
-                                bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
-            }
-            
-            //memcpy(this->queueSolver_, bufZ, bufY, this->alpakaHelper_.extent_);
-            //memcpy(this->queueSolver_, bufY, bufW, this->alpakaHelper_.extent_);
-            //alpaka::wait(this->queueSolver_);
-            std::swap(this->bufZ,this->bufY);
-            std::swap(bufZMdSpan,bufYMdSpan);
-            std::swap(this->bufW,this->bufY);
-            std::swap(bufWMdSpan,bufYMdSpan);
             
         }
+        
+        
+        
 
         /*
         for(k=kmin; k<kmax; k++)
@@ -258,10 +295,11 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
         }
         */
 
-        alpaka::exec<Acc>(this->queueSolver_, workDivExtentAssign1, assignFieldWith1FieldKernel, bufXMdSpan, bufWMdSpan, static_cast<T_data_chebyshev>(-1.0),
+        alpaka::exec<Acc>(this->queueSolver_, workDivExtentAssign1, assignFieldWith1FieldKernel, bufXMdSpan, bufWMdSpan, static_cast<T_data>(-1.0),
                          this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
 
         auto endSolver = std::chrono::high_resolution_clock::now();
+
         /*
         if constexpr (isMainLoop)
         {
@@ -274,155 +312,121 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
         */
     }
 
-
-
     void operator()(T_data fieldX[], T_data fieldB[])
     {   
-        constexpr std::uint8_t value0{0};       
-        T_data_chebyshev rhoOld=1/sigma_;
-        T_data_chebyshev rhoCurr=1/(2*sigma_ - rhoOld);
-
-        auto fieldXHostView = createView(this->alpakaHelper_.devHost_, fieldX, this->alpakaHelper_.extent_);
-        auto fieldBHostView = createView(this->alpakaHelper_.devHost_, fieldB, this->alpakaHelper_.extent_);
-
-        auto bufX = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-        auto bufB = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
-
-        auto bufXMdSpan = alpaka::experimental::getMdSpan(bufX);
-        auto bufBMdSpan = alpaka::experimental::getMdSpan(bufB);
-        auto bufBTmpMdSpan = alpaka::experimental::getMdSpan(this->bufBTmp);
-        auto bufYMdSpan = alpaka::experimental::getMdSpan(this->bufY);
-        auto bufWMdSpan = alpaka::experimental::getMdSpan(this->bufW);
-        auto bufZMdSpan = alpaka::experimental::getMdSpan(this->bufZ);
-
-        if constexpr (isMainLoop)
+        if constexpr(std::is_same<T_data, T_data_chebyshev>::value)
         {
-            this->setProblemAlpaka(bufX, bufB);
-        }
+            constexpr std::uint8_t value0{0};       
+            T_data_chebyshev rhoOld=1/sigma_;
+            T_data_chebyshev rhoCurr=1/(2*sigma_ - rhoOld);
 
-        memcpy(this->queueSolver_, this->bufBTmp, bufB, this->alpakaHelper_.extent_);
-        alpaka::wait(this->queueSolver_);
-        
-        /*
-        if (isMainLoop && communicationON)
-        {
-            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufX));
-            this->communicatorMPI_.waitAllandCheckRcv();
-        }
+            auto fieldXHostView = createView(this->alpakaHelper_.devHost_, fieldX, this->alpakaHelper_.extent_);
+            auto fieldBHostView = createView(this->alpakaHelper_.devHost_, fieldB, this->alpakaHelper_.extent_);
 
-        if constexpr(isMainLoop)
-        {
-            this-> template resetNeumanBCsAlpaka<isMainLoop,true>(bufX);
-        }
-        else 
-        {
-            alpaka::memset(this->queueSolver_, bufX, value0);
-        }
+            auto bufX = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
+            auto bufB = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent_);
 
-        this-> template normalizeProblemToFieldBNormAlpaka<isMainLoop,communicationON>(bufX,bufB);
-        
+            auto bufXMdSpan = alpaka::experimental::getMdSpan(bufX);
+            auto bufBMdSpan = alpaka::experimental::getMdSpan(bufB);
+            auto bufBTmpMdSpan = alpaka::experimental::getMdSpan(this->bufBTmp);
+            auto bufYMdSpan = alpaka::experimental::getMdSpan(this->bufY);
+            auto bufWMdSpan = alpaka::experimental::getMdSpan(this->bufW);
+            auto bufZMdSpan = alpaka::experimental::getMdSpan(this->bufZ);
 
-        this-> template normalizeProblemToFieldBNormAlpaka<isMainLoop,communicationON>(bufX,this->bufBTmp);
-        this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
-        std::cout<< "err: " << this->errorComputeOperator_<<std::endl;
-
-        */
-
-        memcpy(this->queueSolver_, this->bufBTmp, bufB, this->alpakaHelper_.extent_);
-        alpaka::wait(this->queueSolver_);
-        
-        this -> adjustFieldBForDirichletNeumanBCsAlpaka(bufX, bufB);
-        
-        //this-> template resetNormFieldsAlpaka<communicationON>(this->bufZ,bufB,1/this->normFieldB_);
-
-        if constexpr(communicationON)
-        {
-            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufB));
-            this->communicatorMPI_.waitAllandCheckRcv();
-
-            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(this->bufBTmp));
-            this->communicatorMPI_.waitAllandCheckRcv();
-        }
-
-        this-> template resetNeumanBCsAlpaka<isMainLoop,false>(bufB);
-        
-        // r0= b - A(x0)
-        this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
-
-        if constexpr(isMainLoop)
-        {
-            if(this->my_rank_==0)
-            {    std::cout<<"Debug in chebyshev Alpaka START " << " main loop "<< isMainLoop << " globalLocation " << this->globalLocation_[0] << " "<< this->globalLocation_[1] <<" "<< this->globalLocation_[2] <<
-                " indexLimitsData "<< this->indexLimitsData_[0]<< " "<<this->indexLimitsData_[1] <<" "<< this->indexLimitsData_[2] << " " <<this->indexLimitsData_[3] << " "<< this->indexLimitsData_[4] << " "<< this->indexLimitsData_[5] <<
-                " indexLimitsSolver "<< this->indexLimitsSolver_[0]<< " "<<this->indexLimitsSolver_[1] <<" "<< this->indexLimitsSolver_[2] << " " <<this->indexLimitsSolver_[3] << " "<< this->indexLimitsSolver_[4] << " "<< this->indexLimitsSolver_[5] <<std::endl; 
-                std::cout<<"Initial error: " <<  this->errorComputeOperator_ <<" - Norm fieldB " <<this->normFieldB_ <<std::endl;
-            }
-        }
-
-        if constexpr (isMainLoop && trackErrorFromIterationHistory)
-        {
-            this->errorFromIterationHistory_[0]=this->errorComputeOperator_;
-        }
-        if(this->errorComputeOperator_ < toll_)
-        {   
-            this->numIterationFinal_ = 0;
-            if(this->my_rank_==0)
-                std::cout<< "Exit befor loop, error: " << this->errorComputeOperator_  <<std::endl;
-            return;
-        }
-
-                
-
-        // to do fix neuman BCs for mixed precision
-        
-        /*
-        if constexpr(communicationON)
-        {
-            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufB));
-            this->communicatorMPI_.waitAllandCheckRcv();
-        }
-
-        this-> template resetNeumanBCsAlpaka<isMainLoop,false>(bufB);
-        */
-        
-        auto startSolver = std::chrono::high_resolution_clock::now();
-        
-        // apply s0 and s1
-        /*
-        for(k=kmin; k<kmax; k++)
-        {
-            for(j=jmin; j<jmax; j++)
+            if constexpr (isMainLoop)
             {
-                for(i=imin; i<imax; i++)
-                {
-                    indx=i + this->stride_j_*j + this->stride_k_*k;
-                    fieldZ[indx] = fieldB[indx]/theta_;
-                    fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
-                }
+                this->setProblemAlpaka(bufX, bufB);
             }
-        }
-        */
-        
 
-        
-        alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, chebyshev1Kernel, bufBMdSpan, bufYMdSpan, bufZMdSpan, 
-                       delta_, theta_, rhoCurr, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
-        
-
-
-
-        // apply si
-        /*
-        for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
-        {   
-            rhoOld=rhoCurr;
-            rhoCurr=1/(2*sigma_ - rhoOld);
-            if constexpr (communicationON)
+            memcpy(this->queueSolver_, this->bufBTmp, bufB, this->alpakaHelper_.extent_);
+            alpaka::wait(this->queueSolver_);
+            
+            /*
+            if (isMainLoop && communicationON)
             {
-                this->communicatorMPI_(fieldY);
+                this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufX));
                 this->communicatorMPI_.waitAllandCheckRcv();
             }
-            this-> template resetNeumanBCs<isMainLoop,false>(fieldY);
+
+            if constexpr(isMainLoop)
+            {
+                this-> template resetNeumanBCsAlpaka<isMainLoop,true>(bufX);
+            }
+            else 
+            {
+                alpaka::memset(this->queueSolver_, bufX, value0);
+            }
+
+            this-> template normalizeProblemToFieldBNormAlpaka<isMainLoop,communicationON>(bufX,bufB);
+            
+
+            this-> template normalizeProblemToFieldBNormAlpaka<isMainLoop,communicationON>(bufX,this->bufBTmp);
+            this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
+            std::cout<< "err: " << this->errorComputeOperator_<<std::endl;
+
+            */
+
+            memcpy(this->queueSolver_, this->bufBTmp, bufB, this->alpakaHelper_.extent_);
+            alpaka::wait(this->queueSolver_);
+            
+            this -> adjustFieldBForDirichletNeumanBCsAlpaka(bufX, bufB);
+            
+            //this-> template resetNormFieldsAlpaka<communicationON>(this->bufZ,bufB,1/this->normFieldB_);
+
+            if constexpr(communicationON)
+            {
+                this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufB));
+                this->communicatorMPI_.waitAllandCheckRcv();
+
+                this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(this->bufBTmp));
+                this->communicatorMPI_.waitAllandCheckRcv();
+            }
+
+            this-> template resetNeumanBCsAlpaka<isMainLoop,false>(bufB);
+            
+            // r0= b - A(x0)
+            this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
+
+            if constexpr(isMainLoop)
+            {
+                if(this->my_rank_==0)
+                {    std::cout<<"Debug in chebyshev Alpaka START " << " main loop "<< isMainLoop << " globalLocation " << this->globalLocation_[0] << " "<< this->globalLocation_[1] <<" "<< this->globalLocation_[2] <<
+                    " indexLimitsData "<< this->indexLimitsData_[0]<< " "<<this->indexLimitsData_[1] <<" "<< this->indexLimitsData_[2] << " " <<this->indexLimitsData_[3] << " "<< this->indexLimitsData_[4] << " "<< this->indexLimitsData_[5] <<
+                    " indexLimitsSolver "<< this->indexLimitsSolver_[0]<< " "<<this->indexLimitsSolver_[1] <<" "<< this->indexLimitsSolver_[2] << " " <<this->indexLimitsSolver_[3] << " "<< this->indexLimitsSolver_[4] << " "<< this->indexLimitsSolver_[5] <<std::endl; 
+                    std::cout<<"Initial error: " <<  this->errorComputeOperator_ <<" - Norm fieldB " <<this->normFieldB_ <<std::endl;
+                }
+            }
+
+            if constexpr (isMainLoop && trackErrorFromIterationHistory)
+            {
+                this->errorFromIterationHistory_[0]=this->errorComputeOperator_;
+            }
+            if(this->errorComputeOperator_ < toll_)
+            {   
+                this->numIterationFinal_ = 0;
+                if(this->my_rank_==0)
+                    std::cout<< "Exit befor loop, error: " << this->errorComputeOperator_  <<std::endl;
+                return;
+            }
+
+                    
+
+            // to do fix neuman BCs for mixed precision
+            
+            /*
+            if constexpr(communicationON)
+            {
+                this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufB));
+                this->communicatorMPI_.waitAllandCheckRcv();
+            }
+
+            this-> template resetNeumanBCsAlpaka<isMainLoop,false>(bufB);
+            */
+            
+            auto startSolver = std::chrono::high_resolution_clock::now();
+            
+            // apply s0 and s1
+            /*
             for(k=kmin; k<kmax; k++)
             {
                 for(j=jmin; j<jmax; j++)
@@ -430,45 +434,110 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
                     for(i=imin; i<imax; i++)
                     {
                         indx=i + this->stride_j_*j + this->stride_k_*k;
-                        fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
+                        fieldZ[indx] = fieldB[indx]/theta_;
+                        fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                     }
                 }
             }
-            std::swap(fieldZ,fieldY);
-            std::swap(fieldW,fieldY);
-        }
-        */
-        
-        for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
-        {   
-            /*
-            if(this->my_rank_==0)
-                std::cout<< "Chebyshev iteration i: " << indxCheb <<std::endl;
             */
+            
 
-            rhoOld=rhoCurr;
-            rhoCurr=1/(2*sigma_ - rhoOld);
             
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, chebyshev1Kernel, bufBMdSpan, bufYMdSpan, bufZMdSpan, 
+                        delta_, theta_, rhoCurr, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             
-            if constexpr(communicationON)
-            {
-                this->communicatorMPI_.template operator()<T_data_chebyshev,true>(getPtrNative(bufY));
-                this->communicatorMPI_.waitAllandCheckRcv();
+
+
+
+            // apply si
+            /*
+            for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
+            {   
+                rhoOld=rhoCurr;
+                rhoCurr=1/(2*sigma_ - rhoOld);
+                if constexpr (communicationON)
+                {
+                    this->communicatorMPI_(fieldY);
+                    this->communicatorMPI_.waitAllandCheckRcv();
+                }
+                this-> template resetNeumanBCs<isMainLoop,false>(fieldY);
+                for(k=kmin; k<kmax; k++)
+                {
+                    for(j=jmin; j<jmax; j++)
+                    {
+                        for(i=imin; i<imax; i++)
+                        {
+                            indx=i + this->stride_j_*j + this->stride_k_*k;
+                            fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
+                        }
+                    }
+                }
+                std::swap(fieldZ,fieldY);
+                std::swap(fieldW,fieldY);
+            }
+            */
+            
+            for(int indxCheb=2; indxCheb<=maxIteration; indxCheb++)
+            {   
+                /*
+                if(this->my_rank_==0)
+                    std::cout<< "Chebyshev iteration i: " << indxCheb <<std::endl;
+                */
+
+                rhoOld=rhoCurr;
+                rhoCurr=1/(2*sigma_ - rhoOld);
+                
+                
+                if constexpr(communicationON)
+                {
+                    this->communicatorMPI_.template operator()<T_data_chebyshev,true>(getPtrNative(bufY));
+                    this->communicatorMPI_.waitAllandCheckRcv();
+                }
+
+                // to do fix neuman BCs mixed precision
+                this-> template resetNeumanBCsAlpakaCast<T_data_chebyshev,isMainLoop,false>(bufY);
+                
+                alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
+                                    bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
+                
+                std::swap(this->bufZ,this->bufY);
+                std::swap(bufZMdSpan,bufYMdSpan);
+                std::swap(this->bufW,this->bufY);
+                std::swap(bufWMdSpan,bufYMdSpan);
+                /*
+                alpaka::exec<Acc>(this->queueSolver_, workDivExtentAssign1, assignFieldWith1FieldKernel, bufXMdSpan, bufWMdSpan, static_cast<T_data_chebyshev>(-1.0),
+                            this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
+
+                if constexpr(communicationON)
+                {
+                    this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufX));
+                    this->communicatorMPI_.waitAllandCheckRcv();
+                }
+
+                this-> template resetNeumanBCsAlpaka<isMainLoop,true>(bufX);
+                this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
+
+                if(this->my_rank_==0)
+                    std::cout<< "Chebyshev iter: "<< indxCheb << " rhoCurr: " << rhoCurr << " error: " << this->errorComputeOperator_  <<std::endl;
+                */
             }
 
-            // to do fix neuman BCs mixed precision
-            this-> template resetNeumanBCsAlpakaCast<T_data_chebyshev,isMainLoop,false>(bufY);
-            
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
-                                bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.offsetSolver_);
-            
-            std::swap(this->bufZ,this->bufY);
-            std::swap(bufZMdSpan,bufYMdSpan);
-            std::swap(this->bufW,this->bufY);
-            std::swap(bufWMdSpan,bufYMdSpan);
             /*
+            for(k=kmin; k<kmax; k++)
+            {
+                for(j=jmin; j<jmax; j++)
+                {
+                    for(i=imin; i<imax; i++)
+                    {
+                        indx=i + this->stride_j_*j + this->stride_k_*k;
+                        fieldX[indx] = (-1)*fieldW[indx];
+                    }
+                }
+            }
+            */
+
             alpaka::exec<Acc>(this->queueSolver_, workDivExtentAssign1, assignFieldWith1FieldKernel, bufXMdSpan, bufWMdSpan, static_cast<T_data_chebyshev>(-1.0),
-                         this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
+                            this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
 
             if constexpr(communicationON)
             {
@@ -477,69 +546,40 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
             }
 
             this-> template resetNeumanBCsAlpaka<isMainLoop,true>(bufX);
-            this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
+            auto endSolver = std::chrono::high_resolution_clock::now();
+            this->durationSolver_ = endSolver - startSolver;
 
+            memcpy(this->queueSolverNonBlocking1_, bufB, this->bufBTmp, this->alpakaHelper_.extent_);
+            alpaka::wait(this->queueSolverNonBlocking1_);
+
+            if constexpr (isMainLoop)
+            {
+                this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
+            }
+
+
+            //this-> template resetNormFieldsAlpaka<communicationON>(bufX,bufB,this->normFieldB_);
+            this->normFieldB_ = 1;
+
+            memcpy(this->queueSolver_, fieldXHostView, bufX, this->alpakaHelper_.extent_);
+            alpaka::wait(this->queueSolver_);
             if(this->my_rank_==0)
-                std::cout<< "Chebyshev iter: "<< indxCheb << " rhoCurr: " << rhoCurr << " error: " << this->errorComputeOperator_  <<std::endl;
+                    std::cout<< "End chebyshev error: " << this->errorComputeOperator_  <<std::endl;
+
+
+            /*
+            if constexpr (isMainLoop)
+            {
+                std::swap(fieldBtmp,fieldB);
+                this->errorComputeOperator_ = this-> template computeErrorOperatorA<isMainLoop, communicationON>(fieldX,fieldB,fieldBtmp,operatorA);
+                this->errorFromIteration_ = this->errorComputeOperator_;
+                this->numIterationFinal_ = maxIteration;
+                this->durationSolver_ = endSolver - startSolver;
+            }
             */
         }
-
-        /*
-        for(k=kmin; k<kmax; k++)
-        {
-            for(j=jmin; j<jmax; j++)
-            {
-                for(i=imin; i<imax; i++)
-                {
-                    indx=i + this->stride_j_*j + this->stride_k_*k;
-                    fieldX[indx] = (-1)*fieldW[indx];
-                }
-            }
-        }
-        */
-
-        alpaka::exec<Acc>(this->queueSolver_, workDivExtentAssign1, assignFieldWith1FieldKernel, bufXMdSpan, bufWMdSpan, static_cast<T_data_chebyshev>(-1.0),
-                         this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
-
-        if constexpr(communicationON)
-        {
-            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufX));
-            this->communicatorMPI_.waitAllandCheckRcv();
-        }
-
-        this-> template resetNeumanBCsAlpaka<isMainLoop,true>(bufX);
-        auto endSolver = std::chrono::high_resolution_clock::now();
-        this->durationSolver_ = endSolver - startSolver;
-
-        memcpy(this->queueSolverNonBlocking1_, bufB, this->bufBTmp, this->alpakaHelper_.extent_);
-        alpaka::wait(this->queueSolverNonBlocking1_);
-
-        if constexpr (isMainLoop)
-        {
-            this->errorComputeOperator_ = this-> template computeErrorOperatorAAlpaka<isMainLoop, communicationON>(bufX,this->bufBTmp,this->rkDev);
-        }
-
-
-        //this-> template resetNormFieldsAlpaka<communicationON>(bufX,bufB,this->normFieldB_);
-        this->normFieldB_ = 1;
-
-        memcpy(this->queueSolver_, fieldXHostView, bufX, this->alpakaHelper_.extent_);
-        alpaka::wait(this->queueSolver_);
-        if(this->my_rank_==0)
-                std::cout<< "End chebyshev error: " << this->errorComputeOperator_  <<std::endl;
-
-
-        /*
-        if constexpr (isMainLoop)
-        {
-            std::swap(fieldBtmp,fieldB);
-            this->errorComputeOperator_ = this-> template computeErrorOperatorA<isMainLoop, communicationON>(fieldX,fieldB,fieldBtmp,operatorA);
-            this->errorFromIteration_ = this->errorComputeOperator_;
-            this->numIterationFinal_ = maxIteration;
-            this->durationSolver_ = endSolver - startSolver;
-        }
-        */
     }
+
     
     
     private:

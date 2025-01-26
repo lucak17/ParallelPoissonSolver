@@ -29,5 +29,5 @@ export OMP_NUM_THREADS=1
 export MPICH_GPU_SUPPORT_ENABLED=1
 
 
-srun --cpu-bind=${CPU_BIND} ./select_gpu ../build/solverPoisson 4 4 1
+srun --cpu-bind=${CPU_BIND} ./select_gpu ../build/solverPoisson 2 2 4
 rm -rf ./select_gpu

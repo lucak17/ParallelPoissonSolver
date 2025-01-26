@@ -120,23 +120,29 @@ int main(int argc, char** argv) {
     auto end = std::chrono::high_resolution_clock::now();
 
     // output residual history
-    if(my_rank==0)
+    if constexpr (writeResidual)
     {
-        solver.writeResidualHistory();
+        if(my_rank==0)
+        {
+            solver.writeResidualHistory();
+        }
     }
     MPI_Barrier(MPI_COMM_WORLD);
     
 
     // output solution
-    MPI_File fileSolution;
-    MPI_Status status;
-    MPI_Offset offset = sizeof(T_data) * blockGrid.getNtotLocalGuards() * my_rank ;
-    
-    MPI_File_open(MPI_COMM_WORLD, "solution.dat", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fileSolution);
+    if constexpr (writeSolution)
+    {
+        MPI_File fileSolution;
+        MPI_Status status;
+        MPI_Offset offset = sizeof(T_data) * blockGrid.getNtotLocalGuards() * my_rank ;
+        
+        MPI_File_open(MPI_COMM_WORLD, "solution.dat", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fileSolution);
 
-    MPI_File_seek(fileSolution, offset, MPI_SEEK_SET);
-    MPI_File_write(fileSolution, fieldX, blockGrid.getNtotLocalGuards(), getMPIType<T_data>(), &status);
-    MPI_File_close(&fileSolution);
+        MPI_File_seek(fileSolution, offset, MPI_SEEK_SET);
+        MPI_File_write(fileSolution, fieldX, blockGrid.getNtotLocalGuards(), getMPIType<T_data>(), &status);
+        MPI_File_close(&fileSolution);
+    }
 
     MPI_Barrier(MPI_COMM_WORLD);
     
