@@ -108,7 +108,8 @@ int main(int argc, char** argv) {
 
     if(my_rank==0)
     {
-        std::cout<<"Iterative solver finished with iter: "<< solver.getNumIterationFinal()<< " error from algo "<< solver.getErrorFromIteration() << 
+        std::cout<<"Iterative solver finished with iter: "<< solver.getNumIterationFinal()<< " - Total preconditione iterations: "<< solver.getNumIterationPreconditionerFinal() << "\n" << 
+        " error from algo "<< solver.getErrorFromIteration() << 
         " error r=b-Ax "<< solver.getErrorComputeOperator() << " errorAvgtot "<< solver.getErrorComputeOperator()/static_cast<T_data>(blockGrid.getNtotNpglobal())<< std::endl;
     }  
 

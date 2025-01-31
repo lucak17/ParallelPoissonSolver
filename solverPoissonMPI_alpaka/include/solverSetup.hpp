@@ -18,11 +18,28 @@ using T_data_chebyshev=double;
 using Dim = alpaka::DimInt<3>;
 using Idx = std::size_t;
 using Acc = alpaka::AccGpuHipRt<Dim,Idx>;
+//using Acc = alpaka::AccCpuOmp2Threads<Dim,Idx>;
+//using Acc = alpaka::AccCpuOmp2Blocks<Dim,Idx>;
+/*
+#ifdef alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE
+        using Acc = alpaka::AccCpuOmp2Threads<Dim,Idx>;
+#endif
+#ifdef alpaka_ACC_CPU_B_OMP2_T_SEQ_ENABLE
+        using Acc = alpaka::AccCpuOmp2Blocks<Dim,Idx>;
+#endif
+#ifdef alpaka_ACC_GPU_HIP_ENABLE
+        using Acc = alpaka::AccGpuHipRt<Dim,Idx>;
+#endif
+#ifdef alpaka_ACC_GPU_CUDA_ENABLE
+        using Acc = alpaka::AccGpuCudaRt<Dim,Idx>;
+#endif
+*/
+
 using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
 using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
 constexpr std::array<int,3> guards={1,1,1};
-constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,8};
+constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,1};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,8,8};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,32};
 constexpr alpaka::Vec<Dim, Idx> haloSizeFixed = {guards[2],guards[1],guards[0]};
@@ -50,11 +67,11 @@ constexpr T_data tollScalingFactor = 1e-10;
 constexpr int orderNeumanBcs=2;
 
 constexpr int tollMainSolver=1;  //effective toll = tollMainSolver*tollScalingFactor
-constexpr int iterMaxMainSolver=1500;
+constexpr int iterMaxMainSolver=1000;
 constexpr bool trackErrorFromIterationHistory=1;
 
 // preconditioner
-constexpr int tollPreconditionerSolver=tollMainSolver*1e7;
+constexpr int tollPreconditionerSolver=tollMainSolver*1e8;
 constexpr int iterMaxPreconditioner=500;
 
 

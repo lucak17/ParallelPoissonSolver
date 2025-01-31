@@ -67,6 +67,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
     // main solver function
     void operator()(T_data fieldX[], T_data fieldB[])
     {
+        auto startSolver = std::chrono::high_resolution_clock::now();
         int iter=0;
         T_data alphak=1;
         T_data betak=1;
@@ -201,16 +202,17 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
         rho0=1;
         rho1=rho0;
-        preconditioner(MpkDev,pkDev);
-        alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
-                                    this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
-        auto startSolver = std::chrono::high_resolution_clock::now();
+        //preconditioner(MpkDev,pkDev);
+        //alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+        //                            this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+        
         auto startCounter = std::chrono::high_resolution_clock::now();
         
         while(iter<maxIteration)
         {   
             startCounter = std::chrono::high_resolution_clock::now();
             preconditioner(MpkDev,pkDev);
+            this->numIterationPreconditionerFinal_ += preconditioner.getNumIterationFinal();
             this->timeCounter.timeTotPreconditioner1 += std::chrono::high_resolution_clock::now() - startCounter;
 
             startCounter = std::chrono::high_resolution_clock::now();
@@ -286,6 +288,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         
             startCounter = std::chrono::high_resolution_clock::now();
             preconditioner(zkDev,rkDev);
+            this->numIterationPreconditionerFinal_ += preconditioner.getNumIterationFinal();
             this->timeCounter.timeTotPreconditioner2 += std::chrono::high_resolution_clock::now() - startCounter;
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr (communicationON)
@@ -477,6 +480,8 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
     // solver as preconditioner
     void operator()(alpaka::Buf<T_Dev, T_data, Dim, Idx>& fieldXDev, alpaka::Buf<T_Dev, T_data, Dim, Idx>& fieldBDev)
     {
+        auto startSolver = std::chrono::high_resolution_clock::now();
+        this->numIterationFinal_;
         int iter=0;
         T_data alphak=1;
         T_data betak=1;
@@ -593,7 +598,6 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
         rho0=1;
         rho1=rho0;
-        auto startSolver = std::chrono::high_resolution_clock::now();
         auto startCounter = std::chrono::high_resolution_clock::now();
         
         while(iter<maxIteration)

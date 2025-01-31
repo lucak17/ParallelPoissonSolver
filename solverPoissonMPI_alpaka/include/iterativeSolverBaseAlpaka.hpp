@@ -47,6 +47,7 @@ class IterativeSolverBaseAlpaka{
         errorFromIteration_(-1.0),
         errorComputeOperator_(-1.0),
         numIterationFinal_(0),
+        numIterationPreconditionerFinal_(0),
         bufTmp(alpaka::allocBuf<T_data, Idx>(alpakaHelper.devAcc_, alpakaHelper.extent_)),
         workDivExtentResetNeumanBCsKernel_(alpaka::getValidWorkDiv(alpakaHelper.cfgExtentNoHaloHelper_, alpakaHelper.devAcc_, ResetNeumanBCsKernel<DIM, T_data, false, true>{}, 
                                                     alpaka::experimental::getMdSpan(this->bufTmp), this->exactSolutionAndBCs_, 1, 1.0, 
@@ -604,6 +605,10 @@ class IterativeSolverBaseAlpaka{
     {
         return numIterationFinal_;
     }
+    int getNumIterationPreconditionerFinal() const
+    {
+        return numIterationPreconditionerFinal_;
+    }
 
     void writeResidualHistory() const
     {
@@ -611,6 +616,10 @@ class IterativeSolverBaseAlpaka{
         if (!outFile) {
             std::cerr << "Error: Could not open the file!" << std::endl;
         }
+
+        outFile << this->getDurationSolver().count() << "\n";
+        outFile << this->getNumIterationFinal() << "\n";
+        outFile << this->getNumIterationPreconditionerFinal() << "\n";
 
         for (int i = 0 ; i< maxIteration && errorFromIterationHistory_[i]>0; i++  )
         {
@@ -766,6 +775,7 @@ class IterativeSolverBaseAlpaka{
     T_data errorFromIteration_;
     T_data errorComputeOperator_;
     int numIterationFinal_;
+    int numIterationPreconditionerFinal_;
 
     std::chrono::duration<double> durationSolver_;
 

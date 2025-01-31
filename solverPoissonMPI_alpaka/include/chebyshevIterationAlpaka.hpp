@@ -115,8 +115,10 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
     {
     }
 
+    // chebushev iteration as preconditioner
     void operator()(alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufX, alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufB)
     {   
+        this->numIterationFinal_ = 0;
         constexpr std::uint8_t value0{0};
         T_data_chebyshev rhoOld=1/sigma_;
         T_data_chebyshev rhoCurr=1/(2*sigma_ - rhoOld);
@@ -300,6 +302,8 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
 
         auto endSolver = std::chrono::high_resolution_clock::now();
 
+        this->numIterationFinal_ = maxIteration;
+
         /*
         if constexpr (isMainLoop)
         {
@@ -312,6 +316,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
         */
     }
 
+    // chebyshev iteration as main solver
     void operator()(T_data fieldX[], T_data fieldB[])
     {   
         if constexpr(std::is_same<T_data, T_data_chebyshev>::value)
@@ -548,6 +553,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
             this-> template resetNeumanBCsAlpaka<isMainLoop,true>(bufX);
             auto endSolver = std::chrono::high_resolution_clock::now();
             this->durationSolver_ = endSolver - startSolver;
+            this->numIterationFinal_ = maxIteration;
 
             memcpy(this->queueSolverNonBlocking1_, bufB, this->bufBTmp, this->alpakaHelper_.extent_);
             alpaka::wait(this->queueSolverNonBlocking1_);
