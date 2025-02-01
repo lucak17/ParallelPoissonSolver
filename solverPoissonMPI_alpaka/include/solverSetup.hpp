@@ -7,19 +7,19 @@
 #include <iomanip> 
 #include <ctime>
 
-constexpr int DIM=3;
+constexpr int DIM=3; // domain dimensions (1, 2 or 3)
 
-using T_data_base=double; // needed to be explicit here due to alpaka kernels instantiation
-using T_data=double;
-using T_data_chebyshev=double;
+using T_data=double; // data precision of the main solver - double or float (keep it to double)
+using T_data_base=double; // must be equal to T_data - it must be explicited here due to alpaka kernels instantiation
+using T_data_chebyshev=double; //data precision for the chebyshev preconditioner iteration
 
 
 // accelerator Alpaka
-using Dim = alpaka::DimInt<3>;
-using Idx = std::size_t;
-using Acc = alpaka::AccGpuHipRt<Dim,Idx>;
-//using Acc = alpaka::AccCpuOmp2Threads<Dim,Idx>;
-//using Acc = alpaka::AccCpuOmp2Blocks<Dim,Idx>;
+using Dim = alpaka::DimInt<3>; // alpaka dimension is set to 3 - keep to 3 even if DIM=1 or DIM=2
+using Idx = std::size_t; // alpaka index data type 
+using Acc = alpaka::AccGpuHipRt<Dim,Idx>; // alapaka backend --> only alapaka setup to change according to the hardware architecture - must be coherent with CMakeLists.txt
+//using Acc = alpaka::AccCpuOmp2Threads<Dim,Idx>; // blocks parallel and threads sequentials --> chose this for openMP!
+//using Acc = alpaka::AccCpuOmp2Blocks<Dim,Idx>; // blocks sequential and threads parallel
 /*
 #ifdef alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE
         using Acc = alpaka::AccCpuOmp2Threads<Dim,Idx>;
@@ -38,7 +38,7 @@ using Acc = alpaka::AccGpuHipRt<Dim,Idx>;
 using T_Host = alpaka::Dev<alpaka::PlatformCpu>;
 using T_Dev = alpaka::Dev<alpaka::Platform<Acc>>;
 
-constexpr std::array<int,3> guards={1,1,1};
+constexpr std::array<int,3> guards={1,1,1}; // halo-points in each direction x,y,z - for a second order centered FD scheme must be {1,1,1}
 constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,1};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,8,8};
 //constexpr alpaka::Vec<Dim, Idx> blockExtentFixed = {1,1,32};
@@ -47,6 +47,37 @@ constexpr alpaka::Vec<Dim, Idx> haloSizeFixed = {guards[2],guards[1],guards[0]};
 //constexpr alpaka::Vec<Dim, Idx> haloSizeFixed = {0,0,guards[0]};
 constexpr Idx sMemSizeFixed = (blockExtentFixed[0]+2*haloSizeFixed[0])*(blockExtentFixed[1]+2*haloSizeFixed[1])*(blockExtentFixed[2]+2*haloSizeFixed[2]);
 
+constexpr T_data PI = 3.141592653589793;
+
+constexpr T_data tollScalingFactor = 1e-10;
+
+// Order Neuman BCs scheme (only 2nd available)
+constexpr int orderNeumanBcs=2;
+
+// Main Solver BiCGSTAB parameters
+constexpr int tollMainSolver=1;  // Main solver tollerance --> effective toll = tollMainSolver*tollScalingFactor --> needed since only int can be passed as template arguments
+constexpr int iterMaxMainSolver=1000; // maximum iterations main solver
+constexpr bool trackErrorFromIterationHistory=1; // set to 1 to save the residual history (to save residual history in output file set writeResidual = true in inputParam.hpp)
+
+// Iterative BiCGSTAB preconditioner parameters - both for Global-BiCGS and BJ-BiCGS preconditioners
+constexpr int tollPreconditionerSolver=tollMainSolver*1e8;
+constexpr int iterMaxPreconditioner=500;
+
+
+// chebyshev preconditioner paramters - if Chebyshev iteration is used as main solver these paramters must be changed accordingly
+constexpr T_data epsilon=0; // keep to 0
+constexpr T_data rescaleEigMin= 1000; // rescale factor for minimum eigenvalue (if the chebyshev iteration is set to be local in inputParameter.hpp eigenvalues are not rescaled disregarding these values)
+constexpr T_data rescaleEigMax= 1 - 1e-4; // rescale factor for maximum eigenvalue
+constexpr int chebyshevMax=24; // number of chebyshev iterations
+constexpr int jumpCheb = 0; // change kernel2 in the chebyshev iteration !keep to 0! - 0 -> no block shared memory, 1 -> shared memory and set how many grid points to jump to avoid memory bank conflicts (it works but not sure is effective), 2 -> basic shared memory
+// if jumpCheb = 1 set the number of grid points to jump
+constexpr Idx jumpI=1u;
+constexpr Idx jumpJ=1u;
+constexpr Idx jumpK=1u;
+
+
+
+// function to set MPI_Datatype according to T_data in MPI calls
 template <typename T_data>
 inline MPI_Datatype getMPIType();
 template <>
@@ -59,34 +90,8 @@ inline MPI_Datatype getMPIType<double>() {
 }
 
 
-constexpr T_data PI = 3.141592653589793;
 
-constexpr T_data tollScalingFactor = 1e-10;
-
-// Order Neuman BCs scheme (only 2nd available)
-constexpr int orderNeumanBcs=2;
-
-constexpr int tollMainSolver=1;  //effective toll = tollMainSolver*tollScalingFactor
-constexpr int iterMaxMainSolver=1000;
-constexpr bool trackErrorFromIterationHistory=1;
-
-// preconditioner
-constexpr int tollPreconditionerSolver=tollMainSolver*1e8;
-constexpr int iterMaxPreconditioner=500;
-
-
-// chebyshev preconditioner
-constexpr T_data epsilon=0;
-constexpr T_data rescaleEigMin= 10;
-constexpr T_data rescaleEigMax= 1 - 1e-4;
-constexpr int chebyshevMax=24;
-constexpr int jumpCheb = 0;
-constexpr Idx jumpI=1u;
-constexpr Idx jumpJ=1u;
-constexpr Idx jumpK=1u;
-
-
-
+// set up test problem 
 template<int DIM,typename T_data>
 class ExactSolutionAndBCs
 {   
@@ -197,9 +202,8 @@ class ExactSolutionAndBCs
 };
 
 
-#endif
 
-
+// time counters class
 template<int DIM,typename T_data>
 class TimeCounter
 {
@@ -279,5 +283,5 @@ class TimeCounter
     std::chrono::duration<double> timeTotAllReduction1;
     std::chrono::duration<double> timeTotAllReduction2;
     std::chrono::duration<double> timeTotal;
-
 };
+#endif

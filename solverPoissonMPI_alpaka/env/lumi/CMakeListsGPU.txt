@@ -44,15 +44,6 @@ alpaka_add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC alpaka::alpaka)
 
 
- 
-#set(MPI_mpi_cray_LIBRARY /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib/libmpi_cray.so)
-#set(Cray_xpmem_LIBRARY /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64/libxpmem.so)
-#set(MPI_GTL_amd_gfx90a_LIBRARY /opt/cray/pe/mpich/8.1.28/gtl/lib/libmpi_gtl_hsa.so)
-
-# Include directories
-#include_directories(/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include)
-
-#target_link_libraries(solverPoisson PUBLIC ${MPI_mpi_cray_LIBRARY} ${Cray_xpmem_LIBRARY} ${MPI_GTL_amd_gfx90a_LIBRARY})
 # Add HIP compiler flags
 target_compile_options(solverPoisson PUBLIC --offload-arch=gfx90a)
 

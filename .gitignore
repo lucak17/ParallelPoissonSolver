@@ -1,3 +1,6 @@
 /solverPoissonMPI_CPU/build/
+/solverPoissonMPI_CPU/run/
 /solverPoissonMPI_alpaka/build/
+/solverPoissonMPI_alpaka/CMakeLists.txt
+/solverPoissonMPI_alpaka/run/
 /solverPoissonMPI_alpaka/omnitrace-solverPoisson-output/

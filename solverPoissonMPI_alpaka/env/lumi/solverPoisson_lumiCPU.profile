@@ -12,4 +12,4 @@ module load buildtools/24.03
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 #echo ${SCRIPT_DIR}
 cp "$SCRIPT_DIR/CMakeListsCPU.txt" "$SCRIPT_DIR/../../CMakeLists.txt"
-cp "$SCRIPT_DIR/runCPU.slurm" "$SCRIPT_DIR/../../run/runCPU.slurm"
+cp "$SCRIPT_DIR/runCPU.slurm" "$SCRIPT_DIR/../../run/run.slurm"
