@@ -1,4 +1,4 @@
-#module --force purge
+module --force purge
 module load LUMI/24.03  partition/G
 module load PrgEnv-cray/8.5.0
 module load craype-accel-amd-gfx90a
@@ -24,8 +24,8 @@ export CXXFLAGS="$CXXFLAGS -I${MPICH_DIR}/include"
 export HIPFLAGS=$CXXFLAGS
 export LDFLAGS="$LDFLAGS -L${MPICH_DIR}/lib -lmpi ${PE_MPICH_GTL_DIR_amd_gfx90a} ${PE_MPICH_GTL_LIBS_amd_gfx90a}"
 
-#export OMNITRACE_CONFIG_FILE=/users/pennatil/iPIC3D/omnitrace.cfg
+export OMNITRACE_CONFIG_FILE=/users/pennatil/iPIC3D/omnitrace.cfg
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 #echo ${SCRIPT_DIR}
-cp "$SCRIPT_DIR/CMakeLists.txt" "$SCRIPT_DIR/../../."
-cp "$SCRIPT_DIR/run.slurm" "$SCRIPT_DIR/../../run"
+cp "$SCRIPT_DIR/CMakeListsGPU.txt" "$SCRIPT_DIR/../../CMakeLists.txt"
+cp "$SCRIPT_DIR/runGPU.slurm" "$SCRIPT_DIR/../../run/run.slurm"

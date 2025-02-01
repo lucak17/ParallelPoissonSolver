@@ -1,14 +1,5 @@
 cmake_minimum_required(VERSION 3.22)  # Minimum CMake version
 
-# Check if compilers are not already set and provide defaults
-if(NOT DEFINED CMAKE_C_COMPILER)
-    set(CMAKE_C_COMPILER clang)
-endif()
-
-if(NOT DEFINED CMAKE_CXX_COMPILER)
-    set(CMAKE_CXX_COMPILER clang++)
-endif()
-
 project(solverPoisson)                   # Project name
 
 # Set the C++ standard
@@ -27,8 +18,7 @@ endif()
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")                 # Debug: No optimization, debug info
 set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")         # Release: High optimization
 
-set(alpaka_ACC_GPU_HIP_ENABLE ON CACHE BOOL "Enable HIP backend for Alpaka")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --offload-arch=gfx90a")
+set(alpaka_ACC_GPU_CUDA_ENABLE ON CACHE BOOL "Enable CUDA backend for Alpaka")
 
 # Set the alpaka_USE_MDSPAN flag
 # Options: OFF, SYSTEM, FETCH
@@ -44,20 +34,15 @@ alpaka_add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC alpaka::alpaka)
 
 
- 
-#set(MPI_mpi_cray_LIBRARY /opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/lib/libmpi_cray.so)
-#set(Cray_xpmem_LIBRARY /opt/cray/xpmem/2.8.2-1.0_3.9__g84a27a5.shasta/lib64/libxpmem.so)
-#set(MPI_GTL_amd_gfx90a_LIBRARY /opt/cray/pe/mpich/8.1.28/gtl/lib/libmpi_gtl_hsa.so)
 
-# Include directories
-#include_directories(/opt/cray/pe/mpich/8.1.28/ofi/cray/17.0/include)
+# Manually set MPI
+set(MPI_openmpi_LIBRARY1 /gpfs/apps/MN5/ACC/OPENMPI/4.1.5/GCC/lib/libmpi.so)
+set(MPI_openmpi_LIBRARY2 /gpfs/apps/MN5/ACC/OPENMPI/4.1.5/GCC/lib/libmpicxx.so)
+#set(MPI_impi_LIBRARY1 /gpfs/apps/MN5/GPP/ONEAPI/2024.2/mpi/2021.13/lib/libmpi.so)
+#set(MPI_impi_LIBRARY2 /gpfs/apps/MN5/GPP/ONEAPI/2024.2/mpi/2021.13/lib/libmpicxx.so)
 
-#target_link_libraries(solverPoisson PUBLIC ${MPI_mpi_cray_LIBRARY} ${Cray_xpmem_LIBRARY} ${MPI_GTL_amd_gfx90a_LIBRARY})
-# Add HIP compiler flags
-target_compile_options(solverPoisson PUBLIC --offload-arch=gfx90a)
+include_directories(/gpfs/apps/MN5/ACC/OPENMPI/4.1.5/GCC/include)
+target_link_libraries(solverPoisson PUBLIC ${MPI_openmpi_LIBRARY1} )
 
 # Include directories
 target_include_directories(solverPoisson PUBLIC include)
-
-
-

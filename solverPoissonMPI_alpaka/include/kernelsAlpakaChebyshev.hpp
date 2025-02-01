@@ -3,11 +3,28 @@
 #include <alpaka/alpaka.hpp>
 #include <cstdio>
 
-template<int DIM, typename T_data> 
+
+template<int DIM, typename T_data_in, typename T_data_out> 
+struct CastPrecisionFieldKernel
+{
+    template<typename TAcc, typename TMdSpanIn,typename TMdSpanOut>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpanIn bufDataA, TMdSpanOut bufDataB) const -> void
+    {
+        // Get indexes
+        auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        // Z Y X
+        bufDataB(gridThreadIdx[0],gridThreadIdx[1],gridThreadIdx[2]) =  static_cast<T_data_out>(bufDataA(gridThreadIdx[0],gridThreadIdx[1],gridThreadIdx[2]));
+    }
+};
+
+
+
+
+template<int DIM, typename T_data_base, typename T_data_chebyshev> 
 struct AssignFieldWith1FieldKernel
 {
-    template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, const T_data constB,
+    template<typename TAcc, typename TMdSpanBase,typename TMdSpanChebyshev>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpanBase bufDataA, TMdSpanChebyshev bufDataB, const T_data_chebyshev constB,
                                     const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize) const -> void
     {
         // Get indexes
@@ -28,11 +45,11 @@ struct AssignFieldWith1FieldKernel
 
 
 
-template<int DIM, typename T_data> 
+template<int DIM, typename T_data_base, typename T_data_chebyshev> 
 struct AssignFieldWith1FieldKernelSolver
 {
     template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, const T_data constB,
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataA, TMdSpan bufDataB, const T_data_chebyshev constB,
                                     const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, Idx> offset) const -> void
     {
         // Get indexes
@@ -95,7 +112,7 @@ struct AssignFieldWith4FieldsKernel
 
 
 
-template<int DIM, typename T_data> 
+template<int DIM, typename T_data_base, typename T_data_chebyshev > 
 struct Chebyshev1Kernel
 {
 
@@ -115,9 +132,9 @@ struct Chebyshev1Kernel
     }
     */
 
-    template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataZ, const T_data delta, const T_data theta, const T_data rhoCurr, 
-                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+    template<typename TAcc, typename TMdSpanBase, typename TMdSpanChebyshev>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpanBase bufDataB, TMdSpanChebyshev bufDataY, TMdSpanChebyshev bufDataZ, const T_data_chebyshev delta, const T_data_chebyshev theta, const T_data_chebyshev rhoCurr, 
+                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
                                 const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize ) const -> void
     {
         // Get indexes
@@ -127,13 +144,13 @@ struct Chebyshev1Kernel
         auto const j = gridThreadIdxShifted[1];
         auto const k = gridThreadIdxShifted[0];
         
-        const T_data r0 = ds[2]*ds[2];
-        const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[0]*ds[0];
-        const T_data f0 = 2 * rhoCurr / delta * (  1/r0 /theta );
-        const T_data f1 = 2 * rhoCurr / delta * (  1/r1 /theta );
-        const T_data f2 = 2 * rhoCurr / delta * (  1/r2 /theta );
-        T_data tmp;
+        const T_data_chebyshev r0 = ds[2]*ds[2];
+        const T_data_chebyshev r1 = ds[1]*ds[1];
+        const T_data_chebyshev r2 = ds[0]*ds[0];
+        const T_data_chebyshev f0 = 2 * rhoCurr / delta * (  1/r0 /theta );
+        const T_data_chebyshev f1 = 2 * rhoCurr / delta * (  1/r1 /theta );
+        const T_data_chebyshev f2 = 2 * rhoCurr / delta * (  1/r2 /theta );
+        T_data_chebyshev tmp;
                 
         if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
         {
@@ -141,7 +158,7 @@ struct Chebyshev1Kernel
         
             if constexpr (DIM==3)
             {
-                const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1 + 1/r2)/theta );
+                const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1 + 1/r2)/theta );
                 // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                 tmp = bufDataB(k,j,i) * fc0 + ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0;
                 tmp +=              ( bufDataB(k,j-1,i) + bufDataB(k,j+1,i)) * f1 +
@@ -149,18 +166,16 @@ struct Chebyshev1Kernel
              }
             else if constexpr (DIM==2)
             {
-                const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
+                const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
                 // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
-                bufDataY(k,j,i) = bufDataB(k,j,i) * fc0 + 
-                                    ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0 + 
-                                    ( bufDataB(k,j-1,i) + bufDataB(k,j+1,i)) * f1;
+                tmp = bufDataB(k,j,i) * fc0 + ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0;
+                tmp +=              ( bufDataB(k,j-1,i) + bufDataB(k,j+1,i)) * f1;
             }
             else
             {
-                const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
+                const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
                 // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
-                bufDataY(k,j,i) = bufDataB(k,j,i) * fc0 + 
-                                    ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0;
+                tmp = bufDataB(k,j,i) * fc0 + ( bufDataB(k,j,i-1) + bufDataB(k,j,i + 1) ) * f0;
             }
             bufDataY(k,j,i) = tmp;
 
@@ -173,7 +188,7 @@ struct Chebyshev1Kernel
 
 
 
-template<int DIM, typename T_data> 
+template<int DIM, typename T_data_base,typename T_data_chebyshev> 
 struct Chebyshev2Kernel
 {
 
@@ -204,9 +219,9 @@ struct Chebyshev2Kernel
         std::swap(fieldW,fieldY);
     }
     */
-    template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataW, TMdSpan bufDataZ, const T_data delta, const T_data sigma, const T_data rhoCurr, const T_data rhoOld, 
-                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+    template<typename TAcc, typename TMdSpanBase, typename TMdSpanChebyshev>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpanBase bufDataB, TMdSpanChebyshev bufDataY, TMdSpanChebyshev bufDataW, TMdSpanChebyshev bufDataZ, const T_data_chebyshev delta, const T_data_chebyshev sigma, const T_data_chebyshev rhoCurr, const T_data_chebyshev rhoOld, 
+                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
                                 const alpaka::Vec<alpaka::DimInt<3>, Idx> offset ) const -> void
     {
         // Get indexes
@@ -216,15 +231,15 @@ struct Chebyshev2Kernel
         auto const j = gridThreadIdxShifted[1];
         auto const k = gridThreadIdxShifted[0];
         
-        const T_data r0 = ds[2]*ds[2];
-        const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[0]*ds[0];
-        const T_data f0 = rhoCurr * 2 / delta * (  1/r0  );
-        const T_data f1 = rhoCurr * 2 / delta * (  1/r1  );
-        const T_data f2 = rhoCurr * 2 / delta * (  1/r2  );
-        const T_data fB = rhoCurr * 2 / delta;
-        const T_data fZ = - rhoCurr * rhoOld;
-        T_data tmp;
+        const T_data_chebyshev r0 = ds[2]*ds[2];
+        const T_data_chebyshev r1 = ds[1]*ds[1];
+        const T_data_chebyshev r2 = ds[0]*ds[0];
+        const T_data_chebyshev f0 = rhoCurr * 2 / delta * (  1/r0  );
+        const T_data_chebyshev f1 = rhoCurr * 2 / delta * (  1/r1  );
+        const T_data_chebyshev f2 = rhoCurr * 2 / delta * (  1/r2  );
+        const T_data_chebyshev fB = rhoCurr * 2 / delta;
+        const T_data_chebyshev fZ = - rhoCurr * rhoOld;
+        T_data_chebyshev tmp;
 
         //if( i>=indexLimitsSolver[4] && i<indexLimitsSolver[5] && j>=indexLimitsSolver[2] && j<indexLimitsSolver[3] && k>=indexLimitsSolver[0] && k<indexLimitsSolver[1] )
         //if(i<indexLimitsSolver[5] && j<indexLimitsSolver[3] && k<indexLimitsSolver[1] )
@@ -232,31 +247,26 @@ struct Chebyshev2Kernel
 
             if constexpr (DIM==3)
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
                 // Z Y X fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
                 tmp = bufDataY(k,j,i) * fc0 + ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0;
-                tmp += ( bufDataY(k,j-1,i) + bufDataY(k,j+1,i)) * f1 +
-                                    ( bufDataY(k-1,j,i) + bufDataY(k+1,j,i) ) * f2;  
+                tmp += ( bufDataY(k,j-1,i) + bufDataY(k,j+1,i)) * f1 + ( bufDataY(k-1,j,i) + bufDataY(k+1,j,i) ) * f2;  
              }
             else if constexpr (DIM==2)
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
                 // Z Y X
-                bufDataW(k,j,i) = bufDataY(k,j,i) * fc0 + 
-                                    ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0 + 
-                                    ( bufDataY(k,j-1,i) + bufDataY(k,j+1,i)) * f1 +
-                                    bufDataB(k,j,i) * fB + bufDataZ(k,j,i) * fZ ; 
+                tmp = bufDataY(k,j,i) * fc0 + ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0;
+                tmp += ( bufDataY(k,j-1,i) + bufDataY(k,j+1,i)) * f1; 
             }
             else
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                 // Z Y X
-                bufDataW(k,j,i) = bufDataY(k,j,i) * fc0 + 
-                                    ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0 + 
-                                    bufDataB(k,j,i) * fB + bufDataZ(k,j,i) * fZ ;
+                tmp = bufDataY(k,j,i) * fc0 + ( bufDataY(k,j,i-1) + bufDataY(k,j,i + 1) ) * f0;
             }
             tmp += bufDataB(k,j,i) * fB;
-            tmp += bufDataZ(k,j,i) * fZ ;
+            tmp += bufDataZ(k,j,i) * fZ;
             bufDataW(k,j,i) = tmp;
         }   
     }
@@ -270,7 +280,7 @@ struct Chebyshev2Kernel
 
 
 
-template<int DIM, typename T_data> 
+template<int DIM, typename T_data_base, typename T_data_chebyshev> 
 struct Chebyshev1KernelSharedMem
 {
 
@@ -291,8 +301,8 @@ struct Chebyshev1KernelSharedMem
     */
 
     template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataZ, const T_data delta, const T_data theta, const T_data rhoCurr, 
-                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataZ, const T_data_chebyshev delta, const T_data_chebyshev theta, const T_data_chebyshev rhoCurr, 
+                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
                                 const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize ) const -> void
     {
         // Get indexes
@@ -314,12 +324,12 @@ struct Chebyshev1KernelSharedMem
         auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
         */
 
-        const T_data r0 = ds[2]*ds[2];
-        const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[0]*ds[0];
-        const T_data f0 = 2 * rhoCurr / delta * (  1/r0 /theta );
-        const T_data f1 = 2 * rhoCurr / delta * (  1/r1 /theta );
-        const T_data f2 = 2 * rhoCurr / delta * (  1/r2 /theta );
+        const T_data_chebyshev r0 = ds[2]*ds[2];
+        const T_data_chebyshev r1 = ds[1]*ds[1];
+        const T_data_chebyshev r2 = ds[0]*ds[0];
+        const T_data_chebyshev f0 = 2 * rhoCurr / delta * (  1/r0 /theta );
+        const T_data_chebyshev f1 = 2 * rhoCurr / delta * (  1/r1 /theta );
+        const T_data_chebyshev f2 = 2 * rhoCurr / delta * (  1/r2 /theta );
                 
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         //auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
@@ -327,8 +337,8 @@ struct Chebyshev1KernelSharedMem
         auto const blockStartThreadIdx = gridBlockIdx * blockThreadExtent;
         auto const chunck = blockThreadExtent + haloSize + haloSize;
         //auto& sdata = alpaka::declareSharedVar<T_data[4096], __COUNTER__>(acc);
-        auto* sdata = alpaka::getDynSharedMem<T_data>(acc);
-        auto sdataMdSpan = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
+        auto* sdata = alpaka::getDynSharedMem<T_data_chebyshev>(acc);
+        auto sdataMdSpan = std::experimental::mdspan<T_data_chebyshev, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
 
         //auto globalIdx = gridThreadIdx;
             
@@ -363,7 +373,7 @@ struct Chebyshev1KernelSharedMem
                 bufDataZ(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2])/theta;
                 if constexpr (DIM==3)
                 {
-                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1 + 1/r2)/theta );
+                    const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1 + 1/r2)/theta );
                     // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                     bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                                         ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
@@ -372,7 +382,7 @@ struct Chebyshev1KernelSharedMem
                 }
                 else if constexpr (DIM==2)
                 {
-                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
+                    const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
                     // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                     bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                         ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
@@ -380,7 +390,7 @@ struct Chebyshev1KernelSharedMem
                 }
                 else
                 {
-                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
+                    const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
                     // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                     bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                         ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0; 
@@ -392,7 +402,7 @@ struct Chebyshev1KernelSharedMem
 
 
 
-template<int DIM, typename T_data> 
+template<int DIM, typename T_data_base, typename T_data_chebyshev> 
 struct Chebyshev1KernelSharedMemSolver
 {
 
@@ -413,8 +423,8 @@ struct Chebyshev1KernelSharedMemSolver
     */
 
     template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataZ, const T_data delta, const T_data theta, const T_data rhoCurr, 
-                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataZ, const T_data_chebyshev delta, const T_data_chebyshev theta, const T_data_chebyshev rhoCurr, 
+                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
                                 const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize, const alpaka::Vec<alpaka::DimInt<3>, Idx> offset ) const -> void
     {
         // Get indexes
@@ -437,21 +447,21 @@ struct Chebyshev1KernelSharedMemSolver
         auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
         */
 
-        const T_data r0 = ds[2]*ds[2];
-        const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[0]*ds[0];
-        const T_data f0 = 2 * rhoCurr / delta * (  1/r0 /theta );
-        const T_data f1 = 2 * rhoCurr / delta * (  1/r1 /theta );
-        const T_data f2 = 2 * rhoCurr / delta * (  1/r2 /theta );
+        const T_data_chebyshev r0 = ds[2]*ds[2];
+        const T_data_chebyshev r1 = ds[1]*ds[1];
+        const T_data_chebyshev r2 = ds[0]*ds[0];
+        const T_data_chebyshev f0 = 2 * rhoCurr / delta * (  1/r0 /theta );
+        const T_data_chebyshev f1 = 2 * rhoCurr / delta * (  1/r1 /theta );
+        const T_data_chebyshev f2 = 2 * rhoCurr / delta * (  1/r2 /theta );
                 
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         //auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridBlockIdx = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc);
         auto const blockStartThreadIdx = gridBlockIdx * blockThreadExtent;
         auto const chunck = blockThreadExtent + haloSize + haloSize;
-        //auto& sdata = alpaka::declareSharedVar<T_data[4096], __COUNTER__>(acc);
-        auto* sdata = alpaka::getDynSharedMem<T_data>(acc);
-        auto sdataMdSpan = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
+        //auto& sdata = alpaka::declareSharedVar<T_data_chebyshev[4096], __COUNTER__>(acc);
+        auto* sdata = alpaka::getDynSharedMem<T_data_chebyshev>(acc);
+        auto sdataMdSpan = std::experimental::mdspan<T_data_chebyshev, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
 
         //auto globalIdx = gridThreadIdx;
             
@@ -489,7 +499,7 @@ struct Chebyshev1KernelSharedMemSolver
 
                 if constexpr (DIM==3)
                 {
-                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1 + 1/r2)/theta );
+                    const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1 + 1/r2)/theta );
                     // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                     bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                                         ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
@@ -498,7 +508,7 @@ struct Chebyshev1KernelSharedMemSolver
                 }
                 else if constexpr (DIM==2)
                 {
-                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
+                    const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 + 1/r1)/theta );
                     // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                     bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                         ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
@@ -506,7 +516,7 @@ struct Chebyshev1KernelSharedMemSolver
                 }
                 else
                 {
-                    const T_data fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
+                    const T_data_chebyshev fc0 = 2 * rhoCurr / delta * ( 2 - 2 * ( 1/r0 )/theta );
                     // Z Y X fieldY[indx] = 2*rhoCurr/delta_ * (2*fieldB[indx] + operatorA(i,j,k,fieldB)/theta_ );
                     bufDataY(gridThreadIdxShifted[0],gridThreadIdxShifted[1],gridThreadIdxShifted[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                         ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0; 
@@ -522,7 +532,7 @@ struct Chebyshev1KernelSharedMemSolver
 
 
 
-template<int DIM, typename T_data> 
+template<int DIM, typename T_data_base, typename T_data_chebyshev> 
 struct Chebyshev2KernelSharedMem
 {
 
@@ -554,8 +564,8 @@ struct Chebyshev2KernelSharedMem
     }
     */
     template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataW, TMdSpan bufDataZ, const T_data delta, const T_data sigma, const T_data rhoCurr, const T_data rhoOld, 
-                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataW, TMdSpan bufDataZ, const T_data_chebyshev delta, const T_data_chebyshev sigma, const T_data_chebyshev rhoCurr, const T_data_chebyshev rhoOld, 
+                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
                                 const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize ) const -> void
     {
         // Get indexes
@@ -570,23 +580,23 @@ struct Chebyshev2KernelSharedMem
         //auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
         //auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
 
-        const T_data r0 = ds[2]*ds[2];
-        const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[0]*ds[0];
-        const T_data f0 = rhoCurr * 2 / delta * (  1/r0  );
-        const T_data f1 = rhoCurr * 2 / delta * (  1/r1  );
-        const T_data f2 = rhoCurr * 2 / delta * (  1/r2  );
-        const T_data fB = rhoCurr * 2 / delta;
-        const T_data fZ = - rhoCurr * rhoOld;
+        const T_data_chebyshev r0 = ds[2]*ds[2];
+        const T_data_chebyshev r1 = ds[1]*ds[1];
+        const T_data_chebyshev r2 = ds[0]*ds[0];
+        const T_data_chebyshev f0 = rhoCurr * 2 / delta * (  1/r0  );
+        const T_data_chebyshev f1 = rhoCurr * 2 / delta * (  1/r1  );
+        const T_data_chebyshev f2 = rhoCurr * 2 / delta * (  1/r2  );
+        const T_data_chebyshev fB = rhoCurr * 2 / delta;
+        const T_data_chebyshev fZ = - rhoCurr * rhoOld;
                 
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         //auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridBlockIdx = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc);
         auto const blockStartThreadIdx = gridBlockIdx * blockThreadExtent;
         auto const chunck = blockThreadExtent + haloSize + haloSize;
-        auto* sdata = alpaka::getDynSharedMem<T_data>(acc);
-        //auto& sdata = alpaka::declareSharedVar<T_data[sMemSizeFixed], __COUNTER__>(acc);
-        auto sdataMdSpan = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
+        auto* sdata = alpaka::getDynSharedMem<T_data_chebyshev>(acc);
+        //auto& sdata = alpaka::declareSharedVar<T_data_chebyshev[sMemSizeFixed], __COUNTER__>(acc);
+        auto sdataMdSpan = std::experimental::mdspan<T_data_chebyshev, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
 
         for(auto k = blockThreadIdx[0]; k < chunck[0]; k += blockThreadExtent[0])
         {
@@ -617,7 +627,7 @@ struct Chebyshev2KernelSharedMem
             auto const localIdx = blockThreadIdx + haloSize; 
             if constexpr (DIM==3)
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
                 // Z Y X fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0
                                                                 + ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0; 
@@ -631,20 +641,20 @@ struct Chebyshev2KernelSharedMem
             }
             else if constexpr (DIM==2)
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
                 // Z Y X
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
-                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
+                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1;
+                                    //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
             else
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                 // Z Y X
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 +
-                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
+                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0;
+                                    //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
             bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ;
         }  
@@ -655,7 +665,7 @@ struct Chebyshev2KernelSharedMem
 
 
 
-template<int DIM, typename T_data> 
+template<int DIM, typename T_data_base, typename T_data_chebyshev> 
 struct Chebyshev2KernelSharedMemLoop1D
 {
 
@@ -686,9 +696,9 @@ struct Chebyshev2KernelSharedMemLoop1D
         std::swap(fieldW,fieldY);
     }
     */
-    template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataW, TMdSpan bufDataZ, const T_data delta, const T_data sigma, const T_data rhoCurr, const T_data rhoOld, 
-                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+    template<typename TAcc, typename TMdSpanBase, typename TMdSpanChebyshev>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpanBase bufDataB, TMdSpanChebyshev bufDataY, TMdSpanChebyshev bufDataW, TMdSpanChebyshev bufDataZ, const T_data_chebyshev delta, const T_data_chebyshev sigma, const T_data_chebyshev rhoCurr, const T_data_chebyshev rhoOld, 
+                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
                                 const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize, const alpaka::Vec<alpaka::DimInt<3>, Idx> offset ) const -> void
     {
         // Get indexes
@@ -700,16 +710,16 @@ struct Chebyshev2KernelSharedMemLoop1D
         
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
 
-        const T_data r0 = ds[2]*ds[2];
-        const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[0]*ds[0];
-        const T_data f0 = rhoCurr * 2 / delta * (  1/r0  );
-        const T_data f1 = rhoCurr * 2 / delta * (  1/r1  );
-        const T_data f2 = rhoCurr * 2 / delta * (  1/r2  );
-        const T_data fB = rhoCurr * 2 / delta;
-        const T_data fZ = - rhoCurr * rhoOld;
-        T_data fc0;
-        T_data tmp;
+        const T_data_chebyshev r0 = ds[2]*ds[2];
+        const T_data_chebyshev r1 = ds[1]*ds[1];
+        const T_data_chebyshev r2 = ds[0]*ds[0];
+        const T_data_chebyshev f0 = rhoCurr * 2 / delta * (  1/r0  );
+        const T_data_chebyshev f1 = rhoCurr * 2 / delta * (  1/r1  );
+        const T_data_chebyshev f2 = rhoCurr * 2 / delta * (  1/r2  );
+        const T_data_chebyshev fB = rhoCurr * 2 / delta;
+        const T_data_chebyshev fZ = - rhoCurr * rhoOld;
+        T_data_chebyshev fc0;
+        T_data_chebyshev tmp;
         if constexpr (DIM ==3){
             fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
         }
@@ -731,9 +741,9 @@ struct Chebyshev2KernelSharedMemLoop1D
         auto const blockStartThreadIdx = gridBlockIdx * blockThreadExtent;
         auto const chunck = blockThreadExtent + haloSize + haloSize;
         auto const chunkDim = chunck.prod();
-        auto* sdata = alpaka::getDynSharedMem<T_data>(acc);
-        //auto& sdata = alpaka::declareSharedVar<T_data[sMemSizeFixed], __COUNTER__>(acc);
-        auto sdataMdSpan = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
+        auto* sdata = alpaka::getDynSharedMem<T_data_chebyshev>(acc);
+        //auto& sdata = alpaka::declareSharedVar<T_data_chebyshev[sMemSizeFixed], __COUNTER__>(acc);
+        auto sdataMdSpan = std::experimental::mdspan<T_data_chebyshev, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
         
         for(auto i = blockThreadIdx1D; i < chunkDim; i += numThreadsPerBlock)
         {
@@ -774,7 +784,7 @@ struct Chebyshev2KernelSharedMemLoop1D
                     globalIdx = alpaka::Vec<alpaka::DimInt<3>,Idx>(k,j,i) + blockStartThreadIdx + offset;
                     if constexpr (DIM==3)
                     {
-                        const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
+                        const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
                         // Z Y X fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
                         bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
@@ -783,7 +793,7 @@ struct Chebyshev2KernelSharedMemLoop1D
                     }
                     else if constexpr (DIM==2)
                     {
-                        //const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
+                        const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
                         // Z Y X
                         bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
@@ -791,7 +801,7 @@ struct Chebyshev2KernelSharedMemLoop1D
                     }
                     else
                     {
-                        //const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
+                        const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                         // Z Y X
                         bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0;
@@ -807,7 +817,7 @@ struct Chebyshev2KernelSharedMemLoop1D
 
 
 
-template<int DIM, typename T_data> 
+template<int DIM, typename T_data_base, typename T_data_chebyshev> 
 struct Chebyshev2KernelSharedMemSolver
 {
 
@@ -838,9 +848,9 @@ struct Chebyshev2KernelSharedMemSolver
         std::swap(fieldW,fieldY);
     }
     */
-    template<typename TAcc, typename TMdSpan>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpan bufDataB, TMdSpan bufDataY, TMdSpan bufDataW, TMdSpan bufDataZ, const T_data delta, const T_data sigma, const T_data rhoCurr, const T_data rhoOld, 
-                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+    template<typename TAcc, typename TMdSpanBase, typename TMdSpanChebyshev>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TMdSpanBase bufDataB, TMdSpanChebyshev bufDataY, TMdSpanChebyshev bufDataW, TMdSpanChebyshev bufDataZ, const T_data_chebyshev delta, const T_data_chebyshev sigma, const T_data_chebyshev rhoCurr, const T_data_chebyshev rhoOld, 
+                                const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
                                 const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize, const alpaka::Vec<alpaka::DimInt<3>, Idx> offset ) const -> void
     {
         // Get indexes
@@ -856,26 +866,26 @@ struct Chebyshev2KernelSharedMemSolver
         //auto const jBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[1];
         //auto const kBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0];
 
-        const T_data r0 = ds[2]*ds[2];
-        const T_data r1 = ds[1]*ds[1];
-        const T_data r2 = ds[0]*ds[0];
-        const T_data f0 = rhoCurr * 2 / delta * (  1/r0  );
-        const T_data f1 = rhoCurr * 2 / delta * (  1/r1  );
-        const T_data f2 = rhoCurr * 2 / delta * (  1/r2  );
-        const T_data fB = rhoCurr * 2 / delta;
-        const T_data fZ = - rhoCurr * rhoOld;
+        const T_data_chebyshev r0 = ds[2]*ds[2];
+        const T_data_chebyshev r1 = ds[1]*ds[1];
+        const T_data_chebyshev r2 = ds[0]*ds[0];
+        const T_data_chebyshev f0 = rhoCurr * 2 / delta * (  1/r0  );
+        const T_data_chebyshev f1 = rhoCurr * 2 / delta * (  1/r1  );
+        const T_data_chebyshev f2 = rhoCurr * 2 / delta * (  1/r2  );
+        const T_data_chebyshev fB = rhoCurr * 2 / delta;
+        const T_data_chebyshev fZ = - rhoCurr * rhoOld;
                 
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         //auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridBlockIdx = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc);
         auto const blockStartThreadIdx = gridBlockIdx * blockThreadExtent;
         auto const chunck = blockThreadExtent + haloSize + haloSize;
-        auto* sdata = alpaka::getDynSharedMem<T_data>(acc);
-        //auto& sdata = alpaka::declareSharedVar<T_data[sMemSizeFixed], __COUNTER__>(acc);
-        auto sdataMdSpan = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
-        //auto* sdata2 = alpaka::getDynSharedMem<T_data>(acc);
-        //auto& sdata = alpaka::declareSharedVar<T_data[sMemSizeFixed], __COUNTER__>(acc);
-        //auto sdataMdSpan2 = std::experimental::mdspan<T_data, std::experimental::dextents<Idx, 3>>(sdata2, chunck[0], chunck[1], chunck[2]);
+        auto* sdata = alpaka::getDynSharedMem<T_data_chebyshev>(acc);
+        //auto& sdata = alpaka::declareSharedVar<T_data_chebyshev[sMemSizeFixed], __COUNTER__>(acc);
+        auto sdataMdSpan = std::experimental::mdspan<T_data_chebyshev, std::experimental::dextents<Idx, 3>>(sdata, chunck[0], chunck[1], chunck[2]);
+        //auto* sdata2 = alpaka::getDynSharedMem<T_data_chebyshev>(acc);
+        //auto& sdata = alpaka::declareSharedVar<T_data_chebyshev[sMemSizeFixed], __COUNTER__>(acc);
+        //auto sdataMdSpan2 = std::experimental::mdspan<T_data_chebyshev, std::experimental::dextents<Idx, 3>>(sdata2, chunck[0], chunck[1], chunck[2]);
 
         for(auto k = blockThreadIdx[0]; k < chunck[0]; k += blockThreadExtent[0])
         {
@@ -908,7 +918,7 @@ struct Chebyshev2KernelSharedMemSolver
             //auto localIdx = blockThreadIdx + haloSize;
             if constexpr (DIM==3)
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
                 // Z Y X fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                 ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
@@ -918,20 +928,20 @@ struct Chebyshev2KernelSharedMemSolver
             }
             else if constexpr (DIM==2)
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
                 // Z Y X
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
-                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
+                                    ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1;
+                                    //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
             else
             {
-                const T_data fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
+                const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                 // Z Y X
                 bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
-                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 +
-                                    bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
+                                    ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 ;
+                                    //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
         }  
     }
@@ -946,26 +956,26 @@ namespace alpaka::trait
 {
     //! The trait for getting the size of the block shared dynamic memory for a kernel.
     template<typename TAcc>
-    struct BlockSharedMemDynSizeBytes<Chebyshev1KernelSharedMem<DIM,T_data>, TAcc>
+    struct BlockSharedMemDynSizeBytes<Chebyshev1KernelSharedMem<DIM,T_data_base,T_data_chebyshev>, TAcc>
     {
-        template<typename TVec, typename TMdSpan, typename T_data, typename Idx>
+        template<typename TVec, typename TMdSpan, typename T_data_base, typename T_data_chebyshev, typename Idx>
         ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-            Chebyshev1KernelSharedMem<DIM,T_data> const&  kernel ,
+            Chebyshev1KernelSharedMem<DIM,T_data_base,T_data_chebyshev> const&  kernel ,
             TVec const& blockThreadExtent, // dimensions of thread per block
             TVec const& threadElemExtent, // dimensions of elements per thread
             TMdSpan bufDataB, 
             TMdSpan bufDataY, 
             TMdSpan bufDataZ, 
-            const T_data delta, 
-            const T_data theta, 
-            const T_data rhoCurr,
+            const T_data_chebyshev delta, 
+            const T_data_chebyshev theta, 
+            const T_data_chebyshev rhoCurr,
             const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, 
-            const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+            const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
             const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize) // allocated filter width
         {
             // Reserve the buffer, buffers size is the number of elements in a block (tile)
             auto blockThreadExtentNew = blockThreadExtent + haloSize + haloSize;
-            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data);
+            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data_chebyshev);
         }
     };
 } // namespace alpaka::trait
@@ -976,27 +986,27 @@ namespace alpaka::trait
 {
     //! The trait for getting the size of the block shared dynamic memory for a kernel.
     template<typename TAcc>
-    struct BlockSharedMemDynSizeBytes<Chebyshev2KernelSharedMem<DIM,T_data>, TAcc>
+    struct BlockSharedMemDynSizeBytes<Chebyshev2KernelSharedMem<DIM,T_data_base,T_data_chebyshev>, TAcc>
     {
-        template<typename TVec, typename TMdSpan, typename T_data, typename Idx>
+        template<typename TVec, typename TMdSpan, typename T_data_base, typename T_data_chebyshev, typename Idx>
         ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-            Chebyshev2KernelSharedMem<DIM,T_data> const&,
+            Chebyshev2KernelSharedMem<DIM,T_data_base,T_data_chebyshev> const&,
             TVec const& blockThreadExtent, // dimensions of thread per block
             TVec const& threadElemExtent,
             TMdSpan bufDataB, 
             TMdSpan bufDataY,
             TMdSpan bufDataW, 
             TMdSpan bufDataZ, 
-            const T_data delta, 
-            const T_data sigma, 
-            const T_data rhoCurr,
-            const T_data rhoOld,
+            const T_data_chebyshev delta, 
+            const T_data_chebyshev sigma, 
+            const T_data_chebyshev rhoCurr,
+            const T_data_chebyshev rhoOld,
             const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, 
-            const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+            const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
             const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize)  -> std::size_t
         {
             auto blockThreadExtentNew = blockThreadExtent + haloSize + haloSize;
-            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data);
+            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data_chebyshev);
         }
     };
 } // namespace alpaka::trait
@@ -1007,23 +1017,23 @@ namespace alpaka::trait
 {
     //! The trait for getting the size of the block shared dynamic memory for a kernel.
     template<typename TAcc>
-    struct BlockSharedMemDynSizeBytes<Chebyshev2KernelSharedMemLoop1D<DIM,T_data>, TAcc>
+    struct BlockSharedMemDynSizeBytes<Chebyshev2KernelSharedMemLoop1D<DIM,T_data_base,T_data_chebyshev>, TAcc>
     {
-        template<typename TVec, typename TMdSpan, typename T_data, typename Idx>
+        template<typename TVec, typename TMdSpanBase, typename TMdSpanChebyshev, typename T_data_base, typename T_data_chebyshev, typename Idx>
         ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-            Chebyshev2KernelSharedMemLoop1D<DIM,T_data> const&,
+            Chebyshev2KernelSharedMemLoop1D<DIM,T_data_base,T_data_chebyshev> const&,
             TVec const& blockThreadExtent, // dimensions of thread per block
             TVec const& threadElemExtent,
-            TMdSpan bufDataB, 
-            TMdSpan bufDataY,
-            TMdSpan bufDataW, 
-            TMdSpan bufDataZ, 
-            const T_data delta, 
-            const T_data sigma, 
-            const T_data rhoCurr,
-            const T_data rhoOld,
+            TMdSpanBase bufDataB, 
+            TMdSpanChebyshev bufDataY,
+            TMdSpanChebyshev bufDataW, 
+            TMdSpanChebyshev bufDataZ, 
+            const T_data_chebyshev delta, 
+            const T_data_chebyshev sigma, 
+            const T_data_chebyshev rhoCurr,
+            const T_data_chebyshev rhoOld,
             const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, 
-            const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+            const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
             const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize,
             const alpaka::Vec<alpaka::DimInt<3>, Idx> offset)  -> std::size_t
         {
@@ -1040,27 +1050,27 @@ namespace alpaka::trait
 {
     //! The trait for getting the size of the block shared dynamic memory for a kernel.
     template<typename TAcc>
-    struct BlockSharedMemDynSizeBytes<Chebyshev1KernelSharedMemSolver<DIM,T_data>, TAcc>
+    struct BlockSharedMemDynSizeBytes<Chebyshev1KernelSharedMemSolver<DIM,T_data_base,T_data_chebyshev>, TAcc>
     {
-        template<typename TVec, typename TMdSpan, typename T_data, typename Idx>
+        template<typename TVec, typename TMdSpan, typename T_data_base, typename T_data_chebyshev, typename Idx>
         ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-            Chebyshev1KernelSharedMemSolver<DIM,T_data> const&  kernel ,
+            Chebyshev1KernelSharedMemSolver<DIM,T_data_base,T_data_chebyshev> const&  kernel ,
             TVec const& blockThreadExtent, // dimensions of thread per block
             TVec const& threadElemExtent, // dimensions of elements per thread
             TMdSpan bufDataB, 
             TMdSpan bufDataY, 
             TMdSpan bufDataZ, 
-            const T_data delta, 
-            const T_data theta, 
-            const T_data rhoCurr,
+            const T_data_chebyshev delta, 
+            const T_data_chebyshev theta, 
+            const T_data_chebyshev rhoCurr,
             const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, 
-            const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+            const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
             const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize,
             const alpaka::Vec<alpaka::DimInt<3>, Idx> offset) // allocated filter width
         {
             // Reserve the buffer, buffers size is the number of elements in a block (tile)
             auto blockThreadExtentNew = blockThreadExtent + haloSize + haloSize;
-            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data);
+            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data_chebyshev);
         }
     };
 }
@@ -1072,28 +1082,28 @@ namespace alpaka::trait
 {
     //! The trait for getting the size of the block shared dynamic memory for a kernel.
     template<typename TAcc>
-    struct BlockSharedMemDynSizeBytes<Chebyshev2KernelSharedMemSolver<DIM,T_data>, TAcc>
+    struct BlockSharedMemDynSizeBytes<Chebyshev2KernelSharedMemSolver<DIM,T_data_base,T_data_chebyshev>, TAcc>
     {
-        template<typename TVec, typename TMdSpan, typename T_data, typename Idx>
+        template<typename TVec, typename TMdSpan, typename T_data_base, typename T_data_chebyshev, typename Idx>
         ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-            Chebyshev2KernelSharedMemSolver<DIM,T_data> const&,
+            Chebyshev2KernelSharedMemSolver<DIM,T_data_base,T_data_chebyshev> const&,
             TVec const& blockThreadExtent, // dimensions of thread per block
             TVec const& threadElemExtent,
             TMdSpan bufDataB, 
             TMdSpan bufDataY,
             TMdSpan bufDataW, 
             TMdSpan bufDataZ, 
-            const T_data delta, 
-            const T_data sigma, 
-            const T_data rhoCurr,
-            const T_data rhoOld,
+            const T_data_chebyshev delta, 
+            const T_data_chebyshev sigma, 
+            const T_data_chebyshev rhoCurr,
+            const T_data_chebyshev rhoOld,
             const alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsSolver, 
-            const alpaka::Vec<alpaka::DimInt<3>, T_data> ds, 
+            const alpaka::Vec<alpaka::DimInt<3>, T_data_base> ds, 
             const alpaka::Vec<alpaka::DimInt<3>, Idx> haloSize,
             const alpaka::Vec<alpaka::DimInt<3>, Idx> offset)  -> std::size_t
         {
             auto blockThreadExtentNew = blockThreadExtent + haloSize + haloSize;
-            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data);
+            return static_cast<std::size_t>(blockThreadExtentNew.prod() * threadElemExtent.prod()) * sizeof(T_data_chebyshev);
         }
     };
 } // namespace alpaka::trait

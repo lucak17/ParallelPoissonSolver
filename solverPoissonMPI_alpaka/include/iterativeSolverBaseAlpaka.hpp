@@ -1,5 +1,6 @@
 #include <array>
 #include <iostream>
+#include <fstream>
 #include <cstring>
 #include <cmath> 
 
@@ -46,6 +47,7 @@ class IterativeSolverBaseAlpaka{
         errorFromIteration_(-1.0),
         errorComputeOperator_(-1.0),
         numIterationFinal_(0),
+        numIterationPreconditionerFinal_(0),
         bufTmp(alpaka::allocBuf<T_data, Idx>(alpakaHelper.devAcc_, alpakaHelper.extent_)),
         workDivExtentResetNeumanBCsKernel_(alpaka::getValidWorkDiv(alpakaHelper.cfgExtentNoHaloHelper_, alpakaHelper.devAcc_, ResetNeumanBCsKernel<DIM, T_data, false, true>{}, 
                                                     alpaka::experimental::getMdSpan(this->bufTmp), this->exactSolutionAndBCs_, 1, 1.0, 
@@ -69,7 +71,8 @@ class IterativeSolverBaseAlpaka{
                                                     alpaka::experimental::getMdSpan(this->bufTmp), this->exactSolutionAndBCs_,alpakaHelper.indexLimitsDataAlpaka_, alpakaHelper.ds_, alpakaHelper.origin_, 
                                                     alpakaHelper.globalLocation_, alpakaHelper.nlocal_noguards_, alpakaHelper.haloSize_ ))
     {
-        errorFromIterationHistory_ = new T_data[maxIteration];
+        errorFromIterationHistory_ = new T_data[maxIteration + 1];
+        std::fill(errorFromIterationHistory_, errorFromIterationHistory_ + maxIteration + 1, 0.0);
     }
     
     ~IterativeSolverBaseAlpaka()
@@ -132,6 +135,49 @@ class IterativeSolverBaseAlpaka{
         }
     }
 
+
+
+    template<typename T_data_here, bool isMainLoop, bool fieldData>
+    void resetNeumanBCsAlpakaCast(alpaka::Buf<T_Dev, T_data_here, Dim, Idx>& bufData)
+    {
+        alpaka::Vec<alpaka::DimInt<3>, Idx> adjustIdx{0,0,0};
+        alpaka::Vec<alpaka::DimInt<6>, Idx> indexLimitsEdge{0,0,0,0,0,0};
+        
+        int dirAlpaka;
+
+        auto bufDataMdSpan = alpaka::experimental::getMdSpan(bufData);
+        
+        ResetNeumanBCsKernel<DIM, T_data, isMainLoop*fieldData, true> resetNeumanBCsKernelNegative;
+        ResetNeumanBCsKernel<DIM, T_data, isMainLoop*fieldData, false> resetNeumanBCsKernelPositive;
+        
+        for(int dir=0; dir<DIM; dir++)
+        {
+            dirAlpaka = 2 - dir;
+            if(hasBoundary_[2*dir] && bcsType_[2*dir]==1)
+            {
+                //std::cout<< "Debug in resetNeumanBCs " <<std::endl;
+                indexLimitsEdge = this->alpakaHelper_.indexLimitsDataAlpaka_;
+                adjustIdx={0,0,0};
+                indexLimitsEdge[2*dirAlpaka+1]=indexLimitsEdge[2*dirAlpaka] + guards_[dir];
+                adjustIdx[dirAlpaka]=1;
+                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelNegative, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                                    indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                    this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
+            }
+            if(hasBoundary_[2*dir+1] && bcsType_[2*dir+1]==1)
+            {
+                //std::cout<< "Debug in resetNeumanBCs " <<std::endl;
+                indexLimitsEdge = this->alpakaHelper_.indexLimitsDataAlpaka_;
+                adjustIdx={0,0,0};
+                indexLimitsEdge[2*dirAlpaka]=indexLimitsEdge[2*dirAlpaka+1] - guards_[dir];
+                adjustIdx[dirAlpaka]=-1;
+                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelPositive, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                                    indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
+                                    this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
+            }
+        }
+    }
+
     
     template<bool isMainLoop, bool communicationON>
     T_data normalizeProblemToFieldBNormAlpaka(alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufX, alpaka::Buf<T_Dev, T_data, Dim, Idx>& bufB)
@@ -141,8 +187,8 @@ class IterativeSolverBaseAlpaka{
         auto bufXMdSpan = alpaka::experimental::getMdSpan(bufX);
         auto bufBMdSpan = alpaka::experimental::getMdSpan(bufB);
         
-        T_data pSum[1];
-        T_data totSum[1];
+        T_data pSum[1]={0};
+        T_data totSum[1]={0};
         
         auto dotPorductDev = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, this->alpakaHelper_.extent1D1_);
         T_data* const ptrDotPorductDev{std::data(dotPorductDev)};
@@ -153,7 +199,7 @@ class IterativeSolverBaseAlpaka{
         T_data* const ptrTotSumDev{std::data(totSumDev)};
 
         DotProductKernel<DIM,T_data> dotProductKernel;
-
+        
         if constexpr (isMainLoop)
         {
             memcpy(this->queueSolver_, bufTmp, bufB, this->alpakaHelper_.extent_);
@@ -172,12 +218,19 @@ class IterativeSolverBaseAlpaka{
         {
             MPI_Allreduce(ptrDotPorductDev, ptrTotSumDev, 1, getMPIType<T_data>(), MPI_SUM, MPI_COMM_WORLD);
             memcpy(this->queueSolver_, totSumView, totSumDev, this->alpakaHelper_.extent1D1_);
-            this->normFieldB_ = std::sqrt(totSum[0]);
+            if(totSum[0]>0)
+                this->normFieldB_ = std::sqrt(totSum[0]);
+            else
+                this->normFieldB_ = 1;
         }
         else
         {
             memcpy(this->queueSolver_, pSumView, dotPorductDev, this->alpakaHelper_.extent1D1_);
-            this->normFieldB_ = std::sqrt(pSum[0]);
+            //std::cout<< "Norm fieldB1: " << pSum[0] <<std::endl;
+            if(pSum[0]>0)
+                this->normFieldB_ = std::sqrt(pSum[0]);
+            else
+                this->normFieldB_ = 1;
         }
         
         this-> template resetNormFieldsAlpaka<communicationON>(bufX,bufB,1/this->normFieldB_);
@@ -212,7 +265,7 @@ class IterativeSolverBaseAlpaka{
 
         if constexpr(communicationON)
         {
-            this->communicatorMPI_.template operator()<true>(getPtrNative(bufX));
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufX));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
            
@@ -252,7 +305,7 @@ class IterativeSolverBaseAlpaka{
 
         if constexpr(communicationON)
         {
-            this->communicatorMPI_.template operator()<true>(getPtrNative(bufX));
+            this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(bufX));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
     }
@@ -552,6 +605,30 @@ class IterativeSolverBaseAlpaka{
     {
         return numIterationFinal_;
     }
+    int getNumIterationPreconditionerFinal() const
+    {
+        return numIterationPreconditionerFinal_;
+    }
+
+    void writeResidualHistory() const
+    {
+        std::ofstream outFile("residualHistory.txt");
+        if (!outFile) {
+            std::cerr << "Error: Could not open the file!" << std::endl;
+        }
+
+        outFile << this->getDurationSolver().count() << "\n";
+        outFile << this->getNumIterationFinal() << "\n";
+        outFile << this->getNumIterationPreconditionerFinal() << "\n";
+
+        for (int i = 0 ; i< maxIteration && errorFromIterationHistory_[i]>0; i++  )
+        {
+            outFile << errorFromIterationHistory_[i] << "\n";
+        }
+
+        outFile.close();
+        std::cout << "residualHistory has been written to residualHistory.txt" << std::endl;
+    }
 
     TimeCounter<DIM, T_data> timeCounter;
 
@@ -698,6 +775,7 @@ class IterativeSolverBaseAlpaka{
     T_data errorFromIteration_;
     T_data errorComputeOperator_;
     int numIterationFinal_;
+    int numIterationPreconditionerFinal_;
 
     std::chrono::duration<double> durationSolver_;
 

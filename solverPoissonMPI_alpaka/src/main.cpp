@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
     {
         std::cout<< "Current local time and date: " << std::put_time(std::localtime(&currentTime), "%Y-%m-%d %H:%M:%S") << std::endl;
         std::cout<< "Domain DIM = "<< DIM <<  " - Number of MPI tasks "<<nranks[0] << " "<< nranks[1] << " "<< nranks[2] << " - Tot MPI ranks " << nranks[0]*nranks[1]*nranks[2] << " - Max threads per MPI rank "<< 1 << " - Tot threads " << nranks[0]*nranks[1]*nranks[2] << std::endl;
-        std::cout<< "Global grid size from block "<< npGlobal[0]<< " " << npGlobal[1]<< " " << npGlobal[2] << " - Global number of points " << nranks[0]*nranks[1]*nranks[2]*blockGrid.getNtotLocalNoGuards() << std::endl;
+        std::cout<< "Global grid size from block "<< nlocal_noguards[0] * nranks[0]<< " " << nlocal_noguards[1] * nranks[1]<< " " << nlocal_noguards[2] * nranks[2] << " - Global number of points " << nranks[0]*nranks[1]*nranks[2]*blockGrid.getNtotLocalNoGuards() << std::endl;
         std::cout<< "Domain local Np xyz no guards "<<  nlocal_noguards[0]<< " " << nlocal_noguards[1]<< " " << nlocal_noguards[2]<<  " - Domain local Np xyz guards = "<<nlocal_guards[0] << " "<< nlocal_guards[1] << " "<< nlocal_guards[2] << " - Guards size "<<guards[0] << " "<< guards[1] << " "<< guards[2]  <<std::endl;
         std::cout<< "Total local number of points noguards "<<blockGrid.getNtotLocalNoGuards()<< " - total local number of points guards "<< blockGrid.getNtotLocalGuards() <<std::endl;
         std::cout<< "Total local number of points noguards per thread "<<blockGrid.getNtotLocalNoGuards()<< " - total local number of points guards per thread "<< blockGrid.getNtotLocalGuards() <<std::endl;
@@ -108,17 +108,45 @@ int main(int argc, char** argv) {
 
     if(my_rank==0)
     {
-        std::cout<<"Iterative solver finished with iter: "<< solver.getNumIterationFinal()<< " error from algo "<< solver.getErrorFromIteration() << 
+        std::cout<<"Iterative solver finished with iter: "<< solver.getNumIterationFinal()<< " - Total preconditione iterations: "<< solver.getNumIterationPreconditionerFinal() << "\n" << 
+        " error from algo "<< solver.getErrorFromIteration() << 
         " error r=b-Ax "<< solver.getErrorComputeOperator() << " errorAvgtot "<< solver.getErrorComputeOperator()/static_cast<T_data>(blockGrid.getNtotNpglobal())<< std::endl;
     }  
 
 
     // check solution correctenss
     solver.checkSolutionLocalGlobal(fieldX);
-    
     std::cout.flush();
     MPI_Barrier(MPI_COMM_WORLD);
     auto end = std::chrono::high_resolution_clock::now();
+
+    // output residual history
+    if constexpr (writeResidual)
+    {
+        if(my_rank==0)
+        {
+            solver.writeResidualHistory();
+        }
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
+    
+
+    // output solution
+    if constexpr (writeSolution)
+    {
+        MPI_File fileSolution;
+        MPI_Status status;
+        MPI_Offset offset = sizeof(T_data) * blockGrid.getNtotLocalGuards() * my_rank ;
+        
+        MPI_File_open(MPI_COMM_WORLD, "solution.dat", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fileSolution);
+
+        MPI_File_seek(fileSolution, offset, MPI_SEEK_SET);
+        MPI_File_write(fileSolution, fieldX, blockGrid.getNtotLocalGuards(), getMPIType<T_data>(), &status);
+        MPI_File_close(&fileSolution);
+    }
+
+    MPI_Barrier(MPI_COMM_WORLD);
+    
     std::chrono::duration<double> durationSolver = endSolver - startSolver;
     std::chrono::duration<double> duration = end - start;
     if(my_rank==0)

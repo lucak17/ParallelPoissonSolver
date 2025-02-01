@@ -478,9 +478,9 @@ struct BiCGstab2Kernel
     {
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
-        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
-        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        auto const i = gridThreadIdx[2];
+        auto const j = gridThreadIdx[1];
+        auto const k = gridThreadIdx[0];
         
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
@@ -808,9 +808,9 @@ struct BiCGstab1KernelSharedMemV0
     {
         // Get indexes
         auto const gridThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const i = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[2];
-        auto const j = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[1];
-        auto const k = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        auto const i = gridThreadIdx[2];
+        auto const j = gridThreadIdx[1];
+        auto const k = gridThreadIdx[0];
         
         auto const blockThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const iBlock = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[2];
