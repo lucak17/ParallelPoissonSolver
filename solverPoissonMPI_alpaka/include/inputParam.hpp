@@ -43,7 +43,7 @@ Total number of main solver iterations
 Total time or preconditioner iterations (already taken into account that the preconditioner is applied twice per main cycle)
 L2 norm of the residual vector at each main solver iteration
 */
-constexpr bool writeResidual = true; // if true write residual history in residualHistory.txt file (must set trackErrorFromIterationHistory=1 in solverSetup.hpp)
+constexpr bool writeResidual = false; // if true write residual history in residualHistory.txt file (must set trackErrorFromIterationHistory=1 in solverSetup.hpp)
 constexpr bool writeSolution = false; // if true write solution to solution.dat in binary
 
 

@@ -110,8 +110,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
         memcpy(this->queueSolverNonBlocking1_, fieldXDev, fieldXHostView, this->alpakaHelper_.extent_);
         memcpy(this->queueSolverNonBlocking1_, fieldBDev, fieldBHostView, this->alpakaHelper_.extent_);
-        alpaka::wait(this->queueSolverNonBlocking1_);
-             
+                 
 
         const alpaka::Vec<Dim, Idx> extent1D = {1,1,1};
         auto dotPorductHost1 = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devHost_, extent1D);
@@ -128,26 +127,26 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         auto totSumView = createView(this->alpakaHelper_.devHost_, totSum, extent1D2);
         auto totSumDev2D = alpaka::allocBuf<T_data, Idx>(this->alpakaHelper_.devAcc_, extent1D2);
         T_data* const ptrTotSumDev2D{std::data(totSumDev2D)};
+
+        alpaka::wait(this->queueSolverNonBlocking1_);
+
+        
             
         
-        if constexpr (isMainLoop)
-        {
+        if constexpr (isMainLoop){
             this->setProblemAlpaka(fieldXDev, fieldBDev);
         }
         
 
-        if (isMainLoop && communicationON)
-        {
+        if (isMainLoop && communicationON){
             this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(fieldXDev));
             this->communicatorMPI_.waitAllandCheckRcv();
         }
 
-        if constexpr(isMainLoop)
-        {
+        if constexpr(isMainLoop){
             this-> template resetNeumanBCsAlpaka<isMainLoop,true>(fieldXDev);
         }
-        else 
-        {
+        else{
             alpaka::memset(this->queueSolver_, fieldXDev, value0);
         }
 

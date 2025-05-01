@@ -26,6 +26,7 @@ class IterativeSolverBaseAlpaka{
         queueSolver_({alpakaHelper.devAcc_}),
         queueSolverNonBlocking1_({alpakaHelper.devAcc_}),
         queueSolverNonBlocking2_({alpakaHelper.devAcc_}),
+        arrqueueSolverNonBlocking_({alpaka::Queue<Acc, alpaka::NonBlocking>(alpakaHelper.devAcc_),alpaka::Queue<Acc, alpaka::NonBlocking>(alpakaHelper.devAcc_),alpaka::Queue<Acc, alpaka::NonBlocking>(alpakaHelper.devAcc_)}),
         my_rank_(blockGrid.getMyrank()),
         ntot_ranks_(blockGrid.getNranks()[0]*blockGrid.getNranks()[1]*blockGrid.getNranks()[2]),
         globalLocation_(blockGrid.getGlobalLocation()),
@@ -117,7 +118,7 @@ class IterativeSolverBaseAlpaka{
                 adjustIdx={0,0,0};
                 indexLimitsEdge[2*dirAlpaka+1]=indexLimitsEdge[2*dirAlpaka] + guards_[dir];
                 adjustIdx[dirAlpaka]=1;
-                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelNegative, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                alpaka::exec<Acc>(this->arrqueueSolverNonBlocking_[dir], workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelNegative, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
                                     indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
                                     this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
             }
@@ -128,10 +129,13 @@ class IterativeSolverBaseAlpaka{
                 adjustIdx={0,0,0};
                 indexLimitsEdge[2*dirAlpaka]=indexLimitsEdge[2*dirAlpaka+1] - guards_[dir];
                 adjustIdx[dirAlpaka]=-1;
-                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelPositive, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                alpaka::exec<Acc>(this->arrqueueSolverNonBlocking_[dir], workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelPositive, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
                                     indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
                                     this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
             }
+        }
+        for(int dir=0; dir<DIM; dir++){
+            alpaka::wait(this->arrqueueSolverNonBlocking_[dir]);
         }
     }
 
@@ -160,7 +164,7 @@ class IterativeSolverBaseAlpaka{
                 adjustIdx={0,0,0};
                 indexLimitsEdge[2*dirAlpaka+1]=indexLimitsEdge[2*dirAlpaka] + guards_[dir];
                 adjustIdx[dirAlpaka]=1;
-                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelNegative, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                alpaka::exec<Acc>(this->arrqueueSolverNonBlocking_[dir], workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelNegative, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
                                     indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
                                     this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
             }
@@ -171,10 +175,13 @@ class IterativeSolverBaseAlpaka{
                 adjustIdx={0,0,0};
                 indexLimitsEdge[2*dirAlpaka]=indexLimitsEdge[2*dirAlpaka+1] - guards_[dir];
                 adjustIdx[dirAlpaka]=-1;
-                alpaka::exec<Acc>(this->queueSolver_, workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelPositive, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
+                alpaka::exec<Acc>(this->arrqueueSolverNonBlocking_[dir], workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelPositive, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
                                     indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
                                     this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
             }
+        }
+        for(int dir=0; dir<DIM; dir++){
+            alpaka::wait(this->arrqueueSolverNonBlocking_[dir]);
         }
     }
 
@@ -751,6 +758,7 @@ class IterativeSolverBaseAlpaka{
     alpaka::Queue<Acc, alpaka::Blocking> queueSolver_;
     alpaka::Queue<Acc, alpaka::NonBlocking> queueSolverNonBlocking1_;
     alpaka::Queue<Acc, alpaka::NonBlocking> queueSolverNonBlocking2_;
+    std::array<alpaka::Queue<Acc, alpaka::NonBlocking>, 3> arrqueueSolverNonBlocking_;
     const int my_rank_;
     const int ntot_ranks_;
     const std::array<int,3> globalLocation_;

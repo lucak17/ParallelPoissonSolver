@@ -18,8 +18,8 @@ using T_data_chebyshev=double; //data precision for the chebyshev preconditioner
 using Dim = alpaka::DimInt<3>; // alpaka dimension is set to 3 - keep to 3 even if DIM=1 or DIM=2
 using Idx = std::size_t; // alpaka index data type 
 using Acc = alpaka::AccGpuHipRt<Dim,Idx>; // alapaka backend --> only alapaka setup to change according to the hardware architecture - must be coherent with CMakeLists.txt
-//using Acc = alpaka::AccCpuOmp2Threads<Dim,Idx>; // blocks parallel and threads sequentials --> chose this for openMP!
-//using Acc = alpaka::AccCpuOmp2Blocks<Dim,Idx>; // blocks sequential and threads parallel
+//using Acc = alpaka::AccCpuOmp2Blocks<Dim,Idx>; // blocks parallel and threads sequentials --> chose this for openMP!
+//using Acc = alpaka::AccCpuOmp2Threads<Dim,Idx>; // blocks sequential and threads parallel
 /*
 #ifdef alpaka_ACC_CPU_B_SEQ_T_OMP2_ENABLE
         using Acc = alpaka::AccCpuOmp2Threads<Dim,Idx>;
@@ -49,7 +49,7 @@ constexpr Idx sMemSizeFixed = (blockExtentFixed[0]+2*haloSizeFixed[0])*(blockExt
 
 constexpr T_data PI = 3.141592653589793;
 
-constexpr T_data tollScalingFactor = 1e-10;
+constexpr T_data tollScalingFactor = 1e-13;
 
 // Order Neuman BCs scheme (only 2nd available)
 constexpr int orderNeumanBcs=2;
@@ -66,9 +66,9 @@ constexpr int iterMaxPreconditioner=500;
 
 // chebyshev preconditioner paramters - if Chebyshev iteration is used as main solver these paramters must be changed accordingly
 constexpr T_data epsilon=0; // keep to 0
-constexpr T_data rescaleEigMin= 1000; // rescale factor for minimum eigenvalue (if the chebyshev iteration is set to be local in inputParameter.hpp eigenvalues are not rescaled disregarding these values)
+constexpr T_data rescaleEigMin= 100; // rescale factor for minimum eigenvalue (if the chebyshev iteration is set to be local in inputParameter.hpp eigenvalues are not rescaled disregarding these values)
 constexpr T_data rescaleEigMax= 1 - 1e-4; // rescale factor for maximum eigenvalue
-constexpr int chebyshevMax=24; // number of chebyshev iterations
+constexpr int chebyshevMax=44; // number of chebyshev iterations
 constexpr int jumpCheb = 0; // change kernel2 in the chebyshev iteration !keep to 0! - 0 -> no block shared memory, 1 -> shared memory and set how many grid points to jump to avoid memory bank conflicts (it works but not sure is effective), 2 -> basic shared memory
 // if jumpCheb = 1 set the number of grid points to jump
 constexpr Idx jumpI=1u;
