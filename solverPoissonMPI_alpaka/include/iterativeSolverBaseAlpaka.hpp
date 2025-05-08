@@ -132,7 +132,7 @@ class IterativeSolverBaseAlpaka{
                 alpaka::exec<Acc>(this->arrqueueSolverNonBlocking_[dir], workDivExtentResetNeumanBCsKernel_, resetNeumanBCsKernelPositive, bufDataMdSpan, this->exactSolutionAndBCs_, dirAlpaka, this->normFieldB_, 
                                     indexLimitsEdge, this->alpakaHelper_.indexLimitsDataAlpaka_, adjustIdx, this->alpakaHelper_.ds_, this->alpakaHelper_.origin_, 
                                     this->alpakaHelper_.globalLocation_, this->alpakaHelper_.nlocal_noguards_, this->alpakaHelper_.haloSize_ );
-            }
+            }computeErrorOperatorAAlpaka
         }
         for(int dir=0; dir<DIM; dir++){
             alpaka::wait(this->arrqueueSolverNonBlocking_[dir]);

@@ -37,7 +37,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
         workDivExtentKernel1(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, BiCGstab1Kernel<DIM, T_data> {}, 
                                                     alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev), alpaka::experimental::getMdSpan(this->pkDev), 
                                                     this->ptrTmp, this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_)),
-        workDivExtentKernel2(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, BiCGstab2KernelSharedMem<DIM, T_data>{}, 
+        workDivExtentKernel2(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, BiCGstab2Kernel<DIM, T_data>{}, 
                                                     alpaka::experimental::getMdSpan(this->pkDev),alpaka::experimental::getMdSpan(this->pkDev),alpaka::experimental::getMdSpan(this->pkDev),
                                                     this->ptrTmp,this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_)),
         workDivExtentKernel3(alpaka::getValidWorkDiv(this->alpakaHelper_.cfgExtentNoHaloHelper_, this->alpakaHelper_.devAcc_, BiCGstab3Kernel<DIM, T_data>{}, 
@@ -182,7 +182,11 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
              
         BiCGstab1Kernel<DIM, T_data> biCGstab1Kernel;
-        BiCGstab2KernelSharedMem<DIM, T_data> biCGstab2Kernel;
+        BiCGstab1KernelInner<DIM, T_data> biCGstab1KernelInner;
+        BiCGstab1KernelBorder<DIM, T_data> biCGstab1KernelBorder;
+        BiCGstab2KernelInner<DIM, T_data> biCGstab2KernelInner;
+        BiCGstab2KernelBorder<DIM, T_data> biCGstab2KernelBorder;
+        BiCGstab2Kernel<DIM, T_data> biCGstab2Kernel;
         BiCGstab3Kernel<DIM, T_data> biCGstab3Kernel;
         
         UpdateFieldWith1FieldKernelV2<DIM, T_data> updateFieldWith1FieldKernel;
@@ -213,18 +217,25 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             preconditioner(MpkDev,pkDev);
             this->numIterationPreconditionerFinal_ += preconditioner.getNumIterationFinal();
             this->timeCounter.timeTotPreconditioner1 += std::chrono::high_resolution_clock::now() - startCounter;
-
+            
+            
+            alpaka::exec<Acc>(this->queueSolverNonBlocking1_, workDivExtentKernel1, biCGstab1KernelInner, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+                this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             startCounter = std::chrono::high_resolution_clock::now();
-            if constexpr(communicationON)
-            {
+            if constexpr(communicationON){
                 this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(MpkDev));
-                this->communicatorMPI_.waitAllandCheckRcv();
             }
             this->timeCounter.timeTotCommunication1 += std::chrono::high_resolution_clock::now() - startCounter;
-
+    
             startCounter = std::chrono::high_resolution_clock::now();
             this-> template resetNeumanBCsAlpaka<isMainLoop,false>(MpkDev);
             this->timeCounter.timeTotResetNeumanBCs += std::chrono::high_resolution_clock::now() - startCounter;
+            if constexpr(communicationON){
+                this->communicatorMPI_.waitAllandCheckRcv();
+            }
+            alpaka::wait(this->queueSolverNonBlocking1_);
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, biCGstab1KernelBorder, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
+                this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             /*
             pSum1=0.0;
             pSum2=0.0;
@@ -243,11 +254,12 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             */
             
             // kernel1
+            /*
             startCounter = std::chrono::high_resolution_clock::now();
             alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel1, biCGstab1Kernel, AMpkMdSpan, MpkMdSpan, r0MdSpan, ptrDotPorductDev1, 
                                     this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
             this->timeCounter.timeTotKernel1 += std::chrono::high_resolution_clock::now() - startCounter;
-            
+            */
             startCounter = std::chrono::high_resolution_clock::now();
             if constexpr(communicationON)
             {
@@ -281,7 +293,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
             // kernel2
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentFixed, updateFieldWith1FieldKernel, rkMdSpan, AMpkMdSpan,1, -alphak,
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField1, updateFieldWith1FieldKernel, rkMdSpan, AMpkMdSpan,1, -alphak,
                                 this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
             this->timeCounter.timeTotKernel2 += std::chrono::high_resolution_clock::now() - startCounter;
         
@@ -289,17 +301,29 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
             preconditioner(zkDev,rkDev);
             this->numIterationPreconditionerFinal_ += preconditioner.getNumIterationFinal();
             this->timeCounter.timeTotPreconditioner2 += std::chrono::high_resolution_clock::now() - startCounter;
+            
             startCounter = std::chrono::high_resolution_clock::now();
-            if constexpr (communicationON)
-            {
+            /*            
+            alpaka::exec<Acc>(this->queueSolverNonBlocking1_, workDivExtentKernel2, biCGstab2KernelInner, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D, 
+                this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);  
+            */
+            this->timeCounter.timeTotCommunication2 += std::chrono::high_resolution_clock::now() - startCounter;
+            if constexpr (communicationON){
                 this->communicatorMPI_.template operator()<T_data,true>(getPtrNative(zkDev));
                 this->communicatorMPI_.waitAllandCheckRcv();
             }
-            this->timeCounter.timeTotCommunication2 += std::chrono::high_resolution_clock::now() - startCounter;
-            
             startCounter = std::chrono::high_resolution_clock::now();
             this-> template resetNeumanBCsAlpaka<isMainLoop,false>(zkDev);
             this->timeCounter.timeTotResetNeumanBCs += std::chrono::high_resolution_clock::now() - startCounter;
+            
+            /*
+            if constexpr (communicationON){
+                this->communicatorMPI_.waitAllandCheckRcv();
+            }
+            alpaka::wait(this->queueSolverNonBlocking1_);
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2, biCGstab2KernelBorder, AzkMdSpan, zkMdSpan, rkMdSpan, ptrDotPorductDev2D, 
+                this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
+            */
             /*
             for(k=kmin; k<kmax; k++)
             {
@@ -362,7 +386,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
             // kernel4
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentFixed, updateFieldWith2FieldsKernel, fieldXMdSpan, MpkMdSpan, zkMdSpan, 1, alphak, omegak,
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField2, updateFieldWith2FieldsKernel, fieldXMdSpan, MpkMdSpan, zkMdSpan, 1, alphak, omegak,
                                 this->alpakaHelper_.indexLimitsSolverAlpaka_, this->alpakaHelper_.offsetSolver_);
             this->timeCounter.timeTotKernel4 += std::chrono::high_resolution_clock::now() - startCounter;
             /*
@@ -426,7 +450,7 @@ class BiCGstabAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,maxIteration>
 
             // kernel 6
             startCounter = std::chrono::high_resolution_clock::now();
-            alpaka::exec<Acc>(this->queueSolver_, workDivExtentFixed, updateFieldWith2FieldsKernel, pkMdSpan, rkMdSpan, AMpkMdSpan, betak, 1, -betak*omegak, 
+            alpaka::exec<Acc>(this->queueSolver_, workDivExtentUpdateField2, updateFieldWith2FieldsKernel, pkMdSpan, rkMdSpan, AMpkMdSpan, betak, 1, -betak*omegak, 
                                 this->alpakaHelper_.indexLimitsSolverAlpaka_,this->alpakaHelper_.offsetSolver_);
              this->timeCounter.timeTotKernel6 += std::chrono::high_resolution_clock::now() - startCounter;    
 

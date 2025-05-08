@@ -874,7 +874,7 @@ struct Chebyshev2KernelSharedMemSolver
         const T_data_chebyshev f2 = rhoCurr * 2 / delta * (  1/r2  );
         const T_data_chebyshev fB = rhoCurr * 2 / delta;
         const T_data_chebyshev fZ = - rhoCurr * rhoOld;
-                
+        T_data_chebyshev tmp;
         auto const blockThreadExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         //auto const gridThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridBlockIdx = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc);
@@ -907,7 +907,7 @@ struct Chebyshev2KernelSharedMemSolver
         auto const globalIdx = gridThreadIdx + offset;
         auto const localIdx = blockThreadIdx + haloSize;
         //sdataMdSpan2(localIdx[0], localIdx[1],localIdx[2]) 
-        bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ;
+        //bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ;
              
         //if( iGrid>=indexLimitsSolver[4] && iGrid<indexLimitsSolver[5] && jGrid>=indexLimitsSolver[2] && jGrid<indexLimitsSolver[3] && kGrid>=indexLimitsSolver[0] && kGrid<indexLimitsSolver[5] )
         {
@@ -920,7 +920,8 @@ struct Chebyshev2KernelSharedMemSolver
             {
                 const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 + 1/r2) );
                 // Z Y X fieldW[indx] = rhoCurr * ( 2*sigma_*fieldY[indx] +  2/delta_ * ( fieldB[indx] + operatorA(i,j,k,fieldY)  )  - rhoOld*fieldZ[indx] );
-                bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                //bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) += sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                tmp = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                 ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
                                 ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1 +
                                 ( sdataMdSpan(localIdx[0] - 1,localIdx[1],localIdx[2]) + sdataMdSpan(localIdx[0] + 1,localIdx[1],localIdx[2]) ) * f2 ;
@@ -930,7 +931,7 @@ struct Chebyshev2KernelSharedMemSolver
             {
                 const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0 + 1/r1 ) );
                 // Z Y X
-                bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                tmp = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1] - 1,localIdx[2]) + sdataMdSpan(localIdx[0],localIdx[1] + 1,localIdx[2]) ) * f1;
                                     //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
@@ -939,10 +940,13 @@ struct Chebyshev2KernelSharedMemSolver
             {
                 const T_data_chebyshev fc0 =  rhoCurr * ( 2 * sigma  - 4 / delta * ( 1/r0  ) );
                 // Z Y X
-                bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
+                tmp = sdataMdSpan(localIdx[0],localIdx[1],localIdx[2]) * fc0 + 
                                     ( sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] - 1) + sdataMdSpan(localIdx[0],localIdx[1],localIdx[2] + 1) ) * f0 ;
                                     //bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB + bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ ; 
             }
+            tmp += bufDataB(globalIdx[0],globalIdx[1],globalIdx[2]) * fB; 
+            tmp += bufDataZ(globalIdx[0],globalIdx[1],globalIdx[2]) * fZ;
+            bufDataW(globalIdx[0],globalIdx[1],globalIdx[2]) = tmp;
         }  
     }
 };

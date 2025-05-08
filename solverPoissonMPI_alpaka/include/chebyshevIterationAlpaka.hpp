@@ -265,6 +265,12 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
                                             bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
                                             this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_);
                 }
+                else if constexpr(jumpCheb == 3)
+                {
+                    alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2KernelSharedMemSolver, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
+                        bufZMdSpan, delta_, sigma_, rhoCurr, rhoOld, this->alpakaHelper_.indexLimitsSolverAlpaka_, 
+                        this->alpakaHelper_.ds_, this->alpakaHelper_.haloSize_, this->alpakaHelper_.offsetSolver_);
+                }
                 else
                 {
                     alpaka::exec<Acc>(this->queueSolver_, workDivExtentKernel2Solver, chebyshev2Kernel, bufBMdSpan, bufYMdSpan,bufWMdSpan, 
@@ -274,8 +280,7 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
                 std::swap(this->bufZ,this->bufY);
                 std::swap(bufZMdSpan,bufYMdSpan);
                 std::swap(this->bufW,this->bufY);
-                std::swap(bufWMdSpan,bufYMdSpan);
-                
+                std::swap(bufWMdSpan,bufYMdSpan);  
             }
             
         }
