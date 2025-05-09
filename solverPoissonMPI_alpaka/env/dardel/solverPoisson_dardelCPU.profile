@@ -1,0 +1,12 @@
+module load PDC/23.12
+#module load PrgEnv-cray/8.5.0
+module load PrgEnv-gnu/8.5.0
+module load cray-mpich/8.1.28 
+module load boost/1.83.0-gcc-f3q
+module load cmake/3.27.7
+
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+#echo ${SCRIPT_DIR}
+cp "$SCRIPT_DIR/CMakeListsCPU.txt" "$SCRIPT_DIR/../../CMakeLists.txt"
+cp "$SCRIPT_DIR/runCPU.slurm" "$SCRIPT_DIR/../../run/run.slurm"

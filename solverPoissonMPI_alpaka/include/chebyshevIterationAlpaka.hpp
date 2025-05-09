@@ -143,8 +143,8 @@ class ChebyshevIterationAlpaka : public IterativeSolverBaseAlpaka<DIM,T_data,max
 
         auto startSolver = std::chrono::high_resolution_clock::now();
 
-        
-        
+
+
         constexpr bool cast = true;
         if constexpr (!std::is_same_v<T_data, T_data_chebyshev> && cast )
         {

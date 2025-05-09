@@ -10,5 +10,5 @@ module load cmake/3.27.7
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 #echo ${SCRIPT_DIR}
-cp "$SCRIPT_DIR/CMakeLists.txt" "$SCRIPT_DIR/../../."
-cp "$SCRIPT_DIR/run.slurm" "$SCRIPT_DIR/../../run/"
+cp "$SCRIPT_DIR/CMakeListsGPU.txt" "$SCRIPT_DIR/../../CMakeLists.txt"
+cp "$SCRIPT_DIR/runGPU.slurm" "$SCRIPT_DIR/../../run/run.slurm"
